@@ -1,0 +1,67 @@
+{
+  "name": "template-electron-react",
+  "version": "1.0.0",
+  "description": "template electron and react app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@stash.corp.alleninstitute.org:7999/aicssw/template-electron-react.git"
+  },
+  "keywords": [
+    "template",
+    "electron",
+    "react",
+    "aics"
+  ],
+  "author": "Lisa Harrylock",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/chai": "^4.1.4",
+    "@types/electron": "^1.6.10",
+    "@types/react": "^16.4.6",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-redux": "^6.0.4",
+    "@types/sinon": "^5.0.1",
+    "axios": "^0.18.0",
+    "chai": "^4.1.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "electron": "^2.0.5",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "fork-ts-checker-webpack-plugin": "^0.4.3",
+    "html-webpack-plugin": "^3.2.0",
+    "mocha": "^5.2.0",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^11.1.0",
+    "postcss-loader": "^2.1.6",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-redux": "^5.0.7",
+    "sinon": "^6.1.4",
+    "style-loader": "^0.21.0",
+    "ts-import-plugin": "^1.5.4",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.16.2",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "@types/classnames": "^2.2.6",
+    "@types/lodash": "^4.14.112",
+    "antd": "^3.8.0",
+    "classnames": "^2.2.6",
+    "core-js": "^2.5.7",
+    "lodash": "^4.17.10",
+    "react-hot-loader": "^4.3.4",
+    "redux-logic": "^0.15.0",
+    "reselect": "^3.0.1"
+  }
+}
