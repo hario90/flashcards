@@ -8,8 +8,8 @@ import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
 import {
-    DESELECT_FILE,
-    SELECT_FILE,
+    DESELECT_DECK,
+    SELECT_DECK,
     SELECT_METADATA,
 } from "./constants";
 import {
@@ -19,23 +19,21 @@ import {
     SelectMetadataAction,
 } from "./types";
 
-export const initialState = {
-    files: [],
-};
+export const initialState = {};
 
 const actionToConfigMap: TypeToDescriptionMap = {
-    [DESELECT_FILE]: {
-        accepts: (action: AnyAction): action is DeselectFileAction => action.type === DESELECT_FILE,
+    [DESELECT_DECK]: {
+        accepts: (action: AnyAction): action is DeselectFileAction => action.type === DESELECT_DECK,
         perform: (state: SelectionStateBranch, action: DeselectFileAction) => ({
             ...state,
-            files: without(state.files, ...castArray(action.payload)),
+            deck: action.payload,
         }),
     },
-    [SELECT_FILE]: {
-        accepts: (action: AnyAction): action is SelectFileAction => action.type === SELECT_FILE,
+    [SELECT_DECK]: {
+        accepts: (action: AnyAction): action is SelectFileAction => action.type === SELECT_DECK,
         perform: (state: SelectionStateBranch, action: SelectFileAction) => ({
             ...state,
-            files: [...state.files, ...castArray(action.payload)],
+            deck: action.payload,
         }),
     },
     [SELECT_METADATA]: {

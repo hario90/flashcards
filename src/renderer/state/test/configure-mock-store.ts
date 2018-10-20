@@ -7,6 +7,7 @@ import { createLogicMiddleware } from "redux-logic";
 import { SinonStub } from "sinon";
 
 import {
+    deck,
     enableBatching,
     metadata,
     selection,
@@ -21,6 +22,7 @@ export interface ReduxLogicDependencies {
 }
 
 const reducers = {
+    deck: deck.reducer,
     metadata: metadata.reducer,
     selection: selection.reducer,
 };

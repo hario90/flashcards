@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import { AnyAction } from "redux";
 
+import { DeckStateBranch } from "./deck/types";
 import { MetadataStateBranch } from "./metadata/types";
 import { SelectionStateBranch } from "./selection/types";
 
@@ -26,6 +27,7 @@ export interface ReduxLogicDeps {
 export type ReduxLogicNextCb = (action: AnyAction) => void;
 
 export interface State {
+    deck: DeckStateBranch;
     metadata: MetadataStateBranch;
     selection: SelectionStateBranch;
 }

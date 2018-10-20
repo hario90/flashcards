@@ -1,3 +1,4 @@
+import { Deck } from "../deck/types";
 import { MetadataStateBranch } from "../metadata/types";
 
 export interface DeselectFileAction {
@@ -6,8 +7,7 @@ export interface DeselectFileAction {
 }
 
 export interface SelectionStateBranch {
-    [key: string]: any;
-    files: string[];
+    deck?: Deck;
 }
 
 export interface SelectFileAction {

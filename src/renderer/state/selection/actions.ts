@@ -1,6 +1,6 @@
 import {
-    DESELECT_FILE,
-    SELECT_FILE,
+    DESELECT_DECK,
+    SELECT_DECK,
     SELECT_METADATA,
 } from "./constants";
 import {
@@ -12,14 +12,14 @@ import {
 export function selectFile(fileId: string | string[]): SelectFileAction {
     return {
         payload: fileId,
-        type: SELECT_FILE,
+        type: SELECT_DECK,
     };
 }
 
 export function deselectFile(fileId: string | string[]): DeselectFileAction {
     return {
         payload: fileId,
-        type: DESELECT_FILE,
+        type: DESELECT_DECK,
     };
 }
 

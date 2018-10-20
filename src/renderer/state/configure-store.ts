@@ -9,6 +9,7 @@ import { createLogicMiddleware } from "redux-logic";
 import { BASE_API_URL } from "../constants";
 
 import {
+    deck,
     enableBatching,
     metadata,
     selection,
@@ -16,6 +17,7 @@ import {
 } from "./";
 
 const reducers = {
+    deck: deck.reducer,
     metadata: metadata.reducer,
     selection: selection.reducer,
 };
