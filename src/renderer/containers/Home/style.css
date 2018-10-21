@@ -3,5 +3,10 @@
 }
 
 .create-deck-row {
+    margin-top: 1em;
     display: flex;
+}
+
+.body {
+    padding: 1em;
 }

@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  padding: 1em;
+  &:hover {
+    background-color: #d2d4d8;
+  }
+  &>div {
+    flex: 1;
+  }
+  & .number-cards {
+    text-align: right;
+  }
+}

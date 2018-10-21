@@ -85,10 +85,11 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         } else {
             this.setState({error: undefined});
             this.props.saveDeck({
-                cards: this.state.cards,
+                cards: completeCards,
                 id: this.props.deck.id,
                 name: this.state.name || "",
             });
+            this.props.setPage(Page.Home);
         }
     }
 

@@ -7,10 +7,10 @@ import * as React from "react";
 import { ChangeEvent } from "react";
 import { connect } from "react-redux";
 
+import DeckRow from "../../components/DeckRow/index";
 import { createDeck } from "../../state/deck/actions";
 import { getDecks } from "../../state/deck/selectors";
 import {
-    Card,
     CreateDeckAction,
     Deck,
 } from "../../state/deck/types";
@@ -19,6 +19,8 @@ import {
     Page,
     SetPageAction,
 } from "../../state/page/types";
+import { selectDeck } from "../../state/selection/actions";
+import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
@@ -27,6 +29,7 @@ const styles = require("./style.css");
 interface HomeProps {
     decks: Deck[];
     createDeck: (deck: Deck) => CreateDeckAction;
+    selectDeck: (deckId: number | number[]) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
@@ -45,6 +48,13 @@ class Home extends React.Component<HomeProps, HomeState> {
         super(props);
         this.createDeck = this.createDeck.bind(this);
         this.updateDeckName = this.updateDeckName.bind(this);
+        this.selectDeck = this.selectDeck.bind(this);
+    }
+
+    public selectDeck(deckId: number | number[]): void {
+        console.log("selected deck " + deckId);
+        this.props.selectDeck(deckId);
+        this.props.setPage(Page.CreateDeck);
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -78,6 +88,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         const { error } = this.state;
         return (
             <div>
+                <h1>Your Decks</h1>
                 {this.getBody()}
                 <div className={styles.createDeckRow}>
                     <Input
@@ -97,13 +108,13 @@ class Home extends React.Component<HomeProps, HomeState> {
         const { decks } = this.props;
         if (isEmpty(decks)) {
             return (
-                <div>No decks started. Why don't you create one?</div>
+                <div className={styles.body}>No decks started. Why don't you create one?</div>
             );
         }
 
         return (
-            <div>
-                {decks.map((deck) => <div key={deck.name}>{deck.name} {deck.cards.length} cards</div>)}
+            <div className={styles.body}>
+                {decks.map((deck) => <DeckRow key={deck.id} deck={deck} selectDeck={this.selectDeck}/>)}
             </div>
         );
     }
@@ -117,6 +128,7 @@ function mapStateToProps(state: State): Partial<HomeProps> {
 
 const dispatchToPropsMap = {
     createDeck,
+    selectDeck,
     setPage,
 };
 
