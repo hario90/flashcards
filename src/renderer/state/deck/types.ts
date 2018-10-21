@@ -22,3 +22,8 @@ export interface SaveDeckAction {
     payload: Deck;
     type: string;
 }
+
+export interface DeleteDeckAction {
+    payload: number;
+    type: string;
+}

@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
-import { saveDeck } from "../../state/deck/actions";
+import { deleteDeck, saveDeck } from "../../state/deck/actions";
 import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
@@ -169,6 +169,7 @@ function mapStateToProps(state: State): Partial<DeckProps> {
 }
 
 const dispatchToPropsMap = {
+    deleteDeck,
     saveDeck,
     setPage,
 };

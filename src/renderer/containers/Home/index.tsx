@@ -8,11 +8,11 @@ import { ChangeEvent } from "react";
 import { connect } from "react-redux";
 
 import DeckRow from "../../components/DeckRow/index";
-import { createDeck } from "../../state/deck/actions";
+import { createDeck, deleteDeck } from "../../state/deck/actions";
 import { getDecks } from "../../state/deck/selectors";
 import {
     CreateDeckAction,
-    Deck,
+    Deck, DeleteDeckAction,
 } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import {
@@ -28,6 +28,7 @@ import {
 const styles = require("./style.css");
 interface HomeProps {
     decks: Deck[];
+    deleteDeck: (id: number) => DeleteDeckAction;
     createDeck: (deck: Deck) => CreateDeckAction;
     selectDeck: (deckId: number | number[]) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
@@ -47,6 +48,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     constructor(props: HomeProps) {
         super(props);
         this.createDeck = this.createDeck.bind(this);
+        this.getDeleteDeck = this.getDeleteDeck.bind(this);
         this.updateDeckName = this.updateDeckName.bind(this);
         this.selectDeck = this.selectDeck.bind(this);
     }
@@ -84,6 +86,10 @@ class Home extends React.Component<HomeProps, HomeState> {
         }
     }
 
+    public getDeleteDeck(id: number): () => DeleteDeckAction {
+        return () => this.props.deleteDeck(id);
+    }
+
     public render() {
         const { error } = this.state;
         return (
@@ -114,7 +120,13 @@ class Home extends React.Component<HomeProps, HomeState> {
 
         return (
             <div className={styles.body}>
-                {decks.map((deck) => <DeckRow key={deck.id} deck={deck} selectDeck={this.selectDeck}/>)}
+                {decks.map((deck) => (
+                    <DeckRow
+                        key={deck.id}
+                        deck={deck}
+                        deleteDeck={this.props.deleteDeck}
+                        selectDeck={this.selectDeck}
+                    />))}
             </div>
         );
     }
@@ -128,6 +140,7 @@ function mapStateToProps(state: State): Partial<HomeProps> {
 
 const dispatchToPropsMap = {
     createDeck,
+    deleteDeck,
     selectDeck,
     setPage,
 };

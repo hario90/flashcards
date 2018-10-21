@@ -1,9 +1,9 @@
 import {
-    CREATE_DECK, SAVE_DECK,
+    CREATE_DECK, DELETE_DECK, SAVE_DECK,
 } from "./constants";
 import {
     CreateDeckAction,
-    Deck, SaveDeckAction,
+    Deck, DeleteDeckAction, SaveDeckAction,
 } from "./types";
 
 export function createDeck(payload: Deck): CreateDeckAction {
@@ -17,5 +17,12 @@ export function saveDeck(payload: Deck): SaveDeckAction {
     return {
         payload,
         type: SAVE_DECK,
+    };
+}
+
+export function deleteDeck(payload: number): DeleteDeckAction{
+    return {
+        payload,
+        type: DELETE_DECK,
     };
 }

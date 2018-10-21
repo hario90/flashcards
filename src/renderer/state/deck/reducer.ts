@@ -1,12 +1,13 @@
+import { remove } from "lodash";
 import { AnyAction } from "redux";
 
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { CREATE_DECK, SAVE_DECK } from "./constants";
+import { CREATE_DECK, DELETE_DECK, SAVE_DECK } from "./constants";
 import {
     CreateDeckAction, Deck,
-    DeckStateBranch, SaveDeckAction,
+    DeckStateBranch, DeleteDeckAction, SaveDeckAction,
 } from "./types";
 
 export const initialState = {
@@ -20,6 +21,17 @@ const actionToConfigMap: TypeToDescriptionMap = {
             ...state,
             decks: [...state.decks, action.payload],
         }),
+    },
+    [DELETE_DECK]: {
+        accepts: (action: AnyAction): action is DeleteDeckAction => action.type === DELETE_DECK,
+        perform: (state: DeckStateBranch, action: DeleteDeckAction) => {
+            const decks = remove(state.decks, (deck) => deck.id !== action.payload);
+            console.log(decks);
+            return {
+                ...state,
+                decks,
+            };
+        },
     },
     [SAVE_DECK]: {
         accepts: (action: AnyAction): action is SaveDeckAction => action.type === SAVE_DECK,

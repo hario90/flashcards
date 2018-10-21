@@ -1,13 +1,30 @@
 .container {
   display: flex;
   padding: 1em;
+  transition: background-color 0.5s;
+
   &:hover {
     background-color: #d2d4d8;
+
+    & .delete {
+      visibility: visible;
+    }
   }
   &>div {
     flex: 1;
+    align-items: center;
+    display: flex;
+
+    &.number-cards {
+      text-align: right;
+      margin-right: 0.5em;
+      justify-content: flex-end;
+    }
   }
-  & .number-cards {
-    text-align: right;
+
+  & .delete {
+    visibility: hidden;
+    transition: visibility 0.5s;
+    z-index: 100;
   }
 }
