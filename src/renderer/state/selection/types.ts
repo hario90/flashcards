@@ -1,17 +1,16 @@
-import { Deck } from "../deck/types";
 import { MetadataStateBranch } from "../metadata/types";
 
 export interface DeselectDeckAction {
-    payload: string | string[];
+    payload: number | number[];
     type: string;
 }
 
 export interface SelectionStateBranch {
-    deck?: string;
+    deck?: number;
 }
 
 export interface SelectDeckAction {
-    payload: string | string[];
+    payload: number | number[];
     type: string;
 }
 

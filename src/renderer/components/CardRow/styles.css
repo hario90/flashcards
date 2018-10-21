@@ -1,0 +1,9 @@
+.row {
+    display: flex;
+    padding: 1em;
+    vertical-align: center;
+}
+
+.front {
+    padding-right: 1em;
+}

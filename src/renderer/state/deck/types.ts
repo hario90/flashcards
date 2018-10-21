@@ -8,11 +8,17 @@ export interface Card {
 }
 
 export interface Deck {
+    id: number;
     name: string;
     cards: Card[];
 }
 
 export interface CreateDeckAction {
-    payload: string;
+    payload: Deck;
+    type: string;
+}
+
+export interface SaveDeckAction {
+    payload: Deck;
     type: string;
 }

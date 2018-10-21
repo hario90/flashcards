@@ -12,12 +12,10 @@ export const getSelectedDeckId = (state: State) => state.selection.deck;
 export const getSelectedDeck = createSelector([
     getSelectedDeckId,
     getDecks,
-], (deckId: string | undefined, decks: Deck[]) => {
-    console.log(deckId)
-    console.log(decks)
+], (deckId: number | undefined, decks: Deck[]) => {
     if (!deckId) {
         return null;
     }
 
-    return decks.find((deck: Deck) => deck.name === deckId);
+    return decks.find((deck: Deck) => deck.id === deckId);
 });

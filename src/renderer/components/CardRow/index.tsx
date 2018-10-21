@@ -41,13 +41,21 @@ class CardRow extends React.Component<CardRowProps, {}>  {
         return (
             <div className={styles.row}>
                 {index + 1}
-                <div>
-                    Front:
-                    <Input value={card.front} onChange={this.updateFront}/>
+                <div className={styles.front}>
+                    <Input
+                        value={card.front}
+                        onChange={this.updateFront}
+                        placeholder="Enter term"
+                    />
+                    Term
                 </div>
                 <div>
-                    Back:
-                    <Input value={card.back} onChange={this.updateBack}/>
+                    <Input
+                        value={card.back}
+                        onChange={this.updateBack}
+                        placeholder="Enter definition"
+                    />
+                    Definition
                 </div>
             </div>
         );

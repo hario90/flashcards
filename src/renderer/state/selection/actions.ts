@@ -9,14 +9,14 @@ import {
     SelectMetadataAction,
 } from "./types";
 
-export function selectDeck(deckId: string | string[]): SelectDeckAction {
+export function selectDeck(deckId: number | number[]): SelectDeckAction {
     return {
         payload: deckId,
         type: SELECT_DECK,
     };
 }
 
-export function deselectFile(deckId: string | string[]): DeselectDeckAction {
+export function deselectDeck(deckId: number | number[]): DeselectDeckAction {
     return {
         payload: deckId,
         type: DESELECT_DECK,

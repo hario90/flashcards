@@ -9,7 +9,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
-import { Card, Deck } from "../../state/deck/types";
+import { saveDeck } from "../../state/deck/actions";
+import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import { getSelectedDeck } from "../../state/selection/selectors";
@@ -21,12 +22,14 @@ const styles = require("./style.css");
 
 interface DeckProps {
     deck: Deck;
+    saveDeck: (deck: Deck) => SaveDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
 interface DeckState {
     name?: string;
     cards: Card[];
+    error?: string;
 }
 
 const EMPTY_CARD = {
@@ -51,7 +54,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.updateDeckName = this.updateDeckName.bind(this);
         this.updateFront = this.updateFront.bind(this);
         this.updateBack = this.updateBack.bind(this);
-        // this.save = this.save.bind(this);
+        this.addCard = this.addCard.bind(this);
+        this.save = this.save.bind(this);
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -62,6 +66,30 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public goBack(): void {
         this.props.setPage(Page.Home);
+    }
+
+    public save(): void {
+        const { cards, name } = this.state;
+        const completeCards = cards.filter((card: Card) => card.front && card.back);
+        let errorMessage = "";
+        if (!name) {
+            errorMessage = "You deck is missing a name. ";
+        }
+
+        if (isEmpty(completeCards)) {
+            errorMessage += "Your deck is empty. Please make sure you have completed both sides of each card.";
+        }
+
+        if (errorMessage) {
+            this.setState({error: errorMessage});
+        } else {
+            this.setState({error: undefined});
+            this.props.saveDeck({
+                cards: this.state.cards,
+                id: this.props.deck.id,
+                name: this.state.name || "",
+            });
+        }
     }
 
     public updateFront(cardIndex: number, front: string): void {
@@ -86,19 +114,28 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.setState({cards});
     }
 
+    public addCard(): void {
+        const cards = [
+            ...this.state.cards,
+            EMPTY_CARD,
+        ];
+        this.setState({cards});
+    }
+
     public render() {
-        const { cards, name } = this.state;
+        const { cards, name, error } = this.state;
         return (
             <div>
                 <Button type="primary" onClick={this.goBack}>
                     <Icon type="left" />Go back
                 </Button>
-                <div className={styles.title}>Create a new study set</div>
+                <h1 className={styles.title}>Create a new study set</h1>
                 <Input
                     value={name}
                     placeholder="Deck Name"
                     onChange={this.updateDeckName}
                 />
+                <div>Title</div>
                 {cards.map((card: Card, i: number) => (
                     <CardRow
                         updateFront={this.updateFront}
@@ -108,6 +145,13 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         card={card}
                     />
                 ))}
+                {error && <div className={styles.error}>{error}</div>}
+                <Button type="default" onClick={this.addCard}>
+                    Add Card
+                </Button>
+                <Button type="primary" onClick={this.save}>
+                    Save
+                </Button>
             </div>
         );
     }
@@ -117,12 +161,14 @@ function mapStateToProps(state: State): Partial<DeckProps> {
     return {
         deck: getSelectedDeck(state) || {
             cards: [],
+            id: 0,
             name: "",
         },
     };
 }
 
 const dispatchToPropsMap = {
+    saveDeck,
     setPage,
 };
 

@@ -23,21 +23,20 @@ import {
     State
 } from "../../state/types";
 
+const styles = require("./style.css");
 interface HomeProps {
     decks: Deck[];
-    createDeck: (deckId: string) => CreateDeckAction;
+    createDeck: (deck: Deck) => CreateDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
 interface HomeState {
-    cards: Card[];
     deckName: string;
     error: string;
 }
 
 class Home extends React.Component<HomeProps, HomeState> {
     public state: HomeState = {
-        cards: [],
         deckName: "",
         error: "",
     };
@@ -55,14 +54,18 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 
     public createDeck(): void {
-        const { cards, deckName } = this.state;
+        const { deckName } = this.state;
         if (this.props.decks.find((deck: Deck) => deck.name === deckName)) {
             this.setState({
                 deckName: "",
                 error: `Already have deck called ${deckName}`,
             });
         } else {
-            this.props.createDeck(deckName);
+            this.props.createDeck({
+                cards: [],
+                id: 0, // this get populated in the logics
+                name: deckName,
+            });
             this.setState({
                 deckName: "",
                 error: "",
@@ -74,16 +77,18 @@ class Home extends React.Component<HomeProps, HomeState> {
     public render() {
         const { error } = this.state;
         return (
-            <div >
+            <div>
                 {this.getBody()}
-                <Input
-                    placeholder="Deck Name"
-                    value={this.state.deckName}
-                    onChange={this.updateDeckName}
-                    onPressEnter={this.createDeck}
-                />
-                <Button type="primary" onClick={this.createDeck}>New Deck</Button>
-                {error && <div>{error}</div>}
+                <div className={styles.createDeckRow}>
+                    <Input
+                        placeholder="Deck Name"
+                        value={this.state.deckName}
+                        onChange={this.updateDeckName}
+                        onPressEnter={this.createDeck}
+                    />
+                    <Button type="primary" onClick={this.createDeck}>New Deck</Button>
+                </div>
+                {error && <div className={styles.error}>{error}</div>}
             </div>
         );
     }
