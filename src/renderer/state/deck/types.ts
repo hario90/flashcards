@@ -13,6 +13,6 @@ export interface Deck {
 }
 
 export interface CreateDeckAction {
-    payload: Deck;
+    payload: string;
     type: string;
 }

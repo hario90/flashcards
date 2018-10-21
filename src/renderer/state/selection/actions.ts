@@ -4,21 +4,21 @@ import {
     SELECT_METADATA,
 } from "./constants";
 import {
-    DeselectFileAction,
-    SelectFileAction,
+    DeselectDeckAction,
+    SelectDeckAction,
     SelectMetadataAction,
 } from "./types";
 
-export function selectFile(fileId: string | string[]): SelectFileAction {
+export function selectDeck(deckId: string | string[]): SelectDeckAction {
     return {
-        payload: fileId,
+        payload: deckId,
         type: SELECT_DECK,
     };
 }
 
-export function deselectFile(fileId: string | string[]): DeselectFileAction {
+export function deselectFile(deckId: string | string[]): DeselectDeckAction {
     return {
-        payload: fileId,
+        payload: deckId,
         type: DESELECT_DECK,
     };
 }

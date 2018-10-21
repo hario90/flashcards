@@ -3,6 +3,7 @@ import { AnyAction } from "redux";
 
 import { DeckStateBranch } from "./deck/types";
 import { MetadataStateBranch } from "./metadata/types";
+import { PageStateBranch } from "./page/types";
 import { SelectionStateBranch } from "./selection/types";
 
 export interface ActionDescription {
@@ -29,6 +30,7 @@ export type ReduxLogicNextCb = (action: AnyAction) => void;
 export interface State {
     deck: DeckStateBranch;
     metadata: MetadataStateBranch;
+    page: PageStateBranch;
     selection: SelectionStateBranch;
 }
 

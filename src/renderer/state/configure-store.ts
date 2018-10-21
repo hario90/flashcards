@@ -12,6 +12,7 @@ import {
     deck,
     enableBatching,
     metadata,
+    page,
     selection,
     State,
 } from "./";
@@ -19,11 +20,14 @@ import {
 const reducers = {
     deck: deck.reducer,
     metadata: metadata.reducer,
+    page: page.reducer,
     selection: selection.reducer,
 };
 
 const logics = [
+    ...deck.logics,
     ...metadata.logics,
+    ...page.logics,
     ...selection.logics,
 ];
 

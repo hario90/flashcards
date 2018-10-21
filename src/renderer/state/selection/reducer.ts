@@ -1,7 +1,3 @@
-import {
-    castArray,
-    without,
-} from "lodash";
 import { AnyAction } from "redux";
 
 import { TypeToDescriptionMap } from "../types";
@@ -13,8 +9,8 @@ import {
     SELECT_METADATA,
 } from "./constants";
 import {
-    DeselectFileAction,
-    SelectFileAction,
+    DeselectDeckAction,
+    SelectDeckAction,
     SelectionStateBranch,
     SelectMetadataAction,
 } from "./types";
@@ -23,15 +19,15 @@ export const initialState = {};
 
 const actionToConfigMap: TypeToDescriptionMap = {
     [DESELECT_DECK]: {
-        accepts: (action: AnyAction): action is DeselectFileAction => action.type === DESELECT_DECK,
-        perform: (state: SelectionStateBranch, action: DeselectFileAction) => ({
+        accepts: (action: AnyAction): action is DeselectDeckAction => action.type === DESELECT_DECK,
+        perform: (state: SelectionStateBranch, action: DeselectDeckAction) => ({
             ...state,
-            deck: action.payload,
+            deck: null,
         }),
     },
     [SELECT_DECK]: {
-        accepts: (action: AnyAction): action is SelectFileAction => action.type === SELECT_DECK,
-        perform: (state: SelectionStateBranch, action: SelectFileAction) => ({
+        accepts: (action: AnyAction): action is SelectDeckAction => action.type === SELECT_DECK,
+        perform: (state: SelectionStateBranch, action: SelectDeckAction) => ({
             ...state,
             deck: action.payload,
         }),

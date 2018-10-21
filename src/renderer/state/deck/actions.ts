@@ -6,7 +6,7 @@ import {
     Deck,
 } from "./types";
 
-export function createDeck(payload: Deck): CreateDeckAction {
+export function createDeck(payload: string): CreateDeckAction {
     return {
         payload,
         type: CREATE_DECK,

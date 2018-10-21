@@ -10,6 +10,7 @@ import {
     deck,
     enableBatching,
     metadata,
+    page,
     selection,
     State,
 } from "../";
@@ -24,6 +25,7 @@ export interface ReduxLogicDependencies {
 const reducers = {
     deck: deck.reducer,
     metadata: metadata.reducer,
+    page: page.reducer,
     selection: selection.reducer,
 };
 

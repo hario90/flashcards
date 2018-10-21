@@ -18,7 +18,10 @@ const actionToConfigMap: TypeToDescriptionMap = {
         accepts: (action: AnyAction): action is CreateDeckAction => action.type === CREATE_DECK,
         perform: (state: DeckStateBranch, action: CreateDeckAction) => ({
             ...state,
-            decks: [...state.decks, action.payload],
+            decks: [...state.decks, {
+                cards: [],
+                name: action.payload,
+            }],
         }),
     },
 };
