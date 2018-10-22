@@ -10,3 +10,13 @@
 .body {
     padding: 1em;
 }
+
+.alert-button-row {
+    display: flex;
+    &>div {
+        color: blue;
+        text-decoration: underline;
+        padding: 0.5em;
+        cursor: pointer; /* todo consolidate */
+    }
+}

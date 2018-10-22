@@ -3,6 +3,10 @@
   padding: 1em;
   transition: background-color 0.5s;
 
+  &.to-be-deleted {
+    color: #bdbfc1;
+  }
+
   &:hover {
     background-color: #d2d4d8;
     cursor: pointer;

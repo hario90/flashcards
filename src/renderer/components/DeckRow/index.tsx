@@ -1,4 +1,5 @@
-import { Button, Icon } from "antd";
+import * as classNames from "classnames";
+import { Button } from "antd";
 import * as React from "react";
 
 import { Deck, DeleteDeckAction } from "../../state/deck/types";
@@ -8,7 +9,8 @@ const styles = require("./styles.css");
 interface DeckRowProps {
     deck: Deck;
     selectDeck: (deckId: number | number[]) => void;
-    deleteDeck: (deckId: number) => DeleteDeckAction;
+    deleteDeck: (deckId: number) => void;
+    toBeDeleted: boolean;
 }
 class DeckRow extends React.Component<DeckRowProps, {}> {
     constructor(props: DeckRowProps) {
@@ -27,10 +29,13 @@ class DeckRow extends React.Component<DeckRowProps, {}> {
     }
 
     public render() {
-        const { deck } = this.props;
+        const { deck, toBeDeleted } = this.props;
         const cardsLabel = deck.cards.length !== 1 ? "cards" : "card";
+        const containerStyle = {
+            [styles.toBeDeleted]: toBeDeleted,
+        };
         return (
-            <div className={styles.container} onClick={this.selectDeck}>
+            <div className={classNames(styles.container, containerStyle)} onClick={this.selectDeck}>
                 <div className={styles.name}>{deck.name}</div>
                 <div className={styles.numberCards}>{deck.cards.length}&nbsp;{cardsLabel}</div>
                 <Button className={styles.delete} shape="circle" icon="delete" onClick={this.deleteDeck}/>

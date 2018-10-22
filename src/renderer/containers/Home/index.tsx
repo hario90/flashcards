@@ -1,6 +1,7 @@
 import {
+    Alert,
     Button,
-    Input
+    Input,
 } from "antd";
 import { isEmpty } from "lodash";
 import * as React from "react";
@@ -37,24 +38,28 @@ interface HomeProps {
 interface HomeState {
     deckName: string;
     error: string;
+    showAlert: boolean;
+    deckToDelete?: number;
 }
 
 class Home extends React.Component<HomeProps, HomeState> {
     public state: HomeState = {
         deckName: "",
         error: "",
+        showAlert: false,
     };
 
     constructor(props: HomeProps) {
         super(props);
         this.createDeck = this.createDeck.bind(this);
-        this.getDeleteDeck = this.getDeleteDeck.bind(this);
         this.updateDeckName = this.updateDeckName.bind(this);
         this.selectDeck = this.selectDeck.bind(this);
+        this.showAlert = this.showAlert.bind(this);
+        this.deleteDeck = this.deleteDeck.bind(this);
+        this.clearDeckToDelete = this.clearDeckToDelete.bind(this);
     }
 
     public selectDeck(deckId: number | number[]): void {
-        console.log("selected deck " + deckId);
         this.props.selectDeck(deckId);
         this.props.setPage(Page.CreateDeck);
     }
@@ -70,7 +75,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         if (this.props.decks.find((deck: Deck) => deck.name === deckName)) {
             this.setState({
                 deckName: "",
-                error: `Already have deck called ${deckName}`,
+                error: `You already have a deck called ${deckName}`,
             });
         } else {
             this.props.createDeck({
@@ -86,15 +91,47 @@ class Home extends React.Component<HomeProps, HomeState> {
         }
     }
 
-    public getDeleteDeck(id: number): () => DeleteDeckAction {
-        return () => this.props.deleteDeck(id);
+    public deleteDeck(): void {
+        if (this.state.deckToDelete) {
+            this.props.deleteDeck(this.state.deckToDelete);
+        }
+
+        this.clearDeckToDelete();
+    }
+
+    public clearDeckToDelete(): void {
+        this.setState({deckToDelete: undefined, showAlert: false});
+    }
+
+    public showAlert(id: number): void {
+        this.setState({showAlert: true, deckToDelete: id});
     }
 
     public render() {
-        const { error } = this.state;
+        const { error, showAlert } = this.state;
+        const alertButtons = (
+            <div className={styles.alertButtonRow}>
+                <div onClick={this.clearDeckToDelete}>Cancel</div>
+                <div onClick={this.deleteDeck}>Continue</div>
+            </div>
+        );
         return (
             <div>
                 <h1>Your Decks</h1>
+                {showAlert && <Alert
+                    message="Are you sure you want to delete this deck?"
+                    description={alertButtons}
+                    type="warning"
+                    closable={true}
+                    onClose={this.clearDeckToDelete}
+                    showIcon={true}
+                />}
+                {error && <Alert
+                    message="Could Not Create Deck"
+                    description={error}
+                    type="error"
+                    showIcon={true}
+                />}
                 {this.getBody()}
                 <div className={styles.createDeckRow}>
                     <Input
@@ -105,7 +142,6 @@ class Home extends React.Component<HomeProps, HomeState> {
                     />
                     <Button type="primary" onClick={this.createDeck}>New Deck</Button>
                 </div>
-                {error && <div className={styles.error}>{error}</div>}
             </div>
         );
     }
@@ -124,8 +160,9 @@ class Home extends React.Component<HomeProps, HomeState> {
                     <DeckRow
                         key={deck.id}
                         deck={deck}
-                        deleteDeck={this.props.deleteDeck}
+                        deleteDeck={this.showAlert}
                         selectDeck={this.selectDeck}
+                        toBeDeleted={deck.id === this.state.deckToDelete}
                     />))}
             </div>
         );
