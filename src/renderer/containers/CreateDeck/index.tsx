@@ -1,4 +1,5 @@
 import {
+    Alert,
     Button,
     Icon,
     Input,
@@ -150,6 +151,12 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                     onChange={this.updateDeckName}
                 />
                 <div>Title</div>
+                {error && <Alert
+                    message="Could Not Save Deck"
+                    description={error}
+                    type="error"
+                    showIcon={true}
+                />}
                 {cards.map((card: Card, i: number) => (
                     <CardRow
                         updateFront={this.updateFront}
@@ -159,7 +166,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         card={card}
                     />
                 ))}
-                {error && <div className={styles.error}>{error}</div>}
                 <Button type="default" onClick={this.addCard}>
                     Add Card
                 </Button>
