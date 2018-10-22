@@ -56,6 +56,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.updateBack = this.updateBack.bind(this);
         this.addCard = this.addCard.bind(this);
         this.save = this.save.bind(this);
+        this.goToLearn = this.goToLearn.bind(this);
+        this.goToTest = this.goToTest.bind(this);
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -123,14 +125,25 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.setState({cards});
     }
 
+    public goToLearn(): void {
+        this.props.setPage(Page.Learn);
+    }
+
+    public goToTest(): void {
+        this.props.setPage(Page.Test);
+    }
+
     public render() {
         const { cards, name, error } = this.state;
         return (
             <div>
-                <Button type="primary" onClick={this.goBack}>
-                    <Icon type="left" />Go back
-                </Button>
-                <h1 className={styles.title}>Create a new study set</h1>
+                <div className={styles.titleRow}>
+                    <h1 className={styles.title}>Create a new study set</h1>
+                    <div>
+                        <Button onClick={this.goToLearn}>Learn</Button>
+                        <Button onClick={this.goToTest}>Test</Button>
+                    </div>
+                </div>
                 <Input
                     value={name}
                     placeholder="Deck Name"

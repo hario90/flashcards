@@ -7,7 +7,7 @@ import { SET_PAGE } from "./constants";
 import {
     Page,
     PageStateBranch,
-    SetPageAction
+    SetPageAction,
 } from "./types";
 
 const initialState = {
@@ -15,6 +15,7 @@ const initialState = {
 };
 
 const actionToConfigMap: TypeToDescriptionMap = {
+
     [SET_PAGE]: {
         accepts: (action: AnyAction): action is SetPageAction => action.type === SET_PAGE,
         perform: (state: PageStateBranch, action: SetPageAction) => ({

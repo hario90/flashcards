@@ -5,6 +5,7 @@
 
   &:hover {
     background-color: #d2d4d8;
+    cursor: pointer;
 
     & .delete {
       visibility: visible;
