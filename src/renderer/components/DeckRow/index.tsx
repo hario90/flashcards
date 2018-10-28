@@ -1,8 +1,8 @@
-import * as classNames from "classnames";
 import { Button } from "antd";
+import * as classNames from "classnames";
 import * as React from "react";
 
-import { Deck, DeleteDeckAction } from "../../state/deck/types";
+import { Deck } from "../../state/deck/types";
 
 const styles = require("./styles.css");
 

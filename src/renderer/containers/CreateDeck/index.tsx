@@ -1,7 +1,6 @@
 import {
     Alert,
     Button,
-    Icon,
     Input,
 } from "antd";
 import { isEmpty } from "lodash";
@@ -14,7 +13,9 @@ import { deleteDeck, saveDeck } from "../../state/deck/actions";
 import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
+import { selectDeck } from "../../state/selection/actions";
 import { getSelectedDeck } from "../../state/selection/selectors";
+import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
@@ -24,6 +25,7 @@ const styles = require("./style.css");
 interface DeckProps {
     deck: Deck;
     saveDeck: (deck: Deck) => SaveDeckAction;
+    selectDeck: (deckId: number | number[]) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
@@ -59,6 +61,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.save = this.save.bind(this);
         this.goToLearn = this.goToLearn.bind(this);
         this.goToTest = this.goToTest.bind(this);
+        this.onSavePressed = this.onSavePressed.bind(this);
+        this.getCurrentDeck = this.getCurrentDeck.bind(this);
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -71,7 +75,11 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.props.setPage(Page.Home);
     }
 
-    public save(): void {
+    public onSavePressed(): void {
+        this.save(Page.Home);
+    }
+
+    public save(nextPage?: Page): void {
         const { cards, name } = this.state;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
         let errorMessage = "";
@@ -87,13 +95,18 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             this.setState({error: errorMessage});
         } else {
             this.setState({error: undefined});
-            this.props.saveDeck({
-                cards: completeCards,
-                id: this.props.deck.id,
-                name: this.state.name || "",
-            });
-            this.props.setPage(Page.Home);
+            this.props.saveDeck(this.getCurrentDeck());
+            this.props.setPage(nextPage || Page.Home);
         }
+    }
+
+    public getCurrentDeck(): Deck {
+        const completeCards = this.state.cards.filter((card: Card) => card.front && card.back);
+        return {
+            cards: completeCards,
+            id: this.props.deck.id,
+            name: this.state.name || "",
+        };
     }
 
     public updateFront(cardIndex: number, front: string): void {
@@ -127,11 +140,13 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public goToLearn(): void {
-        this.props.setPage(Page.Learn);
+        this.props.selectDeck(this.props.deck.id);
+        this.save(Page.Learn);
     }
 
     public goToTest(): void {
-        this.props.setPage(Page.Test);
+        this.props.selectDeck(this.props.deck.id);
+        this.save(Page.Test);
     }
 
     public render() {
@@ -140,7 +155,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             <div>
                 <div className={styles.titleRow}>
                     <h1 className={styles.title}>Create a new study set</h1>
-                    <div>
+                    <div className={styles.actionButtons}>
                         <Button onClick={this.goToLearn}>Learn</Button>
                         <Button onClick={this.goToTest}>Test</Button>
                     </div>
@@ -169,7 +184,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                 <Button type="default" onClick={this.addCard}>
                     Add Card
                 </Button>
-                <Button type="primary" onClick={this.save}>
+                <Button type="primary" onClick={this.onSavePressed}>
                     Save
                 </Button>
             </div>
@@ -190,6 +205,7 @@ function mapStateToProps(state: State): Partial<DeckProps> {
 const dispatchToPropsMap = {
     deleteDeck,
     saveDeck,
+    selectDeck,
     setPage,
 };
 
