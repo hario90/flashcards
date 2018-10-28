@@ -1,5 +1,4 @@
 import { createLogic } from "redux-logic";
-
 import { Deck } from "../deck/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 import { getRandomCardFromDeck } from "../selection/logics";
@@ -29,7 +28,7 @@ const setPageLogic = createLogic({
             actions.push(
                 setCurrentCard(currentCard),
                 setSeenCards([]),
-                setUnseenCards(unseenCards)
+                setUnseenCards(unseenCards),
             );
         }
 
