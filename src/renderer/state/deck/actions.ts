@@ -20,7 +20,7 @@ export function saveDeck(payload: Deck): SaveDeckAction {
     };
 }
 
-export function deleteDeck(payload: number): DeleteDeckAction{
+export function deleteDeck(payload: number): DeleteDeckAction {
     return {
         payload,
         type: DELETE_DECK,
