@@ -29,7 +29,7 @@ const setPageLogic = createLogic({
             actions.push(
                 setCurrentCard(currentCard),
                 setSeenCards([]),
-                setUnseenCards(unseenCards),
+                setUnseenCards(unseenCards)
             );
         }
 
