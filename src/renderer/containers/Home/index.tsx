@@ -122,12 +122,20 @@ class Home extends React.Component<HomeProps, HomeState> {
                 <div className={styles.createDeckRow}>
                     <LineInput
                         placeholder="Deck Name"
+                        className={styles.deckInput}
                         value={this.state.deckName}
                         onChange={this.updateDeckName}
                         onPressEnter={this.createDeck}
                         label="title"
                     />
-                    <Button type="primary" onClick={this.createDeck}>New Deck</Button>
+                    <Button
+                        className={styles.createDeckBtn}
+                        type="primary"
+                        size="large"
+                        onClick={this.createDeck}
+                    >
+                        New Deck
+                    </Button>
                 </div>
                 {showAlert && <Alert
                     message="Are you sure you want to delete this deck?"

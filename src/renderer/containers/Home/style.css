@@ -1,6 +1,13 @@
 .create-deck-row {
     margin-top: 1em;
     display: flex;
+    align-items: baseline;
+    & .create-deck-btn {
+        flex-basis: auto;
+    }
+    & .deck-input {
+        flex: 8;
+    }
 }
 
 .body {
