@@ -1,7 +1,6 @@
 import {
     Alert,
     Button,
-    Input,
 } from "antd";
 import { isEmpty } from "lodash";
 import { ChangeEvent } from "react";
@@ -9,6 +8,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
+import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck } from "../../state/deck/actions";
 import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
@@ -160,7 +160,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         <Button onClick={this.goToTest}>Test</Button>
                     </div>
                 </div>
-                <Input
+                <LineInput
                     value={name}
                     placeholder="Deck Name"
                     onChange={this.updateDeckName}

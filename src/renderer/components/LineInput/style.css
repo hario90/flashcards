@@ -1,0 +1,15 @@
+:global(.ant-input) {
+  background-color: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  border-bottom: 2px solid black;
+  font-size: 18px;
+  height: 48px;
+
+  &:focus, &:hover {
+    border-bottom-color: #f4a442;
+    box-shadow: none;
+  }
+}

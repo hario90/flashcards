@@ -9,6 +9,7 @@ import { ChangeEvent } from "react";
 import { connect } from "react-redux";
 
 import DeckRow from "../../components/DeckRow/index";
+import LineInput from "../../components/LineInput/index";
 import { createDeck, deleteDeck } from "../../state/deck/actions";
 import { getDecks } from "../../state/deck/selectors";
 import {
@@ -118,6 +119,16 @@ class Home extends React.Component<HomeProps, HomeState> {
         return (
             <div>
                 <h1>Your Decks</h1>
+                <div className={styles.createDeckRow}>
+                    <LineInput
+                        placeholder="Deck Name"
+                        value={this.state.deckName}
+                        onChange={this.updateDeckName}
+                        onPressEnter={this.createDeck}
+                        label="title"
+                    />
+                    <Button type="primary" onClick={this.createDeck}>New Deck</Button>
+                </div>
                 {showAlert && <Alert
                     message="Are you sure you want to delete this deck?"
                     description={alertButtons}
@@ -133,15 +144,6 @@ class Home extends React.Component<HomeProps, HomeState> {
                     showIcon={true}
                 />}
                 {this.getBody()}
-                <div className={styles.createDeckRow}>
-                    <Input
-                        placeholder="Deck Name"
-                        value={this.state.deckName}
-                        onChange={this.updateDeckName}
-                        onPressEnter={this.createDeck}
-                    />
-                    <Button type="primary" onClick={this.createDeck}>New Deck</Button>
-                </div>
             </div>
         );
     }

@@ -1,8 +1,8 @@
-import { Input } from "antd";
 import { ChangeEvent } from "react";
 import * as React from "react";
 
 import { Card } from "../../state/deck/types";
+import LineInput from "../LineInput/index";
 
 const styles = require("./styles.css");
 
@@ -41,22 +41,19 @@ class CardRow extends React.Component<CardRowProps, {}>  {
         return (
             <div className={styles.row}>
                 {index + 1}
-                <div className={styles.front}>
-                    <Input
-                        value={card.front}
-                        onChange={this.updateFront}
-                        placeholder="Enter term"
-                    />
-                    Term
-                </div>
-                <div>
-                    <Input
-                        value={card.back}
-                        onChange={this.updateBack}
-                        placeholder="Enter definition"
-                    />
-                    Definition
-                </div>
+                <LineInput
+                    value={card.front}
+                    className={styles.front}
+                    onChange={this.updateFront}
+                    placeholder="Enter term"
+                    label="term"
+                />
+                <LineInput
+                    value={card.back}
+                    onChange={this.updateBack}
+                    placeholder="Enter definition"
+                    label="definition"
+                />
             </div>
         );
     }

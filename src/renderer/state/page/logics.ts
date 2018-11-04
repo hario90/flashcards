@@ -1,4 +1,5 @@
 import { createLogic } from "redux-logic";
+
 import { Deck } from "../deck/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 import { getRandomCardFromDeck } from "../selection/logics";
