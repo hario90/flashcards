@@ -7,7 +7,7 @@
     color: #bdbfc1;
   }
 
-  &:hover {
+  &:hover:not(.to-be-deleted) {
     background-color: #d2d4d8;
     cursor: pointer;
 

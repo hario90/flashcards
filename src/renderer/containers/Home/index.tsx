@@ -77,6 +77,7 @@ class Home extends React.Component<HomeProps, HomeState> {
             this.setState({
                 deckName: "",
                 error: `You already have a deck called ${deckName}`,
+                showAlert: false,
             });
         } else {
             this.props.createDeck({
@@ -105,7 +106,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 
     public showAlert(id: number): void {
-        this.setState({showAlert: true, deckToDelete: id});
+        this.setState({showAlert: true, deckToDelete: id, error: ""});
     }
 
     public render() {
