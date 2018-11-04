@@ -1,5 +1,5 @@
 .create-deck-row {
-    margin-top: 1em;
+    margin: 1em 0;
     display: flex;
     align-items: baseline;
     & .create-deck-btn {
