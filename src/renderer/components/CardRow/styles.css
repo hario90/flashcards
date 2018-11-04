@@ -2,6 +2,8 @@
     display: flex;
     padding: 1em;
     vertical-align: center;
+    background-color: white;
+    margin: 1.5em 0;
 }
 
 .front {
