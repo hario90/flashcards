@@ -45,8 +45,8 @@ class App extends React.Component<AppProps, {}> {
         const { page, previousPage } = this.props;
         return (
             <div className={styles.container}>
-                {previousPage !== undefined && <Button type="primary" onClick={this.goBack}>
-                    <Icon type="left" />Go back
+                {previousPage !== undefined && <Button type="default" onClick={this.goBack}>
+                    <Icon type="left" />
                 </Button>}
                 {pageComponentMap.get(page)}
             </div>
