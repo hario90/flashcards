@@ -41,10 +41,13 @@ const EMPTY_CARD = {
 };
 
 class CreateDeck extends React.Component<DeckProps, DeckState> {
+    private readonly editing: boolean = false;
+
     constructor(props: DeckProps) {
         super(props);
+        this.editing = !isEmpty(props.deck.cards);
         this.state = {
-            cards: isEmpty(props.deck.cards) ? [
+            cards: !this.editing ? [
                 EMPTY_CARD,
                 EMPTY_CARD,
                 EMPTY_CARD,
@@ -151,21 +154,22 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public render() {
         const { cards, name, error } = this.state;
+        const title = this.editing ? name : "Create a new study set";
         return (
             <div>
                 <div className={styles.titleRow}>
-                    <h1 className={styles.title}>Create a new study set</h1>
+                    <h1 className={styles.title}>{title}</h1>
                     <div className={styles.actionButtons}>
                         <Button onClick={this.goToLearn}>Learn</Button>
                         <Button onClick={this.goToTest}>Test</Button>
                     </div>
                 </div>
-                <LineInput
+                {!this.editing && <LineInput
                     value={name}
+                    label="title"
                     placeholder="Deck Name"
                     onChange={this.updateDeckName}
-                />
-                <div>Title</div>
+                />}
                 {error && <Alert
                     message="Could Not Save Deck"
                     description={error}
