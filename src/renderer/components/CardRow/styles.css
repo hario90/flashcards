@@ -1,9 +1,12 @@
+@import "../../styles/variables.pcss";
+
 .row {
     display: flex;
     padding: 1em;
     vertical-align: center;
     background-color: white;
     margin: 1.5em 0;
+    box-shadow: var(--box-shadow);
 }
 
 .front {

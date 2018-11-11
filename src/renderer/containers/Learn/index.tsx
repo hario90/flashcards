@@ -63,6 +63,7 @@ class Learn extends React.Component<LearnProps, LearnState> {
                 <AntdCard
                     title={label}
                     style={{ width: 300 }}
+                    className={styles.card}
                     actions={[
                         <Button key="flip" onClick={this.flipCard}>Flip</Button>,
                         <Button key="next" onClick={this.getNext}>Next</Button>,

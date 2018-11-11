@@ -1,3 +1,6 @@
+@import "../../styles/variables.pcss";
 .container {
-
+  & .card {
+    box-shadow: var(--box-shadow);
+  }
 }
