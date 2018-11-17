@@ -44,6 +44,10 @@ module.exports = ({ analyze, env } = {}) => ({
     module: {
         rules: [
             {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loader: "file-loader?name=public/fonts/[name].[ext]"
+            },
+            {
                 test: /\.tsx?/,
                 include: [
                     path.resolve(__dirname, '../', 'src', 'renderer')
