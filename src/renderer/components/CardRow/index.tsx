@@ -1,3 +1,4 @@
+import * as classNames from "classnames";
 import { ChangeEvent } from "react";
 import * as React from "react";
 
@@ -43,12 +44,13 @@ class CardRow extends React.Component<CardRowProps, {}>  {
                 {index + 1}
                 <LineInput
                     value={card.front}
-                    className={styles.front}
+                    className={classNames(styles.side, styles.front)}
                     onChange={this.updateFront}
                     placeholder="Enter term"
                     label="term"
                 />
                 <LineInput
+                    className={classNames(styles.side, styles.front)}
                     value={card.back}
                     onChange={this.updateBack}
                     placeholder="Enter definition"

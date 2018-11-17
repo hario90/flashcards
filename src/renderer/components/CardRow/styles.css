@@ -12,3 +12,7 @@
 .front {
     padding-right: 1em;
 }
+
+.side {
+    flex: 1;
+}
