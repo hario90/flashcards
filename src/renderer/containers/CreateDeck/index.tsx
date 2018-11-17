@@ -8,6 +8,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
+import IconButton from "../../components/IconButton/index";
 import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck } from "../../state/deck/actions";
 import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
@@ -157,13 +158,25 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         const title = this.editing ? name : "Create a new study set";
         return (
             <div>
-                <div className={styles.titleRow}>
-                    <h1 className={styles.title}>{title}</h1>
+                <h1 className={styles.title}>{title}</h1>
+                {this.editing && <div className={styles.titleRow}>
                     <div className={styles.actionButtons}>
-                        <Button onClick={this.goToLearn}>Learn</Button>
-                        <Button onClick={this.goToTest}>Test</Button>
+                        <IconButton
+                            title="Learn"
+                            backgroundColor="#ffe2b5"
+                            onClick={this.goToLearn}
+                            icon="read"
+                            color="#6541f4"
+                        />
+                        <IconButton
+                            title="Test"
+                            onClick={this.goToTest}
+                            icon="thunderbolt"
+                            backgroundColor="#cdf5f7"
+                            twoToneColor="#f442b3"
+                        />
                     </div>
-                </div>
+                </div>}
                 {!this.editing && <LineInput
                     value={name}
                     label="title"
