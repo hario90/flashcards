@@ -1,4 +1,4 @@
-@import "../../styles/variables.pcss";
+@import "../../styles/variables.css";
 .container {
   & .card {
     box-shadow: var(--box-shadow);
