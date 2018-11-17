@@ -41,7 +41,7 @@ class CardRow extends React.Component<CardRowProps, {}>  {
         const { card, index } = this.props;
         return (
             <div className={styles.row}>
-                {index + 1}
+                <div className={styles.cardNumber}>{index + 1}</div>
                 <LineInput
                     value={card.front}
                     className={classNames(styles.side, styles.front)}
