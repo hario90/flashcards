@@ -1,4 +1,4 @@
-:global(.ant-input) {
+.container :global(.ant-input) {
   background-color: transparent;
   border-top: none;
   border-left: none;

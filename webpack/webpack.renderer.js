@@ -3,6 +3,9 @@ const getPluginsByEnv = require('./plugins');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const tsImportPluginFactory = require('ts-import-plugin');
 const spawn = require('child_process').spawn;
+const lessToJs = require('less-vars-to-js');
+const fs = require('fs');
+const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, '../src/renderer/styles/ant-vars.less'), 'utf8'));
 
 const port = process.env.PORT || 1212;
 
@@ -128,6 +131,29 @@ module.exports = ({ analyze, env } = {}) => ({
                     fallback: 'style-loader',
                     use: [{ loader: 'css-loader' }],
                 }),
+            },
+            {
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                camelCase: true,
+                                importLoaders: 1
+                            }
+
+                        },
+                        {
+                            loader: "less-loader",
+                            options: {
+                                javascriptEnabled: true,
+                                modifyVars: themeVariables,
+
+                            }
+                        }
+                    ]
+                })
             },
         ]
     },
