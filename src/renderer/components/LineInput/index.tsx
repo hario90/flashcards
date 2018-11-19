@@ -38,7 +38,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
                     onPressEnter={onPressEnter}
                     className={className}
                 />
-                {label && label.toUpperCase()}
+                <div className={styles.label}>{label && label.toUpperCase()}</div>
             </div>
         );
     }

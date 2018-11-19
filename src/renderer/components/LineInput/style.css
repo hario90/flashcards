@@ -5,11 +5,17 @@
   border-right: none;
   border-radius: 0;
   border-bottom: 2px solid black;
-  font-size: 18px;
-  height: 48px;
+  font-size: 16px;
+  height: 36px;
+  font-family: 'Nunito', sans-serif;
 
   &:focus, &:hover {
     border-bottom-color: #f4a442;
     box-shadow: none;
   }
+}
+
+.label {
+  padding: 0.5em;
+  font-size: 14px;
 }
