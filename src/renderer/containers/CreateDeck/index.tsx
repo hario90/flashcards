@@ -1,6 +1,7 @@
 import {
     Alert,
     Button,
+    Icon,
 } from "antd";
 import { isEmpty } from "lodash";
 import { ChangeEvent } from "react";
@@ -198,9 +199,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         card={card}
                     />
                 ))}
-                <Button type="default" onClick={this.addCard}>
-                    Add Card
-                </Button>
+                <div className={styles.addCard} onClick={this.addCard}>
+                    <Icon type="plus" className={styles.plus}/>Add Card
+                </div>
                 <Button type="primary" onClick={this.onSavePressed}>
                     Save
                 </Button>

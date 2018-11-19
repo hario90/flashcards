@@ -1,3 +1,22 @@
+@import "../../styles/colors.css";
+
 .title-row {
     display: flex;
+}
+
+.add-card {
+    display: flex;
+    padding: 2em;
+    vertical-align: center;
+    margin: 1.5em 0;
+    border: 2px dashed var(--grey);
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    & .plus {
+        padding-right: 1em;
+        padding-top: 0.25em;
+    }
 }
