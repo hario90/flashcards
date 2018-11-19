@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 
 import { goBack, setPage } from "../../state/page/actions";
 import { previousPageMap } from "../../state/page/constants";
-import { getPage, getPreviousPage } from "../../state/page/selectors";
+import { getPage } from "../../state/page/selectors";
 import {
     GoBackAction,
     Page,
 } from "../../state/page/types";
 import { State } from "../../state/types";
+import "../../styles/fonts.css";
+
 import CreateDeck from "../CreateDeck";
 import Home from "../Home";
 import Learn from "../Learn";
