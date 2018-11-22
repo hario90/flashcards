@@ -4,4 +4,16 @@
     padding: 1em;
     font-size: 16px;
     font-family: 'Nunito', sans-serif;
+
+    & .title-container {
+        display: flex;
+        & h1 {
+            flex: 1;
+            text-align: center;
+        }
+
+        & .go-back {
+            flex: 0 0 auto;
+        }
+    }
 }

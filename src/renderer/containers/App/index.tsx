@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { goBack, setPage } from "../../state/page/actions";
 import { previousPageMap } from "../../state/page/constants";
-import { getPage } from "../../state/page/selectors";
+import { getPage, getTitle } from "../../state/page/selectors";
 import {
     GoBackAction,
     Page,
@@ -24,6 +24,7 @@ interface AppProps {
     goBack: () => GoBackAction;
     page: Page;
     previousPage: Page;
+    title: string;
 }
 
 const pageComponentMap: Map<Page, JSX.Element> = new Map([
@@ -44,12 +45,20 @@ class App extends React.Component<AppProps, {}> {
     }
 
     public render() {
-        const { page, previousPage } = this.props;
+        const { page, previousPage, title } = this.props;
         return (
             <div className={styles.container}>
-                {previousPage !== undefined && <Button type="default" onClick={this.goBack}>
-                    <Icon type="left" />
-                </Button>}
+                <div className={styles.titleContainer}>
+                    {previousPage !== undefined &&
+                        <Button
+                            className={styles.goBack}
+                            type="default"
+                            onClick={this.goBack}>
+                            <Icon type="left" />
+                        </Button>
+                    }
+                    <h1>{title}</h1>
+                </div>
                 {pageComponentMap.get(page)}
             </div>
         );
@@ -60,6 +69,7 @@ function mapStateToProps(state: State): Partial<AppProps> {
     return {
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
+        title: getTitle(state),
     };
 }
 

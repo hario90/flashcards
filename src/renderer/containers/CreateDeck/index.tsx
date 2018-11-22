@@ -156,10 +156,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public render() {
         const { cards, name, error } = this.state;
-        const title = this.editing ? name : "Create a new study set";
         return (
             <div>
-                <h1 className={styles.title}>{title}</h1>
                 {this.editing && <div className={styles.titleRow}>
                     <div className={styles.actionButtons}>
                         <IconButton

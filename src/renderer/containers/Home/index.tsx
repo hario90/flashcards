@@ -119,7 +119,6 @@ class Home extends React.Component<HomeProps, HomeState> {
         );
         return (
             <div>
-                <h1>Your Decks</h1>
                 <div className={styles.createDeckRow}>
                     <LineInput
                         placeholder="Deck Name"

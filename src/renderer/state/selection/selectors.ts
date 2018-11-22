@@ -17,7 +17,7 @@ export const getSelectedDeck = createSelector([
     getDecks,
 ], (deckId: number | undefined, decks: Deck[]) => {
     if (!deckId) {
-        return null;
+        return undefined;
     }
 
     return decks.find((deck: Deck) => deck.id === deckId);
