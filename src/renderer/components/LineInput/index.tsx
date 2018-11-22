@@ -26,13 +26,14 @@ class LineInput extends React.Component<LineInputProps, {}> {
             label,
             onChange,
             onPressEnter,
+            placeholder,
             value,
         } = this.props;
 
         return (
             <div className={classNames(className, styles.container)}>
                 <Input
-                    placeholder="Deck Name"
+                    placeholder={placeholder || ""}
                     value={value}
                     onChange={onChange}
                     onPressEnter={onPressEnter}
