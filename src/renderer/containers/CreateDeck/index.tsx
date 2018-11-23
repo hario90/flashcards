@@ -53,8 +53,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                 EMPTY_CARD,
                 EMPTY_CARD,
                 EMPTY_CARD,
-                EMPTY_CARD,
-                EMPTY_CARD,
             ] : props.deck.cards,
             name: props.deck.name,
         };
