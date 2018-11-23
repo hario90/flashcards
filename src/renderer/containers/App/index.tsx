@@ -1,6 +1,7 @@
 import { Button, Icon } from "antd";
 import * as React from "react";
 import { connect } from "react-redux";
+import AppHeader from "../../components/AppHeader/index";
 
 import { goBack, setPage } from "../../state/page/actions";
 import { previousPageMap } from "../../state/page/constants";
@@ -37,29 +38,21 @@ const pageComponentMap: Map<Page, JSX.Element> = new Map([
 class App extends React.Component<AppProps, {}> {
     constructor(props: AppProps) {
         super(props);
-        this.goBack = this.goBack.bind(this);
-    }
-
-    public goBack(): void {
-        this.props.goBack();
     }
 
     public render() {
-        const { page, previousPage, title } = this.props;
+        const {
+            goBack: goBackProp,
+            page,
+            previousPage,
+            title,
+        } = this.props;
         return (
             <div className={styles.container}>
-                <div className={styles.titleContainer}>
-                    {previousPage !== undefined &&
-                        <Button
-                            className={styles.goBack}
-                            type="default"
-                            onClick={this.goBack}>
-                            <Icon type="left" />
-                        </Button>
-                    }
-                    <h1>{title}</h1>
+                <AppHeader goBack={goBackProp} previousPage={previousPage} title={title} className={styles.header}/>
+                <div className={styles.mainContent}>
+                    {pageComponentMap.get(page)}
                 </div>
-                {pageComponentMap.get(page)}
             </div>
         );
     }

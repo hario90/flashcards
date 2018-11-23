@@ -1,19 +1,19 @@
 .container {
     height: 100%;
     width: 100%;
-    padding: 1em;
+
     font-size: 16px;
     font-family: 'Nunito', sans-serif;
 
-    & .title-container {
-        display: flex;
-        & h1 {
-            flex: 1;
-            text-align: center;
-        }
+    & .header {
+        top: 0;
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+        opacity: 1;
+    }
 
-        & .go-back {
-            flex: 0 0 auto;
-        }
+    & .main-content {
+        padding: calc(1em + 50px) 1em 1em 1em;
     }
 }
