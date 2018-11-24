@@ -4,10 +4,15 @@
   height: 100%;
   flex-direction: column;
 
+  & .learning-complete {
+    flex: 1%;
+  }
+
   & .completed {
     flex: 0 0 50px;
   }
 }
+
 .flip-container {
   perspective: 1000px;
   flex: 1;

@@ -1,3 +1,4 @@
+import { shuffle } from "lodash";
 import { createLogic } from "redux-logic";
 
 import { Deck } from "../deck/types";
@@ -24,7 +25,7 @@ const setPageLogic = createLogic({
             const { currentCard, unseenCards } = getRandomCardFromDeck({
                 currentCard: undefined,
                 seenCards: [],
-                unseenCards: selectedDeck.cards,
+                unseenCards: shuffle(selectedDeck.cards),
             });
             actions.push(
                 setCurrentCard(currentCard),

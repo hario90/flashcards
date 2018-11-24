@@ -3,6 +3,7 @@ import { Card } from "../deck/types";
 import {
     DESELECT_DECK,
     GET_NEXT_CARD,
+    GET_PREVIOUS_CARD,
     SELECT_DECK,
     SELECT_METADATA,
     SET_CURRENT_CARD,
@@ -12,6 +13,7 @@ import {
 import {
     DeselectDeckAction,
     GetNextCardAction,
+    GetPreviousCardAction,
     SelectDeckAction,
     SelectMetadataAction,
 } from "./types";
@@ -33,6 +35,12 @@ export function deselectDeck(deckId: number | number[]): DeselectDeckAction {
 export function getNextCard(): GetNextCardAction {
     return {
         type: GET_NEXT_CARD,
+    };
+}
+
+export function getPreviousCard(): GetPreviousCardAction {
+    return {
+        type: GET_PREVIOUS_CARD,
     };
 }
 

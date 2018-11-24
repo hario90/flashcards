@@ -1,11 +1,11 @@
-import { isEmpty, random } from "lodash";
+import { isEmpty } from "lodash";
 import { createLogic } from "redux-logic";
 
 import { ReduxLogicDeps, ReduxLogicNextCb } from "../types";
 import { batchActions } from "../util";
 
 import { setCurrentCard, setSeenCards, setUnseenCards } from "./actions";
-import { GET_NEXT_CARD } from "./constants";
+import { GET_NEXT_CARD, GET_PREVIOUS_CARD } from "./constants";
 import { getCurrentCard, getSeenCards, getUnseenCards } from "./selectors";
 import { LearnStateBranch } from "./types";
 
@@ -20,8 +20,7 @@ export const getRandomCardFromDeck = ({ currentCard, seenCards, unseenCards }: L
 
     let card;
     if (!isEmpty(unseenCardsCopy)) {
-        const index = random(unseenCardsCopy.length - 1);
-        card = unseenCardsCopy.splice(index, 1)[0];
+        card = unseenCardsCopy.pop();
     }
 
     return {
@@ -50,6 +49,29 @@ const getNextCardLogic = createLogic({
     type: GET_NEXT_CARD,
 });
 
+const getPreviousCardLogic = createLogic({
+    transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        const {currentCard, seenCards, unseenCards} = getState().selection;
+        const unseenCardsCopy = [...unseenCards];
+        const seenCardsCopy = [...seenCards];
+
+        const previousCard = seenCardsCopy.pop();
+        if (currentCard) {
+            unseenCardsCopy.push(currentCard);
+        }
+
+        const actions = [
+            setCurrentCard(previousCard),
+            setSeenCards(seenCardsCopy),
+            setUnseenCards(unseenCardsCopy),
+        ];
+
+        next(batchActions(actions));
+    },
+    type: GET_PREVIOUS_CARD,
+});
+
 export default [
     getNextCardLogic,
+    getPreviousCardLogic,
 ];

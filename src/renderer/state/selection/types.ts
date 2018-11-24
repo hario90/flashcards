@@ -36,6 +36,10 @@ export interface GetNextCardAction {
     type: string;
 }
 
+export interface GetPreviousCardAction {
+    type: string;
+}
+
 export interface SetCurrentCardAction {
     payload?: Card;
     type: string;

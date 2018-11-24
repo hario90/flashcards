@@ -6,12 +6,16 @@ import { makeReducer } from "../util";
 import {
     DESELECT_DECK,
     GET_NEXT_CARD,
+    GET_PREVIOUS_CARD,
     RESET_DECK,
     SELECT_DECK,
     SELECT_METADATA, SET_CURRENT_CARD, SET_SEEN_CARDS, SET_UNSEEN_CARDS,
 } from "./constants";
 import {
-    DeselectDeckAction, GetNextCardAction, ResetDeckAction,
+    DeselectDeckAction,
+    GetNextCardAction,
+    GetPreviousCardAction,
+    ResetDeckAction,
     SelectDeckAction,
     SelectionStateBranch,
     SelectMetadataAction, SetCurrentCardAction, SetSeenCardsAction, SetUnseenCardsAction,
@@ -60,6 +64,13 @@ const actionToConfigMap: TypeToDescriptionMap = {
         perform: (state: SelectionStateBranch) => ({
             ...state,
             showFront: true,
+        }),
+    },
+    [GET_PREVIOUS_CARD]: {
+        accepts: (action: AnyAction): action is GetPreviousCardAction => action.type === GET_PREVIOUS_CARD,
+        perform: (state: SelectionStateBranch) => ({
+            ...state,
+            showFront: true, // todo why is this stored here
         }),
     },
     [SET_CURRENT_CARD]: {
