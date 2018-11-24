@@ -15,7 +15,6 @@
 
 .flip-container {
   perspective: 1000px;
-  flex: 1;
 
   &.hover .flipper {
     transform: rotateY(180deg);
@@ -56,4 +55,12 @@
 
 .flip-container, .front, .back {
   width: 320px;
+  height: 500px;
+}
+
+.test {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }

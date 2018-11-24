@@ -103,7 +103,9 @@ class Learn extends React.Component<LearnProps, LearnState> {
 
         return (
             <div className={classNames(className, styles.container)}>
-                {this.renderBody()}
+                <div className={styles.test}>
+                    {this.renderBody()}
+                </div>
                 <div className={styles.completed}>
                     <Progress percent={percentComplete} />
                     <Button onClick={this.getPrevious} disabled={isEmpty(seenCards)}>Previous</Button>
