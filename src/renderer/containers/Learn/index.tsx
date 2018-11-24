@@ -69,26 +69,21 @@ class Learn extends React.Component<LearnProps, LearnState> {
                         <AntdCard
                             title="Term"
                             className={classNames(styles.card, styles.front)}
-                            actions={[
-                                <Button key="flip" onClick={this.flipCard}>Flip</Button>,
-                                <Button key="next" onClick={this.getNext}>Next</Button>,
-                            ]}
                         >
                             <p>{currentCard.front}</p>
                         </AntdCard>
                         <AntdCard
                             title="Definition"
                             className={classNames(styles.card, styles.back)}
-                            actions={[
-                                <Button key="flip" onClick={this.flipCard}>Flip</Button>,
-                                <Button key="next" onClick={this.getNext}>Next</Button>,
-                            ]}
                         >
                             <p>{currentCard.back}</p>
                         </AntdCard>
                     </div>
                 </div>
-                <div className={styles.completed}>Completed {seenCards.length} out of {deck.cards.length} cards</div>
+                <div className={styles.completed}>
+                    Completed {seenCards.length} out of {deck.cards.length} cards
+                    <Button key="next" onClick={this.getNext}>Next</Button>
+                </div>
             </div>
         );
     }
