@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import * as classNames from "classnames";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -9,6 +10,7 @@ const styles = require("./styles.css");
 
 interface CardRowProps {
     card: Card;
+    deleteCard: (cardIndex: number) => void;
     index: number;
     updateFront: (i: number, value: string) => void;
     updateBack: (i: number, value: string) => void; // todo return type
@@ -19,6 +21,7 @@ class CardRow extends React.Component<CardRowProps, {}>  {
         super(props);
         this.updateFront = this.updateFront.bind(this);
         this.updateBack = this.updateBack.bind(this);
+        this.deleteCard = this.deleteCard.bind(this);
     }
 
     public updateFront(event: ChangeEvent<HTMLInputElement>): void {
@@ -35,6 +38,14 @@ class CardRow extends React.Component<CardRowProps, {}>  {
             updateBack,
         } = this.props;
         updateBack(index, event.target.value);
+    }
+
+    public deleteCard(): void {
+        const {
+            deleteCard,
+            index,
+        } = this.props;
+        deleteCard(index);
     }
 
     public render() {
@@ -56,6 +67,7 @@ class CardRow extends React.Component<CardRowProps, {}>  {
                     placeholder="Enter definition"
                     label="definition"
                 />
+                <Button icon="close" shape="circle" onClick={this.deleteCard}/>
             </div>
         );
     }

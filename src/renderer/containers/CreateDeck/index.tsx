@@ -66,6 +66,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.goToTest = this.goToTest.bind(this);
         this.onSavePressed = this.onSavePressed.bind(this);
         this.getCurrentDeck = this.getCurrentDeck.bind(this);
+        this.deleteCard = this.deleteCard.bind(this);
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -152,6 +153,18 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.save(Page.Test);
     }
 
+    public deleteCard(cardIndex: number): void {
+        if (this.props.deck && cardIndex > -1 && cardIndex < this.state.cards.length) {
+            this.setState((state) => {
+                const cards = [...state.cards];
+                cards.splice(cardIndex, 1);
+                return {
+                    cards,
+                };
+            });
+        }
+    }
+
     public render() {
         const { cards, name, error } = this.state;
         return (
@@ -190,6 +203,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                     <CardRow
                         updateFront={this.updateFront}
                         updateBack={this.updateBack}
+                        deleteCard={this.deleteCard}
                         key={i}
                         index={i}
                         card={card}
