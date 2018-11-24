@@ -14,6 +14,7 @@
     }
 
     & .main-content {
+        height: 100%;
         padding: calc(1em + 50px) 1em 1em 1em;
     }
 }

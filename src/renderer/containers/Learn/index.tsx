@@ -55,23 +55,40 @@ class Learn extends React.Component<LearnProps, LearnState> {
             return <div>Learning is complete!</div>;
         }
 
-        const label = showFront ? "Term" : "Definition";
-        const value = showFront ? currentCard.front : currentCard.back;
+        const hover = {
+            [styles.hover]: !showFront,
+        };
 
         return (
             <div className={classNames(className, styles.container)}>
-                <AntdCard
-                    title={label}
-                    style={{ width: 300 }}
-                    className={styles.card}
-                    actions={[
-                        <Button key="flip" onClick={this.flipCard}>Flip</Button>,
-                        <Button key="next" onClick={this.getNext}>Next</Button>,
-                    ]}
+                <div
+                    className={classNames(styles.flipContainer, hover)}
+                    onClick={this.flipCard}
                 >
-                    <p>{value}</p>
-                </AntdCard>
-                Completed {seenCards.length} out of {deck.cards.length} cards
+                    <div className={styles.flipper}>
+                        <AntdCard
+                            title="Term"
+                            className={classNames(styles.card, styles.front)}
+                            actions={[
+                                <Button key="flip" onClick={this.flipCard}>Flip</Button>,
+                                <Button key="next" onClick={this.getNext}>Next</Button>,
+                            ]}
+                        >
+                            <p>{currentCard.front}</p>
+                        </AntdCard>
+                        <AntdCard
+                            title="Definition"
+                            className={classNames(styles.card, styles.back)}
+                            actions={[
+                                <Button key="flip" onClick={this.flipCard}>Flip</Button>,
+                                <Button key="next" onClick={this.getNext}>Next</Button>,
+                            ]}
+                        >
+                            <p>{currentCard.back}</p>
+                        </AntdCard>
+                    </div>
+                </div>
+                <div className={styles.completed}>Completed {seenCards.length} out of {deck.cards.length} cards</div>
             </div>
         );
     }
