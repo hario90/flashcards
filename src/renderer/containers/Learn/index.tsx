@@ -98,7 +98,7 @@ class Learn extends React.Component<LearnProps, LearnState> {
     }
 
     public render() {
-        const { className, deck, seenCards } = this.props;
+        const { className, currentCard, deck, seenCards } = this.props;
         const percentComplete: number = Math.round(100 * (seenCards.length / deck.cards.length));
 
         return (
@@ -108,7 +108,7 @@ class Learn extends React.Component<LearnProps, LearnState> {
                     <Progress percent={percentComplete} />
                     <Button onClick={this.getPrevious} disabled={isEmpty(seenCards)}>Previous</Button>
                     Completed {seenCards.length} out of {deck.cards.length} cards
-                    <Button onClick={this.getNext}>Next</Button>
+                    <Button disabled={!currentCard} onClick={this.getNext}>Next</Button>
                 </div>
             </div>
         );
