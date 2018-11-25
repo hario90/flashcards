@@ -42,7 +42,6 @@ export const getTitle = createSelector([
 export const getPreviousTitle = createSelector([
     getPreviousPage,
 ], (page?: Page) => {
-    console.log("prev page", page);
     if (page !== undefined && PAGE_TO_TITLE_MAP.has(page)) {
         // todo handle create vs edit
         return PAGE_TO_TITLE_MAP.get(page);
