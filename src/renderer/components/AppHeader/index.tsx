@@ -1,6 +1,7 @@
 import { Button, Icon } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
+
 import { GoBackAction, Page } from "../../state/page/types";
 
 const styles = require("./style.css");
