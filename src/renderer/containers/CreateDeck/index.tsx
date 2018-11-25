@@ -2,6 +2,7 @@ import {
     Alert,
     Button,
     Icon,
+    Input,
 } from "antd";
 import * as classNames from "classnames";
 import { isEmpty } from "lodash";
@@ -10,7 +11,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
-import IconButton from "../../components/IconButton/index";
 import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck } from "../../state/deck/actions";
 import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
@@ -37,6 +37,7 @@ interface DeckState {
     name?: string;
     cards: Card[];
     error?: string;
+    currentlyEditing?: string;
 }
 
 const EMPTY_CARD = {
@@ -46,6 +47,7 @@ const EMPTY_CARD = {
 
 class CreateDeck extends React.Component<DeckProps, DeckState> {
     private readonly editing: boolean = false;
+    private nameInput?: Input;
 
     constructor(props: DeckProps) {
         super(props);
@@ -69,6 +71,17 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.onSavePressed = this.onSavePressed.bind(this);
         this.getCurrentDeck = this.getCurrentDeck.bind(this);
         this.deleteCard = this.deleteCard.bind(this);
+        this.setCurrentlyEditing = this.setCurrentlyEditing.bind(this);
+    }
+
+    public setCurrentlyEditing(value?: string): () => void  {
+        return () => {
+            // todo more elegant way to do this
+            if (value === "title" && this.nameInput) {
+                this.nameInput.focus();
+            }
+            this.setState({currentlyEditing: value});
+        };
     }
 
     public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
@@ -98,9 +111,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
 
         if (errorMessage) {
-            this.setState({error: errorMessage});
+            this.setState({error: errorMessage, currentlyEditing: undefined});
         } else {
-            this.setState({error: undefined});
+            this.setState({error: undefined, currentlyEditing: undefined});
             this.props.saveDeck(this.getCurrentDeck());
             this.props.setPage(nextPage || Page.Home);
         }
@@ -167,25 +180,43 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
     }
 
+    public componentDidMount(): void {
+        if (this.nameInput) {
+            this.nameInput.focus();
+        }
+    }
+
     public render() {
         const { className } = this.props;
-        const { cards, name, error } = this.state;
+        const { cards, currentlyEditing, name, error } = this.state;
         return (
             <div className={classNames(className)}>
-                {this.editing && <div className={styles.titleRow}>
-                    <div className={styles.actionButtons}>
-                        <Button type="primary" onClick={this.onSavePressed}>
-                            Save
-                        </Button>
-                    </div>
-                </div>}
+                <div className={styles.titleRow}>
+                    {currentlyEditing === "title" ? (
+                        <LineInput
+                            className={styles.titleInput}
+                            value={name}
+                            label="title"
+                            placeholder="Deck Name"
+                            onChange={this.updateDeckName}
+                            ref={(input) => { this.nameInput = input ? input.input : undefined; }}
+                            onBlur={this.setCurrentlyEditing(undefined)}
+                        />
+                    ) : (
+                        <div className={styles.titleContainer}>
+                            <h1>{name}</h1>
+                            <Icon
+                                className={styles.editIcon}
+                                type="edit"
+                                onClick={this.setCurrentlyEditing("title")}
+                            />
+                        </div>
+                    )}
+                    <Button className={styles.saveButton} type="primary" onClick={this.onSavePressed}>
+                        Save
+                    </Button>
+                </div>
                 <div className={styles.cards}>
-                    {!this.editing && <LineInput
-                        value={name}
-                        label="title"
-                        placeholder="Deck Name"
-                        onChange={this.updateDeckName}
-                    />}
                     {error && <Alert
                         message="Could Not Save Deck"
                         description={error}

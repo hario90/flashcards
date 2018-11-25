@@ -3,6 +3,34 @@
 .title-row {
     display: flex;
     flex: 0 0 50px;
+
+    & .title-input {
+        flex: 1;
+        margin-right: 3em;
+    }
+
+    & .title-container {
+        display: flex;
+        flex: 1;
+
+        h1 {
+            flex: 1;
+        }
+
+        & .edit-icon {
+            flex: 0 0 auto;
+            font-size: 2em;
+            padding: 0 1em;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    & .save-button {
+        flex: 0 0 auto;
+    }
 }
 
 .cards {

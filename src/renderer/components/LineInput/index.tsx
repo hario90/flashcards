@@ -10,20 +10,30 @@ interface LineInputProps {
     label?: string;
     placeholder?: string;
     value?: string;
+    onBlur: (event: ChangeEvent<HTMLInputElement>) => void;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onPressEnter?: () => void;
 }
 
 class LineInput extends React.Component<LineInputProps, {}> {
+    public input?: Input;
+
     constructor(props: LineInputProps) {
         super(props);
         this.state = {};
+    }
+
+    public componentDidMount(): void {
+        if (this.input) {
+            this.input.focus();
+        }
     }
 
     public render() {
         const {
             className,
             label,
+            onBlur,
             onChange,
             onPressEnter,
             placeholder,
@@ -35,9 +45,11 @@ class LineInput extends React.Component<LineInputProps, {}> {
                 <Input
                     placeholder={placeholder || ""}
                     value={value}
+                    onBlur={onBlur}
                     onChange={onChange}
                     onPressEnter={onPressEnter}
                     className={className}
+                    ref={(input) => { this.input = input || undefined; }}
                 />
                 <div className={styles.label}>{label && label.toUpperCase()}</div>
             </div>
