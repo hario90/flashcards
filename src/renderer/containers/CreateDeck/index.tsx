@@ -174,20 +174,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             <div className={classNames(className)}>
                 {this.editing && <div className={styles.titleRow}>
                     <div className={styles.actionButtons}>
-                        <IconButton
-                            title="Learn"
-                            backgroundColor="#ffe2b5"
-                            onClick={this.goToLearn}
-                            icon="read"
-                            color="#6541f4"
-                        />
-                        <IconButton
-                            title="Test"
-                            onClick={this.goToTest}
-                            icon="thunderbolt"
-                            backgroundColor="#cdf5f7"
-                            twoToneColor="#f442b3"
-                        />
                         <Button type="primary" onClick={this.onSavePressed}>
                             Save
                         </Button>
