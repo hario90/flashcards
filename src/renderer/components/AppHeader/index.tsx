@@ -10,6 +10,7 @@ interface AppHeaderProps {
     className?: string;
     goBack: () => GoBackAction;
     previousPage: Page;
+    previousTitle: string;
     title: string;
 }
 
@@ -24,6 +25,7 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
         const {
             className,
             previousPage,
+            previousTitle,
             title,
         } = this.props;
         return (
@@ -36,6 +38,7 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
                     ghost={true}
                 >
                     <Icon type="left" />
+                    {`Back to ${previousTitle}`}
                 </Button>
                 }
                 <h1>{title}</h1>

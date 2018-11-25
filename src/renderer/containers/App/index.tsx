@@ -5,7 +5,7 @@ import AppHeader from "../../components/AppHeader/index";
 import SideNav from "../../components/SideNav/index";
 import { goBack, setPage } from "../../state/page/actions";
 import { previousPageMap } from "../../state/page/constants";
-import { getPage, getTitle } from "../../state/page/selectors";
+import { getPage, getPreviousTitle, getTitle } from "../../state/page/selectors";
 import {
     GoBackAction,
     Page, SetPageAction,
@@ -25,6 +25,7 @@ interface AppProps {
     goBack: () => GoBackAction;
     page: Page;
     previousPage: Page;
+    previousTitle: string;
     setPage: (page: Page) => SetPageAction;
     title: string;
 }
@@ -46,6 +47,7 @@ class App extends React.Component<AppProps, {}> {
             goBack: goBackProp,
             page,
             previousPage,
+            previousTitle,
             setPage: setPageProp,
             title,
         } = this.props;
@@ -53,9 +55,19 @@ class App extends React.Component<AppProps, {}> {
         const PageComponent = pageComponentMap.get(page) || ((className?: string) => <Home className={className}/>);
         return (
             <div className={styles.container}>
-                <AppHeader goBack={goBackProp} previousPage={previousPage} title={title} className={styles.header}/>
+                <AppHeader
+                    goBack={goBackProp}
+                    previousPage={previousPage}
+                    previousTitle={previousTitle}
+                    title={title}
+                    className={styles.header}
+                />
                 <div className={styles.mainContent}>
-                    {showSideNav && <SideNav className={styles.sideNav} setPage={setPageProp}/>}
+                    {showSideNav && <SideNav
+                        className={styles.sideNav}
+                        currentPage={page}
+                        setPage={setPageProp}
+                    />}
                     {PageComponent(styles.page)}
                 </div>
             </div>
@@ -63,10 +75,11 @@ class App extends React.Component<AppProps, {}> {
     }
 }
 
-function mapStateToProps(state: State): Partial<AppProps> {
+function mapStateToProps(state: State) {
     return {
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
+        previousTitle: getPreviousTitle(state),
         title: getTitle(state),
     };
 }

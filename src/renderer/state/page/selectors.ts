@@ -3,31 +3,49 @@ import { createSelector } from "reselect";
 
 import { Deck } from "../deck/types";
 import { getSelectedDeck } from "../selection/selectors";
-
 import { State } from "../types";
+
+import { previousPageMap } from "./constants";
 
 import { Page } from "./types";
 
 export const getPage = (state: State) => state.page.page;
-export const getPreviousPage = (state: State) => state.page.previous;
+export const getPreviousPage = createSelector([
+    getPage,
+], (page: Page) => {
+    if (page !== undefined && previousPageMap.has(page)) {
+        return previousPageMap.get(page);
+    }
 
+    return undefined;
+});
+
+export const PAGE_TO_TITLE_MAP = new Map([
+    [Page.Home, "Your Decks"],
+    [Page.Flip, "Flip"],
+    [Page.Test, "Test"],
+    [Page.CreateDeck, "Create New Study Set"],
+    [Page.Copy, "Copy"],
+    [Page.Share, "Share"],
+]);
 export const getTitle = createSelector([
     getPage,
     getSelectedDeck,
 ], (page: Page, deck: Deck | undefined) => {
-    switch(page) {
-        case Page.Home:
-            return "Your decks";
-        case Page.Flip:
-            return "Flip";
-        case Page.Test:
-            return "Test";
-        case Page.CreateDeck:
-            if (!deck || isEmpty(deck.cards)) {
-                return "Create a new study set";
-            }
-            return deck.name;
-        default:
-            return "";
+    if (PAGE_TO_TITLE_MAP.has(page)) {
+        // todo handle create vs edit
+        return PAGE_TO_TITLE_MAP.get(page);
     }
+    return "";
+});
+
+export const getPreviousTitle = createSelector([
+    getPreviousPage,
+], (page?: Page) => {
+    console.log("prev page", page);
+    if (page !== undefined && PAGE_TO_TITLE_MAP.has(page)) {
+        // todo handle create vs edit
+        return PAGE_TO_TITLE_MAP.get(page);
+    }
+    return "";
 });

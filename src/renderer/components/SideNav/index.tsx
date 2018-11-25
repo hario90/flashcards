@@ -1,3 +1,4 @@
+import { Icon } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -8,14 +9,35 @@ const styles = require("./style.css");
 interface SideNavProps {
     className?: string;
     setPage: (page: Page) => SetPageAction;
+    currentPage: Page;
 }
 
 const PAGES = [
-    {buttonTitle: "EDIT", page: Page.CreateDeck},
-    {buttonTitle: "FLIP", page: Page.Flip},
-    {buttonTitle: "COPY", page: Page.Copy},
-    {buttonTitle: "TEST", page: Page.Test},
-    {buttonTitle: "SHARE", page: Page.Share},
+    {
+        buttonTitle: "Edit",
+        icon: "edit",
+        page: Page.CreateDeck,
+    },
+    {
+        buttonTitle: "Flip",
+        icon: "sync",
+        page: Page.Flip,
+    },
+    {
+        buttonTitle: "Copy",
+        icon: "copy",
+        page: Page.Copy,
+    },
+    {
+        buttonTitle: "Test",
+        icon: "thunderbolt",
+        page: Page.Test,
+    },
+    {
+        buttonTitle: "Share",
+        icon: "export",
+        page: Page.Share,
+    },
 ];
 
 class SideNav extends React.Component<SideNavProps, {}> {
@@ -32,18 +54,21 @@ class SideNav extends React.Component<SideNavProps, {}> {
     }
 
     public render() {
-        const { className } = this.props;
+        const { className, currentPage } = this.props;
         return (
             <div className={classNames(styles.container, className)}>
-                {PAGES.map((page) => (
-                    <div
-                        className={styles.sideNavLink}
-                        key={page.buttonTitle}
-                        onClick={this.navigate(page.page)}
-                    >
-                        {page.buttonTitle}
-                    </div>
-                ))}
+                {PAGES.map((page) => {
+                    return (
+                        <div
+                            className={classNames(styles.sideNavLink, {[styles.active]: page.page === currentPage})}
+                            key={page.buttonTitle}
+                            onClick={this.navigate(page.page)}
+                        >
+                            <Icon className={styles.icon} type={page.icon}/>
+                            <div className={styles.title}>{page.buttonTitle}</div>
+                        </div>
+                    );
+                })}
             </div>
         );
     }

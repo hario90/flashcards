@@ -1,18 +1,33 @@
+@import "../../styles/colors.css";
 .container {
-  display: flex;
-  flex-direction: column;
   background-color: #202840;
 
   & .side-nav-link {
-    color: white;
-    border-bottom: 1px solid white;
-    flex: 1;
+    color: #c8c0c0;
+    padding: 1em;
+    border-bottom: 1px solid #323e63;
+    text-transform: uppercase;
     display: flex;
-    justify-content: center;
-    align-items: center;
 
     &:hover {
       cursor: pointer;
+      background-color: #1d243a;
+    }
+
+    &.active {
+      background-color: #283351;
+      color: white;
+      border-left: 4px solid var(--brand-primary);
+    }
+
+    & .title {
+      flex: 1;
+    }
+
+    & .icon {
+      padding: 0em 1em 0 1em;
+      font-size: 1.5em;
+      flex: 0 0 auto;
     }
   }
 }
