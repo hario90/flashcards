@@ -18,8 +18,8 @@ export const getTitle = createSelector([
     switch(page) {
         case Page.Home:
             return "Your decks";
-        case Page.Learn:
-            return "Learn";
+        case Page.Flip:
+            return "Flip";
         case Page.Test:
             return "Test";
         case Page.CreateDeck:

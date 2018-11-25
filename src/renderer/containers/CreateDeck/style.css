@@ -2,6 +2,11 @@
 
 .title-row {
     display: flex;
+    flex: 0 0 50px;
+}
+
+.cards {
+    flex: 1;
 }
 
 .add-card {

@@ -1,8 +1,8 @@
 import {
     Alert,
     Button,
-    Input,
 } from "antd";
+import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
 import { ChangeEvent } from "react";
@@ -29,6 +29,7 @@ import {
 
 const styles = require("./style.css");
 interface HomeProps {
+    className?: string;
     decks: Deck[];
     deleteDeck: (id: number) => DeleteDeckAction;
     createDeck: (deck: Deck) => CreateDeckAction;
@@ -110,6 +111,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 
     public render() {
+        const { className } = this.props;
         const { error, showAlert } = this.state;
         const alertButtons = (
             <div className={styles.alertButtonRow}>
@@ -118,7 +120,7 @@ class Home extends React.Component<HomeProps, HomeState> {
             </div>
         );
         return (
-            <div>
+            <div className={classNames(className)}>
                 <div className={styles.createDeckRow}>
                     <LineInput
                         placeholder="Deck Name"
@@ -179,7 +181,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 }
 
-function mapStateToProps(state: State): Partial<HomeProps> {
+function mapStateToProps(state: State) {
     return {
         decks: getDecks(state),
     };

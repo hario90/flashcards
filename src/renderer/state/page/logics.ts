@@ -21,7 +21,7 @@ const setPageLogic = createLogic({
         const actions = [action];
         const selectedDeck: Deck | null | undefined = getSelectedDeck(getState());
 
-        if (action.payload === Page.Learn && selectedDeck) {
+        if (action.payload === Page.Flip && selectedDeck) {
             const { currentCard, unseenCards } = getRandomCardFromDeck({
                 currentCard: undefined,
                 seenCards: [],

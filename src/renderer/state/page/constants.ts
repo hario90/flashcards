@@ -8,6 +8,8 @@ export const GO_BACK = makeConstant("page", "go_back");
 export const previousPageMap = new Map([
     [Page.Home, undefined],
     [Page.CreateDeck, Page.Home],
-    [Page.Learn, Page.CreateDeck],
+    [Page.Flip, Page.CreateDeck],
     [Page.Test, Page.CreateDeck],
+    [Page.Share, Page.CreateDeck],
+    [Page.Copy, Page.CreateDeck],
 ]);

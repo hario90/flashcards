@@ -1,10 +1,10 @@
-import { Button, Card as AntdCard, Progress } from "antd";
+import { Button, Progress } from "antd";
 import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
-import TwoSidedCard from "../../components/TwoSidedCard/index";
 
+import TwoSidedCard from "../../components/TwoSidedCard/index";
 import { Card, Deck } from "../../state/deck/types";
 import { getNextCard, getPreviousCard } from "../../state/selection/actions";
 import { getCurrentCard, getSeenCards, getSelectedDeck, getUnseenCards } from "../../state/selection/selectors";
@@ -16,7 +16,7 @@ import {
 
 const styles = require("./style.css");
 
-interface LearnProps {
+interface FlipProps {
     className?: string;
     deck: Deck;
     seenCards: Card[];
@@ -25,8 +25,8 @@ interface LearnProps {
     getPrevious: () => GetPreviousCardAction;
 }
 
-class Learn extends React.Component<LearnProps, {}> {
-    constructor(props: LearnProps) {
+class Flip extends React.Component<FlipProps, {}> {
+    constructor(props: FlipProps) {
         super(props);
         this.state = {
             showFront: true,
@@ -56,7 +56,7 @@ class Learn extends React.Component<LearnProps, {}> {
         if (!currentCard) {
             return (
                 <div className={styles.learningComplete}>
-                   Learning is complete!
+                   No more cards!
                 </div>
             );
         }
@@ -100,4 +100,4 @@ const dispatchToPropsMap = {
     getPrevious: getPreviousCard,
 };
 
-export default connect(mapStateToProps, dispatchToPropsMap)(Learn);
+export default connect(mapStateToProps, dispatchToPropsMap)(Flip);

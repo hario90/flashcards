@@ -6,8 +6,10 @@ export interface PageStateBranch {
 export enum Page {
     Home,
     CreateDeck,
-    Learn,
+    Flip,
+    Copy,
     Test,
+    Share,
 }
 
 export interface SetPageAction {

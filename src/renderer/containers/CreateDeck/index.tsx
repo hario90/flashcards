@@ -3,6 +3,7 @@ import {
     Button,
     Icon,
 } from "antd";
+import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -25,6 +26,7 @@ import {
 const styles = require("./style.css");
 
 interface DeckProps {
+    className?: string;
     deck: Deck;
     saveDeck: (deck: Deck) => SaveDeckAction;
     selectDeck: (deckId: number | number[]) => SelectDeckAction;
@@ -145,7 +147,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public goToLearn(): void {
         this.props.selectDeck(this.props.deck.id);
-        this.save(Page.Learn);
+        this.save(Page.Flip);
     }
 
     public goToTest(): void {
@@ -166,9 +168,10 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public render() {
+        const { className } = this.props;
         const { cards, name, error } = this.state;
         return (
-            <div>
+            <div className={classNames(className)}>
                 {this.editing && <div className={styles.titleRow}>
                     <div className={styles.actionButtons}>
                         <IconButton
@@ -185,42 +188,47 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             backgroundColor="#cdf5f7"
                             twoToneColor="#f442b3"
                         />
+                        <Button type="primary" onClick={this.onSavePressed}>
+                            Save
+                        </Button>
                     </div>
                 </div>}
-                {!this.editing && <LineInput
-                    value={name}
-                    label="title"
-                    placeholder="Deck Name"
-                    onChange={this.updateDeckName}
-                />}
-                {error && <Alert
-                    message="Could Not Save Deck"
-                    description={error}
-                    type="error"
-                    showIcon={true}
-                />}
-                {cards.map((card: Card, i: number) => (
-                    <CardRow
-                        updateFront={this.updateFront}
-                        updateBack={this.updateBack}
-                        deleteCard={this.deleteCard}
-                        key={i}
-                        index={i}
-                        card={card}
-                    />
-                ))}
-                <div className={styles.addCard} onClick={this.addCard}>
-                    <Icon type="plus" className={styles.plus}/>Add Card
+                <div className={styles.cards}>
+                    {!this.editing && <LineInput
+                        value={name}
+                        label="title"
+                        placeholder="Deck Name"
+                        onChange={this.updateDeckName}
+                    />}
+                    {error && <Alert
+                        message="Could Not Save Deck"
+                        description={error}
+                        type="error"
+                        showIcon={true}
+                    />}
+                    {cards.map((card: Card, i: number) => (
+                        <CardRow
+                            updateFront={this.updateFront}
+                            updateBack={this.updateBack}
+                            deleteCard={this.deleteCard}
+                            key={i}
+                            index={i}
+                            card={card}
+                        />
+                    ))}
+                    <div className={styles.addCard} onClick={this.addCard}>
+                        <Icon type="plus" className={styles.plus}/>Add Card
+                    </div>
+                    <Button type="primary" onClick={this.onSavePressed}>
+                        Save
+                    </Button>
                 </div>
-                <Button type="primary" onClick={this.onSavePressed}>
-                    Save
-                </Button>
             </div>
         );
     }
 }
 
-function mapStateToProps(state: State): Partial<DeckProps> {
+function mapStateToProps(state: State) {
     return {
         deck: getSelectedDeck(state) || {
             cards: [],

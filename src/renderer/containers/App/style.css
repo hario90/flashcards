@@ -1,20 +1,37 @@
+@import "../../styles/variables.css";
+
 .container {
     height: 100%;
     width: 100%;
-
     font-size: 16px;
     font-family: 'Nunito', sans-serif;
 
     & .header {
-        top: 0;
-        position: fixed;
+        height: 50px;
         width: 100%;
         z-index: 100;
         opacity: 1;
     }
 
     & .main-content {
-        height: 100%;
-        padding: calc(1em + 50px) 1em 1em 1em;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        display: flex;
+
+        & .side-nav {
+            width: 200px;
+        }
+
+        & .page {
+            padding: 3em;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
     }
 }
