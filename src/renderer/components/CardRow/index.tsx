@@ -90,6 +90,18 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
         }
     }
 
+    public componentDidMount() {
+        if (this.backInput) {
+            this.backInput.blur();
+        }
+
+        // todo get this to work
+        if (this.frontInput && this.props.index === 0) {
+            console.log(this.frontInput.focus)
+            this.frontInput.focus();
+        }
+    }
+
     public render() {
         const { card, className, index } = this.props;
         const { isBackEditable, isFrontEditable } = this.state;
@@ -118,7 +130,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                 )}
                 {(isBackEditable || !card.back) ? (
                     <LineInput
-                        className={classNames(styles.side, styles.front)}
+                        className={classNames(styles.side, styles.back)}
                         value={card.back}
                         onChange={this.updateBack}
                         placeholder="Enter definition"
@@ -128,14 +140,16 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                     />
                 ) : (
                     <div
-                        className={classNames(styles.side, styles.front, styles.sideReadOnly)}
+                        className={classNames(styles.side, styles.back, styles.sideReadOnly)}
                         onClick={this.makeEditable(false, true)}
                     >
                         <h2>{card.back}</h2>
                         <Icon className={styles.editIcon} type="edit"/>
                     </div>
                 )}
-                <Button icon="close" shape="circle" onClick={this.deleteCard}/>
+                <div className={styles.closeButton} >
+                    <Button icon="delete" shape="circle" onClick={this.deleteCard}/>
+                </div>
             </div>
         );
     }

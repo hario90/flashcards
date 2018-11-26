@@ -1,4 +1,5 @@
 @import "../../styles/colors.css";
+@import "../../styles/variables.css";
 
 .title-row {
     display: flex;
@@ -14,6 +15,12 @@
         flex: 1;
         &:hover {
             cursor: pointer;
+
+            & .edit-icon {
+                visibility: visible;
+                opacity: 1;
+                transition: var(--transition);
+            }
         }
 
         h1 {
@@ -21,6 +28,9 @@
         }
 
         & .edit-icon {
+            visibility: hidden;
+            opacity: 0;
+            transition: var(--transition);
             flex: 0 0 auto;
             font-size: 2em;
             padding: 0.25em 1em;
