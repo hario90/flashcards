@@ -36,6 +36,7 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
                     type="default"
                     onClick={this.goBack}
                     ghost={true}
+                    size="large"
                 >
                     <Icon type="left" />
                     {`Back to ${previousTitle}`}

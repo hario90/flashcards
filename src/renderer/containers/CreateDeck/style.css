@@ -9,7 +9,7 @@
         margin-right: 3em;
     }
 
-    & .title-container {
+    & .title-read-only {
         display: flex;
         flex: 1;
 

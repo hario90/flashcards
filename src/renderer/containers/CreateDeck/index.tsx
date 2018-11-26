@@ -203,7 +203,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             onBlur={this.setCurrentlyEditing(undefined)}
                         />
                     ) : (
-                        <div className={styles.titleContainer}>
+                        <div className={styles.titleReadOnly}>
                             <h1>{name}</h1>
                             <Icon
                                 className={styles.editIcon}
@@ -212,7 +212,12 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             />
                         </div>
                     )}
-                    <Button className={styles.saveButton} type="primary" onClick={this.onSavePressed}>
+                    <Button
+                        className={styles.saveButton}
+                        type="primary"
+                        onClick={this.onSavePressed}
+                        size="large"
+                    >
                         Save
                     </Button>
                 </div>
@@ -236,9 +241,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                     <div className={styles.addCard} onClick={this.addCard}>
                         <Icon type="plus" className={styles.plus}/>Add Card
                     </div>
-                    <Button type="primary" onClick={this.onSavePressed}>
-                        Save
-                    </Button>
                 </div>
             </div>
         );
