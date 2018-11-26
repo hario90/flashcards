@@ -203,12 +203,11 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             onBlur={this.setCurrentlyEditing(undefined)}
                         />
                     ) : (
-                        <div className={styles.titleReadOnly}>
+                        <div className={styles.titleReadOnly} onClick={this.setCurrentlyEditing("title")}>
                             <h1>{name}</h1>
                             <Icon
                                 className={styles.editIcon}
                                 type="edit"
-                                onClick={this.setCurrentlyEditing("title")}
                             />
                         </div>
                     )}

@@ -12,6 +12,9 @@
     & .title-read-only {
         display: flex;
         flex: 1;
+        &:hover {
+            cursor: pointer;
+        }
 
         h1 {
             flex: 1;
@@ -20,11 +23,7 @@
         & .edit-icon {
             flex: 0 0 auto;
             font-size: 2em;
-            padding: 0 1em;
-
-            &:hover {
-                cursor: pointer;
-            }
+            padding: 0.25em 1em;
         }
     }
 
