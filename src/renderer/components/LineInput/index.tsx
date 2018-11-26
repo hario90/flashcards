@@ -10,7 +10,7 @@ interface LineInputProps {
     label?: string;
     placeholder?: string;
     value?: string;
-    onBlur: (event: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onPressEnter?: () => void;
 }

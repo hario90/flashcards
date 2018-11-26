@@ -27,10 +27,11 @@
     "@types/react-redux": "^6.0.4",
     "@types/sinon": "^5.0.1",
     "axios": "^0.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
-    "electron": "^2.0.5",
+    "electron": "^2.0.14",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^2.0.0",
     "fork-ts-checker-webpack-plugin": "^0.4.3",
@@ -54,7 +55,7 @@
     "webpack": "^4.16.2",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "@types/classnames": "^2.2.6",

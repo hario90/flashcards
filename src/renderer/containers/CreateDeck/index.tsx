@@ -60,21 +60,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             ] : props.deck.cards,
             name: props.deck.name,
         };
-        this.goBack = this.goBack.bind(this);
-        this.updateDeckName = this.updateDeckName.bind(this);
-        this.updateFront = this.updateFront.bind(this);
-        this.updateBack = this.updateBack.bind(this);
-        this.addCard = this.addCard.bind(this);
-        this.save = this.save.bind(this);
-        this.goToLearn = this.goToLearn.bind(this);
-        this.goToTest = this.goToTest.bind(this);
-        this.onSavePressed = this.onSavePressed.bind(this);
-        this.getCurrentDeck = this.getCurrentDeck.bind(this);
-        this.deleteCard = this.deleteCard.bind(this);
-        this.setCurrentlyEditing = this.setCurrentlyEditing.bind(this);
     }
 
-    public setCurrentlyEditing(value?: string): () => void  {
+    public setCurrentlyEditing = (value?: string): () => void  => {
         return () => {
             // todo more elegant way to do this
             if (value === "title" && this.nameInput) {
@@ -84,21 +72,21 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         };
     }
 
-    public updateDeckName(event: ChangeEvent<HTMLInputElement>): void {
+    public updateDeckName = (event: ChangeEvent<HTMLInputElement>): void => {
         this.setState({
             name: event.target.value,
         });
     }
 
-    public goBack(): void {
+    public goBack = (): void => {
         this.props.setPage(Page.Home);
     }
 
-    public onSavePressed(): void {
+    public onSavePressed = (): void => {
         this.save(Page.Home);
     }
 
-    public save(nextPage?: Page): void {
+    public save = (nextPage?: Page): void => {
         const { cards, name } = this.state;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
         let errorMessage = "";
@@ -119,7 +107,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
     }
 
-    public getCurrentDeck(): Deck {
+    public getCurrentDeck = (): Deck => {
         const completeCards = this.state.cards.filter((card: Card) => card.front && card.back);
         return {
             cards: completeCards,
@@ -128,7 +116,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         };
     }
 
-    public updateFront(cardIndex: number, front: string): void {
+    public updateFront = (cardIndex: number, front: string): void => {
         const cards = [
                 ...this.state.cards,
         ];
@@ -139,7 +127,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.setState({cards});
     }
 
-    public updateBack(cardIndex: number, back: string): void {
+    public updateBack = (cardIndex: number, back: string): void => {
         const cards = [
             ...this.state.cards,
         ];
@@ -150,7 +138,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.setState({cards});
     }
 
-    public addCard(): void {
+    public addCard = (): void => {
         const cards = [
             ...this.state.cards,
             EMPTY_CARD,
@@ -158,17 +146,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.setState({cards});
     }
 
-    public goToLearn(): void {
-        this.props.selectDeck(this.props.deck.id);
-        this.save(Page.Flip);
-    }
-
-    public goToTest(): void {
-        this.props.selectDeck(this.props.deck.id);
-        this.save(Page.Test);
-    }
-
-    public deleteCard(cardIndex: number): void {
+    public deleteCard = (cardIndex: number): void => {
         if (this.props.deck && cardIndex > -1 && cardIndex < this.state.cards.length) {
             this.setState((state) => {
                 const cards = [...state.cards];
