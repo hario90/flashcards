@@ -86,6 +86,12 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.save(Page.Home);
     }
 
+    public canSave = (): boolean => {
+        const { cards, name } = this.state;
+        const completeCards = cards.filter((card: Card) => card.front && card.back);
+        return !!name && !isEmpty(completeCards);
+    }
+
     public save = (nextPage?: Page): void => {
         const { cards, name } = this.state;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
@@ -200,6 +206,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         type="primary"
                         onClick={this.onSavePressed}
                         size="large"
+                        disabled={!this.canSave()}
                     >
                         Save
                     </Button>
