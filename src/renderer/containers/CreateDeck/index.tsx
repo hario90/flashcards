@@ -37,7 +37,7 @@ interface DeckState {
     name?: string;
     cards: Card[];
     error?: string;
-    currentlyEditing?: string;
+    editingTitle: boolean;
 }
 
 const EMPTY_CARD = {
@@ -58,17 +58,17 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                 EMPTY_CARD,
                 EMPTY_CARD,
             ] : props.deck.cards,
+            editingTitle: false,
             name: props.deck.name,
         };
     }
 
-    public setCurrentlyEditing = (value?: string): () => void  => {
+    public setEditingTitle = (value: boolean): () => void  => {
         return () => {
-            // todo more elegant way to do this
-            if (value === "title" && this.nameInput) {
-                this.nameInput.focus();
+            if (!this.state.name && !value) {
+                return;
             }
-            this.setState({currentlyEditing: value});
+            this.setState({editingTitle: value});
         };
     }
 
@@ -99,9 +99,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
 
         if (errorMessage) {
-            this.setState({error: errorMessage, currentlyEditing: undefined});
+            this.setState({error: errorMessage});
         } else {
-            this.setState({error: undefined, currentlyEditing: undefined});
+            this.setState({error: undefined, editingTitle: false});
             this.props.saveDeck(this.getCurrentDeck());
             this.props.setPage(nextPage || Page.Home);
         }
@@ -164,13 +164,19 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
     }
 
+    public componentDidUpdate(prevProps: DeckProps, prevState: DeckState): void {
+        if (this.nameInput && prevState.editingTitle !== this.state.editingTitle) {
+            this.nameInput.focus();
+        }
+    }
+
     public render() {
         const { className } = this.props;
-        const { cards, currentlyEditing, name, error } = this.state;
+        const { cards, editingTitle, name, error } = this.state;
         return (
             <div className={classNames(className)}>
                 <div className={styles.titleRow}>
-                    {currentlyEditing === "title" ? (
+                    {(editingTitle || !name) ? (
                         <LineInput
                             className={styles.titleInput}
                             value={name}
@@ -178,10 +184,10 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             placeholder="Deck Name"
                             onChange={this.updateDeckName}
                             ref={(input) => { this.nameInput = input ? input.input : undefined; }}
-                            onBlur={this.setCurrentlyEditing(undefined)}
+                            onBlur={this.setEditingTitle(false)}
                         />
                     ) : (
-                        <div className={styles.titleReadOnly} onClick={this.setCurrentlyEditing("title")}>
+                        <div className={styles.titleReadOnly} onClick={this.setEditingTitle(true)}>
                             <h1>{name}</h1>
                             <Icon
                                 className={styles.editIcon}
