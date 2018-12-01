@@ -1,5 +1,6 @@
 export interface DeckStateBranch {
     decks: Deck[];
+    draft?: Deck;
 }
 
 export interface Card {
@@ -19,6 +20,11 @@ export interface CreateDeckAction {
 }
 
 export interface SaveDeckAction {
+    payload: Deck;
+    type: string;
+}
+
+export interface SaveDraftAction {
     payload: Deck;
     type: string;
 }

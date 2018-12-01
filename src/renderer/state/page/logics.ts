@@ -1,5 +1,7 @@
-import { shuffle } from "lodash";
+import { isEmpty, shuffle } from "lodash";
 import { createLogic } from "redux-logic";
+
+import { saveDraft } from "../deck/actions";
 
 import { Deck } from "../deck/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
@@ -15,7 +17,10 @@ import { batchActions } from "../util";
 import { setPage } from "./actions";
 import { GO_BACK, previousPageMap, SET_PAGE } from "./constants";
 import { Page } from "./types";
-
+const EMPTY_CARD = {
+    back: "",
+    front: "",
+};
 const setPageLogic = createLogic({
     transform: ({ getState, action }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
         const actions = [action];
@@ -32,6 +37,11 @@ const setPageLogic = createLogic({
                 setSeenCards([]),
                 setUnseenCards(unseenCards)
             );
+        } else if (action.payload === Page.CreateDeck && selectedDeck) {
+            actions.push(saveDraft({
+                ...selectedDeck,
+                cards: !isEmpty(selectedDeck.cards) ? [...selectedDeck.cards] : [EMPTY_CARD, EMPTY_CARD, EMPTY_CARD],
+            }));
         }
 
         next(batchActions(actions));

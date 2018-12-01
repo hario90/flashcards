@@ -12,8 +12,9 @@ import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
 import LineInput from "../../components/LineInput/index";
-import { deleteDeck, saveDeck } from "../../state/deck/actions";
-import { Card, Deck, SaveDeckAction } from "../../state/deck/types";
+import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
+import { getDraft } from "../../state/deck/selectors";
+import { Card, Deck, SaveDeckAction, SaveDraftAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import { selectDeck } from "../../state/selection/actions";
@@ -28,14 +29,14 @@ const styles = require("./style.css");
 interface DeckProps {
     className?: string;
     deck: Deck;
+    draft: Deck;
     saveDeck: (deck: Deck) => SaveDeckAction;
+    saveDraft: (deck: Deck) => SaveDraftAction;
     selectDeck: (deckId: number | number[]) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
 interface DeckState {
-    name?: string;
-    cards: Card[];
     error?: string;
     editingTitle: boolean;
 }
@@ -53,19 +54,13 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         super(props);
         this.editing = !isEmpty(props.deck.cards);
         this.state = {
-            cards: !this.editing ? [
-                EMPTY_CARD,
-                EMPTY_CARD,
-                EMPTY_CARD,
-            ] : props.deck.cards,
             editingTitle: false,
-            name: props.deck.name,
         };
     }
 
     public setEditingTitle = (value: boolean): () => void  => {
         return () => {
-            if (!this.state.name && !value) {
+            if (!this.props.draft.name && !value) {
                 return;
             }
             this.setState({editingTitle: value});
@@ -73,7 +68,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public updateDeckName = (event: ChangeEvent<HTMLInputElement>): void => {
-        this.setState({
+        this.props.saveDraft({
+            ...this.props.draft,
             name: event.target.value,
         });
     }
@@ -87,13 +83,13 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public canSave = (): boolean => {
-        const { cards, name } = this.state;
+        const { cards, name } = this.props.draft;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
         return !!name && !isEmpty(completeCards);
     }
 
     public save = (nextPage?: Page): void => {
-        const { cards, name } = this.state;
+        const { cards, name } = this.props.draft;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
         let errorMessage = "";
         if (!name) {
@@ -114,52 +110,65 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public getCurrentDeck = (): Deck => {
-        const completeCards = this.state.cards.filter((card: Card) => card.front && card.back);
+        const { cards, id, name } = this.props.draft;
+        const completeCards = cards.filter((card: Card) => card.front && card.back);
         return {
             cards: completeCards,
-            id: this.props.deck.id,
-            name: this.state.name || "",
+            id,
+            name: name || "",
         };
     }
 
     public updateFront = (cardIndex: number, front: string): void => {
+        const { draft } = this.props;
         const cards = [
-                ...this.state.cards,
+                ...draft.cards,
         ];
         cards[cardIndex] = {
             ...cards[cardIndex],
             front,
         };
-        this.setState({cards});
+        this.props.saveDraft({
+            ...draft,
+            cards,
+        });
     }
 
     public updateBack = (cardIndex: number, back: string): void => {
+        const { draft } = this.props;
         const cards = [
-            ...this.state.cards,
+            ...draft.cards,
         ];
         cards[cardIndex] = {
             ...cards[cardIndex],
             back,
         };
-        this.setState({cards});
+        this.props.saveDraft({
+            ...draft,
+            cards,
+        });
     }
 
     public addCard = (): void => {
+        const { draft } = this.props;
         const cards = [
-            ...this.state.cards,
+            ...draft.cards,
             EMPTY_CARD,
         ];
-        this.setState({cards});
+        this.props.saveDraft({
+            ...draft,
+            cards,
+        });
     }
 
     public deleteCard = (cardIndex: number): void => {
-        if (this.props.deck && cardIndex > -1 && cardIndex < this.state.cards.length) {
-            this.setState((state) => {
-                const cards = [...state.cards];
-                cards.splice(cardIndex, 1);
-                return {
-                    cards,
-                };
+        const { draft } = this.props;
+        if (cardIndex > -1 && cardIndex < draft.cards.length) {
+            const cards = [...draft.cards];
+            cards.splice(cardIndex, 1);
+            this.props.saveDraft({
+                ...draft,
+                cards,
             });
         }
     }
@@ -177,8 +186,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public render() {
-        const { className } = this.props;
-        const { cards, editingTitle, name, error } = this.state;
+        const { className, draft } = this.props;
+        const { cards, name } = draft;
+        const {  editingTitle, error } = this.state;
         return (
             <div className={classNames(className)}>
                 <div className={styles.titleRow}>
@@ -244,12 +254,14 @@ function mapStateToProps(state: State) {
             id: 0,
             name: "",
         },
+        draft: getDraft(state),
     };
 }
 
 const dispatchToPropsMap = {
     deleteDeck,
     saveDeck,
+    saveDraft,
     selectDeck,
     setPage,
 };

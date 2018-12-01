@@ -4,14 +4,15 @@ import { AnyAction } from "redux";
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { CREATE_DECK, DELETE_DECK, SAVE_DECK } from "./constants";
+import { CREATE_DECK, DELETE_DECK, SAVE_DECK, SAVE_DRAFT } from "./constants";
 import {
     CreateDeckAction, Deck,
-    DeckStateBranch, DeleteDeckAction, SaveDeckAction,
+    DeckStateBranch, DeleteDeckAction, SaveDeckAction, SaveDraftAction,
 } from "./types";
 
 export const initialState = {
     decks: [],
+    draft: undefined,
 };
 
 const actionToConfigMap: TypeToDescriptionMap = {
@@ -45,6 +46,15 @@ const actionToConfigMap: TypeToDescriptionMap = {
             return ({
                 ...state,
                 decks,
+            });
+        },
+    },
+    [SAVE_DRAFT]: {
+        accepts: (action: AnyAction): action is SaveDraftAction => action.type === SAVE_DRAFT,
+        perform: (state: DeckStateBranch, action: SaveDraftAction) => {
+            return ({
+                ...state,
+                draft: action.payload,
             });
         },
     },
