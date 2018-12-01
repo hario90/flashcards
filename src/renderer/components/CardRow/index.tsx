@@ -97,7 +97,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
 
         // todo get this to work
         if (this.frontInput && this.props.index === 0) {
-            console.log(this.frontInput.focus)
+            console.log(this.frontInput.focus);
             this.frontInput.focus();
         }
     }
