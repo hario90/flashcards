@@ -3,7 +3,7 @@ import { isEmpty } from "lodash";
 import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { setAlert } from "../feedback/actions";
+import { clearAlert, setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
 import { setPage } from "../page/actions";
 import { getNextPage } from "../page/selectors";
@@ -54,9 +54,13 @@ const getCurrentDeck = (draft: Deck): Deck => {
 const saveDeckLogic = createLogic({
     process: ({getState, action}: ReduxLogicDeps, dispatch: (action: AnyAction) => void, done: () => void) => {
         const nextPage = getNextPage(getState());
+        const actions = [clearAlert()];
+
         if (nextPage) {
-            dispatch(setPage(nextPage));
+            actions.push(setPage(nextPage));
         }
+
+        dispatch(batchActions(actions));
         done();
     },
     transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: () => void) => {
@@ -95,11 +99,12 @@ const saveDeckLogic = createLogic({
                 ...decks,
             ];
             decksCopy[index] = getCurrentDeck(draft);
+            console.log("test", getCurrentDeck(draft));
             actions.push(
                 setDecks(decksCopy),
                 selectDeck(getCurrentDeck(draft)),
                 setAlert({
-                    message: "Deck created!",
+                    message: "Deck saved!",
                     type: AlertType.SUCCESS,
                 })
             );
