@@ -7,7 +7,7 @@ export interface DeselectDeckAction {
 }
 
 export interface SelectionStateBranch extends LearnStateBranch {
-    deck?: Deck;
+    deck?: number;
 }
 
 export interface LearnStateBranch {
@@ -17,7 +17,7 @@ export interface LearnStateBranch {
 }
 
 export interface SelectDeckAction {
-    payload: Deck;
+    payload: number;
     type: string;
 }
 

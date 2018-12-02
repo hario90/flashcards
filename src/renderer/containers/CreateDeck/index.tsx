@@ -13,12 +13,11 @@ import { connect } from "react-redux";
 import CardRow from "../../components/CardRow/index";
 import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
-import { getDraft } from "../../state/deck/selectors";
+import { getDraft, getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck, SaveDeckAction, SaveDraftAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import { selectDeck } from "../../state/selection/actions";
-import { getSelectedDeck } from "../../state/selection/selectors";
 import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
@@ -32,7 +31,7 @@ interface DeckProps {
     draft: Deck;
     saveDeck: () => SaveDeckAction;
     saveDraft: (deck: Deck) => SaveDraftAction;
-    selectDeck: (deck: Deck) => SelectDeckAction;
+    selectDeck: (deckId: number) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 

@@ -35,7 +35,7 @@ const createDeckLogic = createLogic({
 
         next(batchActions([
             action,
-            selectDeck(action.payload),
+            selectDeck(action.payload.id),
         ]));
     },
     type: CREATE_DECK,
@@ -54,13 +54,11 @@ const getCurrentDeck = (draft: Deck): Deck => {
 const saveDeckLogic = createLogic({
     process: ({getState, action}: ReduxLogicDeps, dispatch: (action: AnyAction) => void, done: () => void) => {
         const nextPage = getNextPage(getState());
-        const actions = [clearAlert()];
 
         if (nextPage) {
-            actions.push(setPage(nextPage));
+            dispatch(setPage(nextPage));
         }
 
-        dispatch(batchActions(actions));
         done();
     },
     transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: () => void) => {
@@ -102,7 +100,6 @@ const saveDeckLogic = createLogic({
             console.log("test", getCurrentDeck(draft));
             actions.push(
                 setDecks(decksCopy),
-                selectDeck(getCurrentDeck(draft)),
                 setAlert({
                     message: "Deck saved!",
                     type: AlertType.SUCCESS,

@@ -3,15 +3,13 @@ import { createLogic } from "redux-logic";
 
 import { saveDraft } from "../deck/actions";
 import { SAVE_DECK } from "../deck/constants";
-import { unsavedChanges } from "../deck/selectors";
+import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 
 import { Deck } from "../deck/types";
 import { clearAlert, setAlert } from "../feedback/actions";
-import { getAlert } from "../feedback/selectors";
-import { AlertType, AppAlert } from "../feedback/types";
+import { AlertType } from "../feedback/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 import { getRandomCardFromDeck } from "../selection/logics";
-import { getSelectedDeck } from "../selection/selectors";
 
 import {
     ReduxLogicDeps,
@@ -30,12 +28,12 @@ const EMPTY_CARD = {
 const setPageLogic = createLogic({
     transform: ({ getState, action }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
         const actions = [];
-        const selectedDeck: Deck | null | undefined = getSelectedDeck(getState());
+        const selectedDeck: Deck | undefined = getSelectedDeck(getState());
         const currentPage: Page = getPage(getState());
-        const alert: AppAlert | undefined = getAlert(getState());
         const unsavedChangesExist: boolean = unsavedChanges(getState());
+        console.log(selectedDeck);
 
-        if (currentPage === Page.CreateDeck && !alert && unsavedChangesExist) {
+        if (currentPage === Page.CreateDeck && unsavedChangesExist) {
             actions.push(
                 setAlert({
                     message: "Save Deck?",

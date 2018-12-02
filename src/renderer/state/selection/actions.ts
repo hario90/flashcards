@@ -18,9 +18,9 @@ import {
     SelectMetadataAction,
 } from "./types";
 
-export function selectDeck(deck: Deck): SelectDeckAction {
+export function selectDeck(deckId: number): SelectDeckAction {
     return {
-        payload: deck,
+        payload: deckId,
         type: SELECT_DECK,
     };
 }

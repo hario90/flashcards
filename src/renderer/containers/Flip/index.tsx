@@ -5,9 +5,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import TwoSidedCard from "../../components/TwoSidedCard/index";
+import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 import { getNextCard, getPreviousCard } from "../../state/selection/actions";
-import { getCurrentCard, getSeenCards, getSelectedDeck, getUnseenCards } from "../../state/selection/selectors";
+import { getCurrentCard, getSeenCards, getUnseenCards } from "../../state/selection/selectors";
 import { GetNextCardAction, GetPreviousCardAction } from "../../state/selection/types";
 
 import {

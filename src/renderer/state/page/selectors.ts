@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
+import { getSelectedDeck } from "../deck/selectors";
 import { Deck } from "../deck/types";
-import { getSelectedDeck } from "../selection/selectors";
 import { State } from "../types";
 
 import { previousPageMap } from "./constants";
