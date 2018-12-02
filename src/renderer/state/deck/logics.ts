@@ -1,10 +1,11 @@
 import { message } from "antd";
 import { isEmpty } from "lodash";
+import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { clearAlert, setAlert } from "../feedback/actions";
+import { setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
-import { clearNextPage, setPage } from "../page/actions";
+import { setPage } from "../page/actions";
 import { getNextPage } from "../page/selectors";
 import { selectDeck } from "../selection/actions";
 import {
@@ -13,7 +14,7 @@ import {
 } from "../types";
 import { batchActions } from "../util";
 
-import { clearDraft, setDecks } from "./actions";
+import { setDecks } from "./actions";
 import { CREATE_DECK, SAVE_DECK } from "./constants";
 import { getDecks, getDraft } from "./selectors";
 import { Card, Deck } from "./types";
@@ -51,6 +52,13 @@ const getCurrentDeck = (draft: Deck): Deck => {
 };
 
 const saveDeckLogic = createLogic({
+    process: ({getState, action}: ReduxLogicDeps, dispatch: (action: AnyAction) => void, done: () => void) => {
+        const nextPage = getNextPage(getState());
+        if (nextPage) {
+            dispatch(setPage(nextPage));
+        }
+        done();
+    },
     transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: () => void) => {
         const actions = [];
         const decks = getDecks(getState());
@@ -81,32 +89,22 @@ const saveDeckLogic = createLogic({
             }));
             done();
         } else {
-            console.log("Deck Logics: clear alert, clear draft, set decks, set alert");
             const ids = decks.map((deck: Deck) => deck.id);
             const index = ids.indexOf(draft.id);
             const decksCopy = [
                 ...decks,
             ];
             decksCopy[index] = getCurrentDeck(draft);
-            console.log("saved draft:", getCurrentDeck(draft));
             actions.push(
                 setDecks(decksCopy),
+                selectDeck(getCurrentDeck(draft)),
                 setAlert({
                     message: "Deck created!",
                     type: AlertType.SUCCESS,
                 })
             );
-            const nextPage = getNextPage(getState());
-
-            if (nextPage) {
-                console.log("Deck Logics: set page to next");
-                actions.push(
-                    setPage(nextPage)
-                );
-            }
-
             next(batchActions(actions));
-            next(clearDraft());
+
             done();
         }
     },

@@ -36,7 +36,6 @@ const setPageLogic = createLogic({
         const unsavedChangesExist: boolean = unsavedChanges(getState());
 
         if (currentPage === Page.CreateDeck && !alert && unsavedChangesExist) {
-            console.log("Page Logics: set alert and set next page");
             actions.push(
                 setAlert({
                     message: "Save Deck?",
@@ -47,7 +46,6 @@ const setPageLogic = createLogic({
                 setNextPage(action.payload)
             );
         } else if (action.payload === Page.Flip && selectedDeck) {
-            console.log("Page Logics: set page, clear next page, clear alert, prepare for flip");
             const { currentCard, unseenCards } = getRandomCardFromDeck({
                 currentCard: undefined,
                 seenCards: [],
@@ -62,7 +60,6 @@ const setPageLogic = createLogic({
                 setUnseenCards(unseenCards)
             );
         } else if (action.payload === Page.CreateDeck && selectedDeck) {
-            console.log("Page Logics: set page, clear next page, save draft");
             actions.push(
                 action,
                 clearNextPage(),
@@ -72,7 +69,6 @@ const setPageLogic = createLogic({
                         : [EMPTY_CARD, EMPTY_CARD, EMPTY_CARD],
                 }));
         } else {
-            console.log("Page Logics: set page");
             actions.push(action);
         }
 
