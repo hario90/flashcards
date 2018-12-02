@@ -1,7 +1,7 @@
 import { makeConstant } from "../util";
 
-export const DESELECT_DECK = makeConstant("selection", "deselect-file");
-export const SELECT_DECK = makeConstant("selection", "select-file");
+export const DESELECT_DECK = makeConstant("selection", "deselect-deck");
+export const SELECT_DECK = makeConstant("selection", "select-deck");
 export const SELECT_METADATA = makeConstant("selection", "select_metadata");
 export const RESET_DECK = makeConstant("selection", "reset-deck");
 export const GET_NEXT_CARD = makeConstant("selection", "get-next-card");
