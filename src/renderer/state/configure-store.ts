@@ -11,6 +11,7 @@ import { BASE_API_URL } from "../constants";
 import {
     deck,
     enableBatching,
+    feedback,
     metadata,
     page,
     selection,
@@ -19,6 +20,7 @@ import {
 
 const reducers = {
     deck: deck.reducer,
+    feedback: feedback.reducer,
     metadata: metadata.reducer,
     page: page.reducer,
     selection: selection.reducer,

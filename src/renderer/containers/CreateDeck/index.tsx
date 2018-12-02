@@ -32,7 +32,7 @@ interface DeckProps {
     draft: Deck;
     saveDeck: (deck: Deck) => SaveDeckAction;
     saveDraft: (deck: Deck) => SaveDraftAction;
-    selectDeck: (deckId: number | number[]) => SelectDeckAction;
+    selectDeck: (deck: Deck) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
@@ -111,7 +111,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public getCurrentDeck = (): Deck => {
         const { cards, id, name } = this.props.draft;
-        const completeCards = cards.filter((card: Card) => card.front && card.back);
+            const completeCards = cards.filter((card: Card) => card.front && card.back);
         return {
             cards: completeCards,
             id,

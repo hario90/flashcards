@@ -1,4 +1,4 @@
-import { Card } from "../deck/types";
+import { Card, Deck } from "../deck/types";
 
 import {
     DESELECT_DECK,
@@ -18,9 +18,9 @@ import {
     SelectMetadataAction,
 } from "./types";
 
-export function selectDeck(deckId: number | number[]): SelectDeckAction {
+export function selectDeck(deck: Deck): SelectDeckAction {
     return {
-        payload: deckId,
+        payload: deck,
         type: SELECT_DECK,
     };
 }

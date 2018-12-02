@@ -8,7 +8,7 @@ const styles = require("./styles.css");
 
 interface DeckRowProps {
     deck: Deck;
-    selectDeck: (deckId: number | number[]) => void;
+    selectDeck: (deck: Deck) => void;
     deleteDeck: (deckId: number) => void;
     toBeDeleted: boolean;
 }
@@ -20,7 +20,7 @@ class DeckRow extends React.Component<DeckRowProps, {}> {
     }
 
     public selectDeck(): void {
-        this.props.selectDeck(this.props.deck.id);
+        this.props.selectDeck(this.props.deck);
     }
 
     public deleteDeck(e: React.MouseEvent<HTMLButtonElement>): void {

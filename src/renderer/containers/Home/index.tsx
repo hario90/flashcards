@@ -33,7 +33,7 @@ interface HomeProps {
     decks: Deck[];
     deleteDeck: (id: number) => DeleteDeckAction;
     createDeck: (deck: Deck) => CreateDeckAction;
-    selectDeck: (deckId: number | number[]) => SelectDeckAction;
+    selectDeck: (deck: Deck) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
@@ -61,8 +61,8 @@ class Home extends React.Component<HomeProps, HomeState> {
         this.clearDeckToDelete = this.clearDeckToDelete.bind(this);
     }
 
-    public selectDeck(deckId: number | number[]): void {
-        this.props.selectDeck(deckId);
+    public selectDeck(deck: Deck): void {
+        this.props.selectDeck(deck);
         this.props.setPage(Page.CreateDeck);
     }
 

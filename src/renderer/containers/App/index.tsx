@@ -1,8 +1,13 @@
+import { message } from "antd";
 import * as React from "react";
 import { connect } from "react-redux";
+import { AnyAction } from "redux";
 
+import AlertBody from "../../components/AlertBody/index";
 import AppHeader from "../../components/AppHeader/index";
 import SideNav from "../../components/SideNav/index";
+import { getAlert } from "../../state/feedback/selectors";
+import { AlertType, AppAlert } from "../../state/feedback/types";
 import { goBack, setPage } from "../../state/page/actions";
 import { previousPageMap } from "../../state/page/constants";
 import { getPage, getPreviousTitle, getTitle } from "../../state/page/selectors";
@@ -21,7 +26,9 @@ import Test from "../Test";
 const styles = require("./style.css");
 
 interface AppProps {
+    alert?: AppAlert;
     className?: string;
+    dispatch: (action: AnyAction) => AnyAction;
     goBack: () => GoBackAction;
     page: Page;
     previousPage: Page;
@@ -40,6 +47,35 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
 class App extends React.Component<AppProps, {}> {
     constructor(props: AppProps) {
         super(props);
+    }
+
+    public dismissAlert = (): void => {
+        const { alert, dispatch } = this.props;
+        if (alert) {
+            dispatch(alert.onNo);
+        }
+    }
+
+    public acceptAlert = () => {
+        const { alert, dispatch } = this.props;
+        if (alert) {
+            dispatch(alert.onYes);
+        }
+    }
+
+    public componentDidUpdate() {
+        const { alert } = this.props;
+        if (alert) {
+            const { message: alertText, type} = alert;
+            switch(type) {
+                case AlertType.WARN:
+                    message.warn(<AlertBody message={alertText} onNo={this.dismissAlert} onYes={this.acceptAlert}/>, 0);
+                    break;
+                default:
+                    message.info(<AlertBody message={alertText} onNo={this.dismissAlert} onYes={this.acceptAlert}/>);
+                    break;
+            }
+        }
     }
 
     public render() {
@@ -77,6 +113,7 @@ class App extends React.Component<AppProps, {}> {
 
 function mapStateToProps(state: State) {
     return {
+        alert: getAlert(state),
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
         previousTitle: getPreviousTitle(state),
@@ -85,6 +122,7 @@ function mapStateToProps(state: State) {
 }
 
 const dispatchToPropsMap = {
+    dispatch: (action: AnyAction) => action,
     goBack,
     setPage,
 };

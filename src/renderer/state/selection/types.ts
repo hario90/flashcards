@@ -1,4 +1,4 @@
-import { Card } from "../deck/types";
+import { Card, Deck } from "../deck/types";
 import { MetadataStateBranch } from "../metadata/types";
 
 export interface DeselectDeckAction {
@@ -7,7 +7,7 @@ export interface DeselectDeckAction {
 }
 
 export interface SelectionStateBranch extends LearnStateBranch {
-    deck?: number;
+    deck?: Deck;
 }
 
 export interface LearnStateBranch {
@@ -17,7 +17,7 @@ export interface LearnStateBranch {
 }
 
 export interface SelectDeckAction {
-    payload: number | number[];
+    payload: Deck;
     type: string;
 }
 

@@ -1,4 +1,5 @@
 export { default as deck } from "./deck";
+export { default as feedback } from "./feedback";
 export { default as metadata } from "./metadata";
 export { default as page } from "./page";
 export { default as selection } from "./selection";

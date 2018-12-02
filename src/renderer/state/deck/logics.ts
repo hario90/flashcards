@@ -9,11 +9,12 @@ import {
 import { batchActions } from "../util";
 
 import { CREATE_DECK } from "./constants";
+import { getDecks } from "./selectors";
 import { Deck } from "./types";
 
 const createDeckLogic = createLogic({
     transform: ({ getState, action }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
-        const { decks } = getState().deck;
+        const decks = getDecks(getState());
         let id: number = 1;
         if (!isEmpty(decks)) {
             const ids = decks.map((deck: Deck) => deck.id);
@@ -27,7 +28,7 @@ const createDeckLogic = createLogic({
 
         next(batchActions([
             action,
-            selectDeck(id),
+            selectDeck(action.payload),
         ]));
     },
     type: CREATE_DECK,

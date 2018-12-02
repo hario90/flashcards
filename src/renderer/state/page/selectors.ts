@@ -1,4 +1,3 @@
-import { isEmpty } from "lodash";
 import { createSelector } from "reselect";
 
 import { Deck } from "../deck/types";
