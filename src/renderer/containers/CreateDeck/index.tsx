@@ -79,19 +79,14 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public onSavePressed = (): void => {
-        this.save(Page.Home);
+        this.setState({editingTitle: false});
+        this.props.saveDeck();
     }
 
     public canSave = (): boolean => {
         const { cards, name } = this.props.draft;
         const completeCards = cards.filter((card: Card) => card.front && card.back);
         return !!name && !isEmpty(completeCards);
-    }
-
-    public save = (nextPage?: Page): void => {
-        this.setState({editingTitle: false});
-        this.props.saveDeck();
-        this.props.setPage(nextPage || Page.Home);
     }
 
     public updateFront = (cardIndex: number, front: string): void => {
