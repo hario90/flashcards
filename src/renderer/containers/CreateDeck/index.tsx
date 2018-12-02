@@ -30,7 +30,7 @@ interface DeckProps {
     className?: string;
     deck: Deck;
     draft: Deck;
-    saveDeck: (deck: Deck) => SaveDeckAction;
+    saveDeck: () => SaveDeckAction;
     saveDraft: (deck: Deck) => SaveDraftAction;
     selectDeck: (deck: Deck) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
@@ -89,34 +89,9 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public save = (nextPage?: Page): void => {
-        const { cards, name } = this.props.draft;
-        const completeCards = cards.filter((card: Card) => card.front && card.back);
-        let errorMessage = "";
-        if (!name) {
-            errorMessage = "You deck is missing a name. ";
-        }
-
-        if (isEmpty(completeCards)) {
-            errorMessage += "Your deck is empty. Please make sure you have completed both sides of each card.";
-        }
-
-        if (errorMessage) {
-            this.setState({error: errorMessage});
-        } else {
-            this.setState({error: undefined, editingTitle: false});
-            this.props.saveDeck(this.getCurrentDeck());
-            this.props.setPage(nextPage || Page.Home);
-        }
-    }
-
-    public getCurrentDeck = (): Deck => {
-        const { cards, id, name } = this.props.draft;
-            const completeCards = cards.filter((card: Card) => card.front && card.back);
-        return {
-            cards: completeCards,
-            id,
-            name: name || "",
-        };
+        this.setState({editingTitle: false});
+        this.props.saveDeck();
+        this.props.setPage(nextPage || Page.Home);
     }
 
     public updateFront = (cardIndex: number, front: string): void => {

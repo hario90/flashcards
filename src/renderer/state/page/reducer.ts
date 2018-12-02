@@ -3,10 +3,10 @@ import { AnyAction } from "redux";
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { SET_PAGE } from "./constants";
+import { SET_NEXT_PAGE, SET_PAGE } from "./constants";
 import {
     Page,
-    PageStateBranch,
+    PageStateBranch, SetNextPageAction,
     SetPageAction,
 } from "./types";
 
@@ -15,7 +15,13 @@ const initialState = {
 };
 
 const actionToConfigMap: TypeToDescriptionMap = {
-
+    [SET_NEXT_PAGE]: {
+        accepts: (action: AnyAction): action is SetNextPageAction => action.type === SET_NEXT_PAGE,
+        perform: (state: PageStateBranch, action: SetNextPageAction) => ({
+            ...state,
+            next: action.payload,
+        }),
+    },
     [SET_PAGE]: {
         accepts: (action: AnyAction): action is SetPageAction => action.type === SET_PAGE,
         perform: (state: PageStateBranch, action: SetPageAction) => ({

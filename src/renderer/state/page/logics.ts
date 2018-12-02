@@ -2,6 +2,7 @@ import { isEmpty, shuffle } from "lodash";
 import { createLogic } from "redux-logic";
 
 import { saveDraft } from "../deck/actions";
+import { SAVE_DECK } from "../deck/constants";
 import { unsavedChanges } from "../deck/selectors";
 
 import { Deck } from "../deck/types";
@@ -18,7 +19,7 @@ import {
 } from "../types";
 import { batchActions } from "../util";
 
-import { setPage } from "./actions";
+import { clearNextPage, setNextPage, setPage } from "./actions";
 import { GO_BACK, previousPageMap, SET_PAGE } from "./constants";
 import { getPage } from "./selectors";
 import { Page } from "./types";
@@ -33,16 +34,20 @@ const setPageLogic = createLogic({
         const currentPage: Page = getPage(getState());
         const alert: AppAlert | undefined = getAlert(getState());
         const unsavedChangesExist: boolean = unsavedChanges(getState());
+
         if (currentPage === Page.CreateDeck && !alert && unsavedChangesExist) {
+            console.log("Page Logics: set alert and set next page");
             actions.push(
                 setAlert({
                     message: "Save Deck?",
                     onNo: action,
-                    onYes: { type: "bogus" },
+                    onYes: { type: SAVE_DECK },
                     type: AlertType.WARN,
-                })
+                }),
+                setNextPage(action.payload)
             );
         } else if (action.payload === Page.Flip && selectedDeck) {
+            console.log("Page Logics: set page, clear next page, clear alert, prepare for flip");
             const { currentCard, unseenCards } = getRandomCardFromDeck({
                 currentCard: undefined,
                 seenCards: [],
@@ -50,20 +55,24 @@ const setPageLogic = createLogic({
             });
             actions.push(
                 action,
+                clearNextPage(),
                 clearAlert(),
                 setCurrentCard(currentCard),
                 setSeenCards([]),
                 setUnseenCards(unseenCards)
             );
         } else if (action.payload === Page.CreateDeck && selectedDeck) {
+            console.log("Page Logics: set page, clear next page, save draft");
             actions.push(
                 action,
+                clearNextPage(),
                 saveDraft({
                     ...selectedDeck,
                     cards: !isEmpty(selectedDeck.cards) ? [...selectedDeck.cards]
                         : [EMPTY_CARD, EMPTY_CARD, EMPTY_CARD],
                 }));
         } else {
+            console.log("Page Logics: set page");
             actions.push(action);
         }
 

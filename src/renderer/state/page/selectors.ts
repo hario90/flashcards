@@ -9,6 +9,7 @@ import { previousPageMap } from "./constants";
 import { Page } from "./types";
 
 export const getPage = (state: State) => state.page.page;
+export const getNextPage = (state: State) => state.page.next;
 export const getPreviousPage = createSelector([
     getPage,
 ], (page: Page) => {

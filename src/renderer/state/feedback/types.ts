@@ -2,8 +2,8 @@ import { AnyAction } from "redux";
 
 export interface AppAlert {
     message: string;
-    onNo: AnyAction;
-    onYes: AnyAction;
+    onNo?: AnyAction;
+    onYes?: AnyAction;
     type: AlertType;
 }
 
@@ -14,7 +14,7 @@ export enum AlertType {
 }
 
 export interface FeedbackStateBranch {
-    alert?: AppAlert,
+    alert?: AppAlert;
 }
 
 export interface SetAlertAction {

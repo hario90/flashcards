@@ -4,10 +4,11 @@ import { AnyAction } from "redux";
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { CREATE_DECK, DELETE_DECK, SAVE_DECK, SAVE_DRAFT } from "./constants";
+import { CLEAR_DRAFT, CREATE_DECK, DELETE_DECK, SAVE_DECK, SAVE_DRAFT, SET_DECKS } from "./constants";
 import {
+    ClearDraftAction,
     CreateDeckAction, Deck,
-    DeckStateBranch, DeleteDeckAction, SaveDeckAction, SaveDraftAction,
+    DeckStateBranch, DeleteDeckAction, SaveDeckAction, SaveDraftAction, SetDecksAction,
 } from "./types";
 
 export const initialState = {
@@ -27,26 +28,19 @@ const actionToConfigMap: TypeToDescriptionMap = {
         accepts: (action: AnyAction): action is DeleteDeckAction => action.type === DELETE_DECK,
         perform: (state: DeckStateBranch, action: DeleteDeckAction) => {
             const decks = remove(state.decks, (deck) => deck.id !== action.payload);
-            console.log(decks);
             return {
                 ...state,
                 decks,
             };
         },
     },
-    [SAVE_DECK]: {
-        accepts: (action: AnyAction): action is SaveDeckAction => action.type === SAVE_DECK,
-        perform: (state: DeckStateBranch, action: SaveDeckAction) => {
-            const ids = state.decks.map((deck: Deck) => deck.id);
-            const index = ids.indexOf(action.payload.id);
-            const decks = [
-                ...state.decks,
-            ];
-            decks[index] = action.payload;
-            return ({
+    [SET_DECKS]: {
+        accepts: (action: AnyAction): action is SetDecksAction => action.type === SET_DECKS,
+        perform: (state: DeckStateBranch, action: SetDecksAction) => {
+            return {
                 ...state,
-                decks,
-            });
+                decks: action.payload,
+            };
         },
     },
     [SAVE_DRAFT]: {
@@ -56,6 +50,15 @@ const actionToConfigMap: TypeToDescriptionMap = {
                 ...state,
                 draft: action.payload,
             });
+        },
+    },
+    [CLEAR_DRAFT]: {
+        accepts: (action: AnyAction): action is ClearDraftAction => action.type === CLEAR_DRAFT,
+        perform: (state: DeckStateBranch) => {
+            return {
+                ...state,
+                draft: undefined,
+            };
         },
     },
 };

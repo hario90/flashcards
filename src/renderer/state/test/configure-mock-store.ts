@@ -9,6 +9,7 @@ import { SinonStub } from "sinon";
 import {
     deck,
     enableBatching,
+    feedback,
     metadata,
     page,
     selection,
@@ -24,6 +25,7 @@ export interface ReduxLogicDependencies {
 
 const reducers = {
     deck: deck.reducer,
+    feedback: feedback.reducer,
     metadata: metadata.reducer,
     page: page.reducer,
     selection: selection.reducer,

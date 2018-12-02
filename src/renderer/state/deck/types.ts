@@ -20,7 +20,6 @@ export interface CreateDeckAction {
 }
 
 export interface SaveDeckAction {
-    payload: Deck;
     type: string;
 }
 
@@ -31,5 +30,14 @@ export interface SaveDraftAction {
 
 export interface DeleteDeckAction {
     payload: number;
+    type: string;
+}
+
+export interface SetDecksAction {
+    payload: Deck[];
+    type: string;
+}
+
+export interface ClearDraftAction {
     type: string;
 }

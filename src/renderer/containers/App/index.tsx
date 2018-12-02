@@ -3,9 +3,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { AnyAction } from "redux";
 
-import AlertBody from "../../components/AlertBody/index";
-import AppHeader from "../../components/AppHeader/index";
-import SideNav from "../../components/SideNav/index";
+import AlertBody from "../../components/AlertBody";
+import AppHeader from "../../components/AppHeader";
+import SideNav from "../../components/SideNav";
 import { getAlert } from "../../state/feedback/selectors";
 import { AlertType, AppAlert } from "../../state/feedback/types";
 import { goBack, setPage } from "../../state/page/actions";
@@ -51,14 +51,14 @@ class App extends React.Component<AppProps, {}> {
 
     public dismissAlert = (): void => {
         const { alert, dispatch } = this.props;
-        if (alert) {
+        if (alert && alert.onNo) {
             dispatch(alert.onNo);
         }
     }
 
     public acceptAlert = () => {
         const { alert, dispatch } = this.props;
-        if (alert) {
+        if (alert && alert.onYes) {
             dispatch(alert.onYes);
         }
     }
@@ -66,13 +66,26 @@ class App extends React.Component<AppProps, {}> {
     public componentDidUpdate() {
         const { alert } = this.props;
         if (alert) {
-            const { message: alertText, type} = alert;
-            switch(type) {
+            const { message: alertText, type, onNo, onYes} = alert;
+            const alertBody = (
+                <AlertBody
+                    message={alertText}
+                    onNo={onNo ? this.dismissAlert : undefined}
+                    onYes={onYes ? this.acceptAlert : undefined}
+                />
+            );
+            switch (type) {
                 case AlertType.WARN:
-                    message.warn(<AlertBody message={alertText} onNo={this.dismissAlert} onYes={this.acceptAlert}/>, 0);
+                    message.warn(alertBody, 0);
+                    break;
+                case AlertType.SUCCESS:
+                    message.success(alertBody);
+                    break;
+                case AlertType.ERROR:
+                    message.error(alertBody);
                     break;
                 default:
-                    message.info(<AlertBody message={alertText} onNo={this.dismissAlert} onYes={this.acceptAlert}/>);
+                    message.info(alertBody);
                     break;
             }
         }
