@@ -16,7 +16,7 @@ import { batchActions } from "../util";
 
 import { setDecks } from "./actions";
 import { CREATE_DECK, SAVE_DECK } from "./constants";
-import { getDecks, getDraft } from "./selectors";
+import { getDecks, getDraft, getErrorMessage } from "./selectors";
 import { Card, Deck } from "./types";
 
 const createDeckLogic = createLogic({
@@ -72,17 +72,7 @@ const saveDeckLogic = createLogic({
             return;
         }
 
-        const { cards, name } = draft;
-        const completeCards = cards.filter((card: Card) => card.front && card.back);
-        let errorMessage = "";
-        if (!name) {
-            errorMessage = "You deck is missing a name. ";
-        }
-
-        if (isEmpty(completeCards)) {
-            errorMessage += "Your deck is empty. Please make sure you have completed both sides of each card.";
-        }
-
+        const errorMessage = getErrorMessage(getState());
         message.destroy();
         if (errorMessage) {
             next(setAlert({

@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import CardRow from "../../components/CardRow/index";
 import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
-import { getDraft, getSelectedDeck } from "../../state/deck/selectors";
+import { getCanSave, getDraft, getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck, SaveDeckAction, SaveDraftAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
@@ -29,6 +29,7 @@ interface DeckProps {
     className?: string;
     deck: Deck;
     draft: Deck;
+    enableSave: boolean;
     saveDeck: () => SaveDeckAction;
     saveDraft: (deck: Deck) => SaveDraftAction;
     selectDeck: (deckId: number) => SelectDeckAction;
@@ -82,11 +83,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.props.saveDeck();
     }
 
-    public canSave = (): boolean => {
-        const { cards, name } = this.props.draft;
-        const completeCards = cards.filter((card: Card) => card.front && card.back);
-        return !!name && !isEmpty(completeCards);
-    }
 
     public updateFront = (cardIndex: number, front: string): void => {
         const { draft } = this.props;
@@ -155,7 +151,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public render() {
-        const { className, draft } = this.props;
+        const { className, draft, enableSave } = this.props;
         const { cards, name } = draft;
         const {  editingTitle, error } = this.state;
         return (
@@ -185,7 +181,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         type="primary"
                         onClick={this.onSavePressed}
                         size="large"
-                        disabled={!this.canSave()}
+                        disabled={!enableSave}
                     >
                         Save
                     </Button>
@@ -224,6 +220,7 @@ function mapStateToProps(state: State) {
             name: "",
         },
         draft: getDraft(state),
+        enableSave: getCanSave(state),
     };
 }
 

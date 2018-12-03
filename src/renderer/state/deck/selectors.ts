@@ -1,4 +1,4 @@
-import { find } from "lodash";
+import { find, isEmpty } from "lodash";
 import { createSelector } from "reselect";
 
 import { getSelectedDeckId } from "../selection/selectors";
@@ -22,7 +22,18 @@ export const getSelectedDeck = createSelector([
     return decks.find((deck: Deck) => deck.id === deckId);
 });
 
-export const unsavedChanges = createSelector([getSelectedDeck, getDraft], (
+export const getNotEmptyDraftCards = createSelector([
+    getDraft,
+], (draft?: Deck) => {
+    return draft ? draft.cards.filter((card: Card) => card.front || card.back) : [];
+});
+
+export const unsavedChanges = createSelector([
+    getNotEmptyDraftCards,
+    getSelectedDeck,
+    getDraft,
+], (
+    notEmptyDraftCards: Card[],
     selected?: Deck,
     draft?: Deck
 ): boolean => {
@@ -33,7 +44,6 @@ export const unsavedChanges = createSelector([getSelectedDeck, getDraft], (
     const nameChanged = selected.name !== draft.name;
     const { cards: draftCards } = draft;
     const { cards: savedCards } = selected;
-    const notEmptyDraftCards = draftCards.filter((card: Card) => card.front || card.back);
 
     let cardsChanged: boolean = false;
     savedCards.forEach((card) => {
@@ -46,4 +56,51 @@ export const unsavedChanges = createSelector([getSelectedDeck, getDraft], (
 
     cardsChanged = cardsChanged || savedCards.length !== notEmptyDraftCards.length;
     return nameChanged || cardsChanged;
+});
+
+export const getCompleteCards = createSelector([
+    getDraft,
+], (draft?: Deck) => {
+    if (!draft) {
+        return [];
+    }
+
+    return draft.cards.filter((card: Card) => card.front && card.back);
+});
+
+export const getCanSave = createSelector([
+    unsavedChanges,
+    getCompleteCards,
+    getDraft,
+], (unsavedChangesExist: boolean, completeCards: Card[], draft?: Deck) => {
+    if (!draft) {
+        return false;
+    }
+
+    return !!draft.name && !isEmpty(completeCards) && unsavedChangesExist;
+});
+
+export const getErrorMessage = createSelector([
+    getCompleteCards,
+    getNotEmptyDraftCards,
+    getDraft,
+], (completeCards: Card[], notEmptyDraftCards: Card[], draft?: Deck) => {
+    if (!draft) {
+        return "";
+    }
+
+    let errorMessage = "";
+    if (!draft.name) {
+        errorMessage = "You deck is missing a name.\n";
+    }
+
+    if (isEmpty(completeCards)) {
+        errorMessage += "Your deck is empty. Please make sure you have completed both sides of each card.\n";
+    }
+
+    if (completeCards.length !== notEmptyDraftCards.length) {
+        errorMessage += "There are incomplete cards in your deck.\n";
+    }
+
+    return errorMessage;
 });
