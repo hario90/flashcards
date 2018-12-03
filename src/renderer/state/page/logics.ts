@@ -6,7 +6,7 @@ import { SAVE_DECK } from "../deck/constants";
 import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 
 import { Deck } from "../deck/types";
-import { clearAlert, setAlert } from "../feedback/actions";
+import { setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 import { getRandomCardFromDeck } from "../selection/logics";
@@ -31,7 +31,6 @@ const setPageLogic = createLogic({
         const selectedDeck: Deck | undefined = getSelectedDeck(getState());
         const currentPage: Page = getPage(getState());
         const unsavedChangesExist: boolean = unsavedChanges(getState());
-        console.log(selectedDeck);
 
         if (currentPage === Page.CreateDeck && unsavedChangesExist) {
             actions.push(
@@ -52,7 +51,6 @@ const setPageLogic = createLogic({
             actions.push(
                 action,
                 clearNextPage(),
-                clearAlert(),
                 setCurrentCard(currentCard),
                 setSeenCards([]),
                 setUnseenCards(unseenCards)

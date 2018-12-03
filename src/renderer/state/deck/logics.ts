@@ -1,15 +1,15 @@
 import { message } from "antd";
 import { isEmpty } from "lodash";
-import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { clearAlert, setAlert } from "../feedback/actions";
+import { setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
 import { setPage } from "../page/actions";
 import { getNextPage } from "../page/selectors";
 import { selectDeck } from "../selection/actions";
 import {
     ReduxLogicDeps,
+    ReduxLogicDoneCb,
     ReduxLogicNextCb,
 } from "../types";
 import { batchActions } from "../util";
@@ -52,7 +52,7 @@ const getCurrentDeck = (draft: Deck): Deck => {
 };
 
 const saveDeckLogic = createLogic({
-    process: ({getState, action}: ReduxLogicDeps, dispatch: (action: AnyAction) => void, done: () => void) => {
+    process: ({getState, action}: ReduxLogicDeps, dispatch: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
         const nextPage = getNextPage(getState());
 
         if (nextPage) {
@@ -61,7 +61,7 @@ const saveDeckLogic = createLogic({
 
         done();
     },
-    transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: () => void) => {
+    transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
         const actions = [];
         const decks = getDecks(getState());
         const draft = getDraft(getState());
@@ -97,7 +97,6 @@ const saveDeckLogic = createLogic({
                 ...decks,
             ];
             decksCopy[index] = getCurrentDeck(draft);
-            console.log("test", getCurrentDeck(draft));
             actions.push(
                 setDecks(decksCopy),
                 setAlert({

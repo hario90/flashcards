@@ -6,6 +6,7 @@ import { AnyAction } from "redux";
 import AlertBody from "../../components/AlertBody";
 import AppHeader from "../../components/AppHeader";
 import SideNav from "../../components/SideNav";
+import { clearAlert } from "../../state/feedback/actions";
 import { getAlert } from "../../state/feedback/selectors";
 import { AlertType, AppAlert } from "../../state/feedback/types";
 import { goBack, setPage } from "../../state/page/actions";
@@ -64,7 +65,7 @@ class App extends React.Component<AppProps, {}> {
     }
 
     public componentDidUpdate() {
-        const { alert } = this.props;
+        const { alert, dispatch } = this.props;
         if (alert) {
             const { message: alertText, type, onNo, onYes} = alert;
             const alertBody = (
@@ -74,18 +75,19 @@ class App extends React.Component<AppProps, {}> {
                     onYes={onYes ? this.acceptAlert : undefined}
                 />
             );
+            const dispatchClearAlert = () => dispatch(clearAlert());
             switch (type) {
                 case AlertType.WARN:
-                    message.warn(alertBody, 0);
+                    message.warn(alertBody, 0, dispatchClearAlert);
                     break;
                 case AlertType.SUCCESS:
-                    message.success(alertBody);
+                    message.success(alertBody, dispatchClearAlert);
                     break;
                 case AlertType.ERROR:
-                    message.error(alertBody);
+                    message.error(alertBody, dispatchClearAlert);
                     break;
                 default:
-                    message.info(alertBody);
+                    message.info(alertBody, dispatchClearAlert);
                     break;
             }
         }
