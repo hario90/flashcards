@@ -3,8 +3,9 @@ import { isEmpty } from "lodash";
 import { createLogic } from "redux-logic";
 
 import { setAlert } from "../feedback/actions";
+import { getAlert } from "../feedback/selectors";
 import { AlertType } from "../feedback/types";
-import { setPage } from "../page/actions";
+import { clearNextPage, setPage } from "../page/actions";
 import { getNextPage } from "../page/selectors";
 import { selectDeck } from "../selection/actions";
 import {
@@ -14,7 +15,7 @@ import {
 } from "../types";
 import { batchActions } from "../util";
 
-import { setDecks } from "./actions";
+import { clearDraft, setDecks } from "./actions";
 import { CREATE_DECK, SAVE_DECK } from "./constants";
 import { getDecks, getDraft, getErrorMessage } from "./selectors";
 import { Card, Deck } from "./types";
@@ -54,9 +55,15 @@ const getCurrentDeck = (draft: Deck): Deck => {
 const saveDeckLogic = createLogic({
     process: ({getState, action}: ReduxLogicDeps, dispatch: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
         const nextPage = getNextPage(getState());
+        const alert = getAlert(getState());
 
-        if (nextPage) {
-            dispatch(setPage(nextPage));
+        if (nextPage && (!alert || (alert.type !== AlertType.ERROR))) {
+            console.log(nextPage);
+            dispatch(batchActions([
+                setPage(nextPage),
+                clearNextPage(),
+                clearDraft(),
+            ]));
         }
 
         done();
@@ -73,6 +80,7 @@ const saveDeckLogic = createLogic({
         }
 
         const errorMessage = getErrorMessage(getState());
+        console.log(errorMessage)
         message.destroy();
         if (errorMessage) {
             next(setAlert({

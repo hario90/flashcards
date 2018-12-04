@@ -1,12 +1,12 @@
 import { isEmpty, shuffle } from "lodash";
 import { createLogic } from "redux-logic";
 
-import { saveDraft } from "../deck/actions";
+import { clearDraft, saveDraft } from "../deck/actions";
 import { SAVE_DECK } from "../deck/constants";
 import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 
 import { Deck } from "../deck/types";
-import { setAlert } from "../feedback/actions";
+import { clearAlert, setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
 import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 import { getRandomCardFromDeck } from "../selection/logics";
@@ -36,7 +36,7 @@ const setPageLogic = createLogic({
             actions.push(
                 setAlert({
                     message: "Save Deck?",
-                    onNo: action,
+                    onNo: batchActions([action, clearDraft(), clearAlert()]),
                     onYes: { type: SAVE_DECK },
                     type: AlertType.WARN,
                 }),
