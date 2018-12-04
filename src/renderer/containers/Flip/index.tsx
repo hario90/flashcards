@@ -52,12 +52,13 @@ class Flip extends React.Component<FlipProps, {}> {
     }
 
     public renderBody() {
-        const { currentCard } = this.props;
-
+        const { currentCard, seenCards } = this.props;
         if (!currentCard) {
+            const message = !isEmpty(seenCards) ? "No more cards!" : "No cards!";
+
             return (
                 <div className={styles.learningComplete}>
-                   No more cards!
+                    {message}
                 </div>
             );
         }
