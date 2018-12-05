@@ -1,4 +1,5 @@
 import { message } from "antd";
+import "antd/dist/antd.less";
 import * as React from "react";
 import { connect } from "react-redux";
 import { AnyAction } from "redux";

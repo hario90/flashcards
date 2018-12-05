@@ -11,6 +11,23 @@
   & .completed {
     flex: 0 0 50px;
   }
+
+  & .navigation-footer {
+    display: flex;
+    width: 100%;
+    padding: 0.5em;
+
+    & .navigation-button {
+      flex: 0 0 auto;
+    }
+
+    & .completed {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
 .body {

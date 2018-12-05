@@ -58,7 +58,6 @@ const saveDeckLogic = createLogic({
         const alert = getAlert(getState());
 
         if (nextPage && (!alert || (alert.type !== AlertType.ERROR))) {
-            console.log(nextPage);
             dispatch(batchActions([
                 setPage(nextPage),
                 clearNextPage(),
@@ -80,7 +79,6 @@ const saveDeckLogic = createLogic({
         }
 
         const errorMessage = getErrorMessage(getState());
-        console.log(errorMessage)
         message.destroy();
         if (errorMessage) {
             next(setAlert({

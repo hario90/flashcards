@@ -138,19 +138,19 @@ module.exports = ({ analyze, env } = {}) => ({
                     use: [
                         {
                             loader: "css-loader",
-                            options: {
-                                camelCase: true,
-                                importLoaders: 1
-                            }
-
                         },
                         {
                             loader: "less-loader",
                             options: {
+                                modifyVars: {
+                                    'primary-color': '#1DA57A',
+                                    'link-color': '#1DA57A',
+                                    'border-radius-base': '2px',
+                                    'font-size-base': '18px',
+                                    'font-family'  : "Nunito"
+                                },
                                 javascriptEnabled: true,
-                                modifyVars: themeVariables,
-
-                            }
+                            },
                         }
                     ]
                 })

@@ -83,7 +83,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         this.props.saveDeck();
     }
 
-
     public updateFront = (cardIndex: number, front: string): void => {
         const { draft } = this.props;
         const cards = [

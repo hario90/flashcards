@@ -79,9 +79,27 @@ class Flip extends React.Component<FlipProps, {}> {
                 </div>
                 <div className={styles.completed}>
                     <Progress percent={percentComplete} />
-                    <Button onClick={this.getPrevious} disabled={isEmpty(seenCards)}>Previous</Button>
-                    Completed {seenCards.length} out of {deck.cards.length} cards
-                    <Button disabled={!currentCard} onClick={this.getNext}>Next</Button>
+                    <div className={styles.navigationFooter}>
+                        <Button
+                            size="large"
+                            onClick={this.getPrevious}
+                            disabled={isEmpty(seenCards)}
+                            className={styles.navigationButton}
+                        >
+                            Previous
+                        </Button>
+                        <div className={styles.completed}>
+                            Completed {seenCards.length} out of {deck.cards.length} cards
+                        </div>
+                        <Button
+                            size="large"
+                            disabled={!currentCard}
+                            onClick={this.getNext}
+                            className={styles.navigationButton}
+                        >
+                            Next
+                        </Button>
+                    </div>
                 </div>
             </div>
         );
