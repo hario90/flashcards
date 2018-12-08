@@ -3,9 +3,6 @@ const getPluginsByEnv = require('./plugins');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const tsImportPluginFactory = require('ts-import-plugin');
 const spawn = require('child_process').spawn;
-const lessToJs = require('less-vars-to-js');
-const fs = require('fs');
-const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, '../src/renderer/styles/ant-vars.less'), 'utf8'));
 
 const port = process.env.PORT || 1212;
 
@@ -32,7 +29,7 @@ module.exports = ({ analyze, env } = {}) => ({
             poll: 100
         },
         before() {
-            if (process.env.START_HOT) {
+            if (process.env.START_MAIN) {
                 console.log('Starting Main Process...');
                 spawn('./gradlew', ['main'], {
                     shell: true,
@@ -69,7 +66,8 @@ module.exports = ({ analyze, env } = {}) => ({
                                     {
                                         libraryName: 'antd',
                                         libraryDirectory: 'es',
-                                        style: 'css'
+                                        style: 'index',
+                                        styleExt: 'less'
                                     },
                                     {
                                         libraryName: 'lodash',
@@ -94,7 +92,6 @@ module.exports = ({ analyze, env } = {}) => ({
                     path.resolve(__dirname, '../', 'src', 'renderer')
                 ],
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -119,22 +116,10 @@ module.exports = ({ analyze, env } = {}) => ({
                 })
             },
 
-            // this rule will handle any css imports out of node_modules; it does not apply PostCSS,
-            // nor does it convert the imported css to CSS Modules
-            // e.g., importing antd component css
-            {
-                test: /\.css/,
-                include: [
-                    path.resolve(__dirname, '../', 'node_modules')
-                ],
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [{ loader: 'css-loader' }],
-                }),
-            },
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
                     use: [
                         {
                             loader: "css-loader",
@@ -155,6 +140,21 @@ module.exports = ({ analyze, env } = {}) => ({
                     ]
                 })
             },
+
+            // this rule will handle any css imports out of node_modules; it does not apply PostCSS,
+            // nor does it convert the imported css to CSS Modules
+            // e.g., importing antd component css
+            {
+                test: /\.css/,
+                include: [
+                    path.resolve(__dirname, '../', 'node_modules')
+                ],
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [{ loader: 'css-loader' }],
+                }),
+            },
+
         ]
     },
     plugins: getPluginsByEnv(env, analyze, 'renderer'),
@@ -174,5 +174,6 @@ module.exports = ({ analyze, env } = {}) => ({
         }
     },
     mode: 'development',
-    target: "electron-renderer"
+    target: "electron-renderer",
+    devtool: "inline-source-map"
 });

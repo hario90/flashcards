@@ -51,7 +51,7 @@ task buildMain(type: NodeTask) {
 }
 
 task dev(type: NodeTask) {
-    environment = [NODE_ENV: "development", START_HOT: 1]
+    environment = [NODE_ENV: "development", START_MAIN: 1]
 
     script = file("${npmBin}/webpack-dev-server")
     args = ["--config", "webpack/webpack.renderer.js"]
@@ -59,7 +59,7 @@ task dev(type: NodeTask) {
 
 task main(type: NodeTask) {
     dependsOn buildMain
-    environment = [NODE_ENV: "development", START_HOT: 1]
+    environment = [NODE_ENV: "development", START_MAIN: 1]
 
     script = file("${npmBin}/electron")
     args = ["dist/main.js"]
