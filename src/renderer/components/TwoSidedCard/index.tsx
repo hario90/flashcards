@@ -40,13 +40,17 @@ class TwoSidedCard extends React.Component<TwoSidedCardProps, TwoSidedCardState>
                         title="Term"
                         className={classNames(styles.card, styles.front)}
                     >
-                        <p>{currentCard.front}</p>
+                        <div className={styles.cardContent}>
+                            <p>{currentCard.front}</p>
+                        </div>
                     </AntdCard>
                     <AntdCard
                         title="Definition"
                         className={classNames(styles.card, styles.back)}
                     >
-                        <p>{currentCard.back}</p>
+                        <div className={styles.cardContent}>
+                            {currentCard.back}
+                        </div>
                     </AntdCard>
                 </div>
             </div>

@@ -1,3 +1,12 @@
+:global(.ant-card-body) {
+  height: 100%;
+  font-size: 36px;
+}
+
+:global(.ant-card-head) {
+  font-size: 18px;
+}
+
 .flip-container {
   perspective: 1000px;
 
@@ -7,6 +16,14 @@
 
   & .card {
     box-shadow: var(--box-shadow);
+
+    & .card-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100% - 50px);
+      width: 100%;
+    }
   }
 
   /* flip speed goes here */
@@ -38,7 +55,7 @@
   }
 }
 
-.flip-container, .front, .back {
+.flip-container, .front, .back, .card {
   width: 320px;
   height: 300px;
 }
