@@ -76,6 +76,7 @@ class App extends React.Component<AppProps, {}> {
                     onYes={onYes ? this.acceptAlert : undefined}
                 />
             );
+
             const dispatchClearAlert = () => dispatch(clearAlert());
             switch (type) {
                 case AlertType.WARN:
