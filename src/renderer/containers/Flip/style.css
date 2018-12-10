@@ -1,8 +1,89 @@
 @import "../../styles/variables.css";
+
 .container {
   display: flex;
   height: 100%;
   flex-direction: column;
+
+  & .deck-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex: 0 0 auto;
+
+    & :not(.empty) {
+      /* Diagonal stacked paper effect */
+      &.deck {
+        background-color: white;
+        /* Need position to allow stacking of pseudo-elements */
+        position: relative;
+        z-index: 1;
+      }
+
+      &.deck,
+      &.deck::before,
+      &.deck::after {
+        /* Add shadow to distinguish sheets from one another */
+        box-shadow: 2px 1px 1px rgba(0,0,0,0.15);
+      }
+
+      &.deck::before,
+      &.deck::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+      }
+
+      /* Second sheet of deck */
+      &.deck::before {
+        left: 7px;
+        top: 5px;
+        z-index: -1;
+      }
+
+      /* Third sheet of deck */
+      &.deck::after {
+        left: 12px;
+        top: 10px;
+        z-index: -2;
+      }
+    }
+
+    & .deck {
+      flex: 0 0 50px;
+      font-size: 18px;
+      //box-shadow: var(--box-shadow);
+
+      & .count {
+        font-size: 36px;
+        text-align: center;
+      }
+
+      &.empty {
+        box-shadow: none;
+        background-color: transparent;
+        border-style: dashed;
+      }
+    }
+  }
+
+  & .deal-unseen {
+    animation: deal-unseen 0.5s ease-in 1;
+  }
+
+  & .deal-seen {
+    animation: deal-seen 0.5s ease-in 1;
+  }
+
+  & .add-card-to-seen {
+    animation: discard-to-seen 0.5s ease-out 1;
+  }
+
+  & .add-card-to-unseen {
+    animation: discard-to-unseen 0.5s ease-in 1;
+  }
 
   & .learning-complete {
     flex: 1%;
@@ -27,6 +108,36 @@
       justify-content: center;
       align-items: center;
     }
+  }
+}
+
+@keyframes deal-seen {
+  0% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes deal-unseen {
+  0% {
+    transform: translateX(-300%);
+  }
+}
+
+@keyframes discard-to-seen {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes discard-to-unseen {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translateX(-300%);
   }
 }
 

@@ -43,17 +43,12 @@ const setPageLogic = createLogic({
                 setNextPage(action.payload)
             );
         } else if (action.payload === Page.Flip && selectedDeck) {
-            const { currentCard, unseenCards } = getRandomCardFromDeck({
-                currentCard: undefined,
-                seenCards: [],
-                unseenCards: shuffle(selectedDeck.cards),
-            });
             actions.push(
                 action,
                 clearNextPage(),
-                setCurrentCard(currentCard),
+                setCurrentCard(undefined),
                 setSeenCards([]),
-                setUnseenCards(unseenCards)
+                setUnseenCards(shuffle(selectedDeck.cards))
             );
         } else if (action.payload === Page.CreateDeck && selectedDeck) {
             actions.push(

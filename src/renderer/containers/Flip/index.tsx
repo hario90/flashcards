@@ -1,4 +1,4 @@
-import { Button, Progress } from "antd";
+import { Button, Card as AntCard, Progress } from "antd";
 import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
@@ -21,15 +21,26 @@ interface FlipProps {
     className?: string;
     deck: Deck;
     seenCards: Card[];
+    unseenCards: Card[];
     currentCard?: Card;
     getNext: () => GetNextCardAction;
     getPrevious: () => GetPreviousCardAction;
 }
 
-class Flip extends React.Component<FlipProps, {}> {
+interface FlipState {
+    dealSeen: boolean;
+    discardToUnseen: boolean;
+    showFront: boolean;
+    discardToSeen: boolean;
+}
+
+class Flip extends React.Component<FlipProps, FlipState> {
     constructor(props: FlipProps) {
         super(props);
         this.state = {
+            dealSeen: false,
+            discardToSeen: false,
+            discardToUnseen: false,
             showFront: true,
         };
         this.getNext = this.getNext.bind(this);
@@ -37,23 +48,46 @@ class Flip extends React.Component<FlipProps, {}> {
         this.renderBody = this.renderBody.bind(this);
     }
 
+    public componentDidMount() {
+        this.getNext();
+    }
+
+    public componentDidUpdate(prevProps: FlipProps) {
+        if (prevProps.currentCard !== this.props.currentCard) {
+            this.setState({
+                discardToSeen: false,
+                discardToUnseen: false,
+            });
+        }
+    }
+
     public getNext(): void {
-        this.props.getNext();
         this.setState({
+            dealSeen: false,
+            discardToSeen: true,
             showFront: true,
         });
+
+        setTimeout(this.props.getNext, 500);
     }
 
     public getPrevious(): void {
-        this.props.getPrevious();
         this.setState({
+            dealSeen: true,
+            discardToUnseen: true,
             showFront: true,
         });
+
+        setTimeout(this.props.getPrevious, 500);
     }
 
     public renderBody() {
-        const { currentCard, seenCards } = this.props;
+        const { currentCard, seenCards, unseenCards } = this.props;
         if (!currentCard) {
+            if (!isEmpty(unseenCards)) {
+                return null;
+            }
+
             const message = !isEmpty(seenCards) ? "No more cards!" : "No cards!";
 
             return (
@@ -63,17 +97,41 @@ class Flip extends React.Component<FlipProps, {}> {
             );
         }
 
+        const {dealSeen, discardToUnseen, discardToSeen} = this.state;
+
+        const style = {
+            [styles.dealUnseen]: !discardToSeen && !discardToUnseen && !dealSeen,
+            [styles.addCardToSeen]: discardToSeen,
+            [styles.addCardToUnseen]: discardToUnseen,
+            [styles.dealSeen]: !discardToSeen && !discardToUnseen && dealSeen,
+        };
+
         return (
-           <TwoSidedCard currentCard={currentCard}/>
+            <TwoSidedCard className={classNames(style)} currentCard={currentCard}/>
         );
     }
 
     public render() {
-        const { className, currentCard, deck, seenCards } = this.props;
+        const { className, currentCard, deck, seenCards, unseenCards } = this.props;
         const percentComplete: number = Math.round(100 * (seenCards.length / deck.cards.length));
-
+        const unseenCardsStyle = {
+            [styles.empty]: isEmpty(unseenCards),
+        };
+        const seenCardsStyle = {
+            [styles.empty]: isEmpty(seenCards),
+        };
         return (
             <div className={classNames(className, styles.container)}>
+                <div className={styles.deckRow}>
+                    <AntCard className={classNames(styles.deck, unseenCardsStyle)}>
+                        <div className={styles.count}>{unseenCards.length}</div>
+                        <div>Unseen</div>
+                    </AntCard>
+                    <AntCard className={classNames(styles.deck, seenCardsStyle)}>
+                        <div className={styles.count}>{seenCards.length}</div>
+                        <div>Completed</div>
+                    </AntCard>
+                </div>
                 <div className={styles.body}>
                     {this.renderBody()}
                 </div>
