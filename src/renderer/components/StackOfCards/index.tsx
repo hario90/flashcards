@@ -1,10 +1,6 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    State,
-} from "../../state/types";
-
 const styles = require("./style.css");
 
 interface StackOfCardsProps {
@@ -23,10 +19,16 @@ class StackOfCards extends React.Component<StackOfCardsProps, {}> {
         const {
             children,
             className,
+            size,
         } = this.props;
+        const style = {
+            [styles.empty]: size < 1,
+            [styles.two]: size === 2,
+            [styles.multiple]: size > 2,
+        };
         return (
             <div className={classNames(styles.container, className)}>
-                <div className={styles.paper}>
+                <div className={classNames(styles.deck, style)}>
                     {children}
                 </div>
             </div>
