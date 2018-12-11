@@ -1,10 +1,11 @@
-import { Button, Card as AntCard, Progress } from "antd";
+import { Button, Progress } from "antd";
 import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import TwoSidedCard from "../../components/TwoSidedCard/index";
+import StackOfCards from "../../components/StackOfCards";
+import TwoSidedCard from "../../components/TwoSidedCard";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 import { getNextCard, getPreviousCard } from "../../state/selection/actions";
@@ -114,23 +115,18 @@ class Flip extends React.Component<FlipProps, FlipState> {
     public render() {
         const { className, currentCard, deck, seenCards, unseenCards } = this.props;
         const percentComplete: number = Math.round(100 * (seenCards.length / deck.cards.length));
-        const unseenCardsStyle = {
-            [styles.empty]: isEmpty(unseenCards),
-        };
-        const seenCardsStyle = {
-            [styles.empty]: isEmpty(seenCards),
-        };
+
         return (
             <div className={classNames(className, styles.container)}>
                 <div className={styles.deckRow}>
-                    <AntCard className={classNames(styles.deck, unseenCardsStyle)}>
+                    <StackOfCards size={unseenCards.length} className={styles.deck}>
                         <div className={styles.count}>{unseenCards.length}</div>
-                        <div>Unseen</div>
-                    </AntCard>
-                    <AntCard className={classNames(styles.deck, seenCardsStyle)}>
+                        <div className={styles.countLabel}>Unseen</div>
+                    </StackOfCards>
+                    <StackOfCards size={seenCards.length} className={styles.deck}>
                         <div className={styles.count}>{seenCards.length}</div>
-                        <div>Completed</div>
-                    </AntCard>
+                        <div className={styles.countLabel}>Completed</div>
+                    </StackOfCards>
                 </div>
                 <div className={styles.body}>
                     {this.renderBody()}

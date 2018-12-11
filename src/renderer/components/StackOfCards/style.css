@@ -10,7 +10,7 @@
   /* Diagonal stacked deck effect */
   & :not(.empty).deck {
     background-color: #fff;
-    box-shadow: 2px 1px 1px rgba(0,0,0,0.15);
+    box-shadow: 2px 1px 1px rgba(0, 0, 0, 0.15);
     /* Need position to allow stacking of pseudo-elements */
 
     &.two::before,
