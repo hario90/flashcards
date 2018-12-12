@@ -8,14 +8,14 @@ import {
     SELECT_METADATA,
     SET_CURRENT_CARD,
     SET_SEEN_CARDS,
-    SET_UNSEEN_CARDS,
+    SET_UNSEEN_CARDS, SHUFFLE_DECK,
 } from "./constants";
 import {
     DeselectDeckAction,
     GetNextCardAction,
     GetPreviousCardAction,
     SelectDeckAction,
-    SelectMetadataAction,
+    SelectMetadataAction, ShuffleDeckAction,
 } from "./types";
 
 export function selectDeck(deckId: number): SelectDeckAction {
@@ -41,6 +41,12 @@ export function getNextCard(): GetNextCardAction {
 export function getPreviousCard(): GetPreviousCardAction {
     return {
         type: GET_PREVIOUS_CARD,
+    };
+}
+
+export function shuffleDeck(): ShuffleDeckAction {
+    return {
+        type: SHUFFLE_DECK,
     };
 }
 

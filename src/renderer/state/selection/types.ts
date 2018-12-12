@@ -40,6 +40,10 @@ export interface GetPreviousCardAction {
     type: string;
 }
 
+export interface ShuffleDeckAction {
+    type: string;
+}
+
 export interface SetCurrentCardAction {
     payload?: Card;
     type: string;

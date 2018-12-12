@@ -8,15 +8,23 @@ import StackOfCards from "../../components/StackOfCards";
 import TwoSidedCard from "../../components/TwoSidedCard";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
-import { getNextCard, getPreviousCard } from "../../state/selection/actions";
+import { getNextCard, getPreviousCard, shuffleDeck } from "../../state/selection/actions";
 import { getCurrentCard, getSeenCards, getUnseenCards } from "../../state/selection/selectors";
-import { GetNextCardAction, GetPreviousCardAction } from "../../state/selection/types";
+import { GetNextCardAction, GetPreviousCardAction, ShuffleDeckAction } from "../../state/selection/types";
 
 import {
     State,
 } from "../../state/types";
 
 const styles = require("./style.css");
+const congratulatoryPhrases = [
+    "Good Job!",
+    "Nice Work!",
+    "Yee-haw!",
+    "Woot woot!",
+    "Phew!",
+    "Aww yeah.",
+];
 
 interface FlipProps {
     className?: string;
@@ -26,6 +34,7 @@ interface FlipProps {
     currentCard?: Card;
     getNext: () => GetNextCardAction;
     getPrevious: () => GetPreviousCardAction;
+    shuffleDeck: () => ShuffleDeckAction;
 }
 
 interface FlipState {
@@ -47,6 +56,7 @@ class Flip extends React.Component<FlipProps, FlipState> {
         this.getNext = this.getNext.bind(this);
         this.getPrevious = this.getPrevious.bind(this);
         this.renderBody = this.renderBody.bind(this);
+        this.startOver = this.startOver.bind(this);
     }
 
     public componentDidMount() {
@@ -82,6 +92,11 @@ class Flip extends React.Component<FlipProps, FlipState> {
         setTimeout(this.props.getPrevious, 500);
     }
 
+    public startOver(): void {
+        this.props.shuffleDeck();
+        this.props.getNext();
+    }
+
     public renderBody() {
         const { currentCard, seenCards, unseenCards } = this.props;
         if (!currentCard) {
@@ -89,11 +104,26 @@ class Flip extends React.Component<FlipProps, FlipState> {
                 return null;
             }
 
-            const message = !isEmpty(seenCards) ? "No more cards!" : "No cards!";
+            if (isEmpty(seenCards)) {
+                return (
+                    <div className={styles.learningComplete}>
+                        No cards!
+                    </div>
+                );
+            }
 
+            const index = Math.floor(Math.random() * Math.floor(congratulatoryPhrases.length));
+            const phrase = congratulatoryPhrases[index];
             return (
                 <div className={styles.learningComplete}>
-                    {message}
+                    <h2>{phrase}</h2>
+                    <Button
+                        size="large"
+                        type="primary"
+                        onClick={this.startOver}
+                    >
+                        Start Over
+                    </Button>
                 </div>
             );
         }
@@ -139,9 +169,9 @@ class Flip extends React.Component<FlipProps, FlipState> {
                             onClick={this.getPrevious}
                             disabled={isEmpty(seenCards)}
                             className={styles.navigationButton}
-                        >
-                            Previous
-                        </Button>
+                            icon="left"
+                            shape="circle"
+                        />
                         <div className={styles.completed}>
                             Completed {seenCards.length} out of {deck.cards.length} cards
                         </div>
@@ -150,9 +180,9 @@ class Flip extends React.Component<FlipProps, FlipState> {
                             disabled={!currentCard}
                             onClick={this.getNext}
                             className={styles.navigationButton}
-                        >
-                            Next
-                        </Button>
+                            icon="right"
+                            shape="circle"
+                        />
                     </div>
                 </div>
             </div>
@@ -172,6 +202,7 @@ function mapStateToProps(state: State) {
 const dispatchToPropsMap = {
     getNext: getNextCard,
     getPrevious: getPreviousCard,
+    shuffleDeck,
 };
 
 export default connect(mapStateToProps, dispatchToPropsMap)(Flip);

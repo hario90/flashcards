@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { isEmpty } from "lodash";
+import { isEmpty, shuffle } from "lodash";
 import { createLogic } from "redux-logic";
 
 import { setAlert } from "../feedback/actions";
@@ -7,7 +7,8 @@ import { getAlert } from "../feedback/selectors";
 import { AlertType } from "../feedback/types";
 import { clearNextPage, setPage } from "../page/actions";
 import { getNextPage } from "../page/selectors";
-import { selectDeck } from "../selection/actions";
+import { selectDeck, setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
+import { SHUFFLE_DECK } from "../selection/constants";
 import {
     ReduxLogicDeps,
     ReduxLogicDoneCb,
@@ -17,7 +18,7 @@ import { batchActions } from "../util";
 
 import { clearDraft, setDecks } from "./actions";
 import { CREATE_DECK, SAVE_DECK } from "./constants";
-import { getDecks, getDraft, getErrorMessage } from "./selectors";
+import { getDecks, getDraft, getErrorMessage, getSelectedDeck } from "./selectors";
 import { Card, Deck } from "./types";
 
 const createDeckLogic = createLogic({
@@ -108,7 +109,26 @@ const saveDeckLogic = createLogic({
     type: SAVE_DECK,
 });
 
+const shuffleDeckLogic = createLogic({
+    transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const selectedDeck = getSelectedDeck(getState());
+        if (selectedDeck) {
+            next(
+                batchActions([
+                    setCurrentCard(undefined),
+                    setSeenCards([]),
+                    setUnseenCards(shuffle(selectedDeck.cards)),
+                ])
+            );
+        }
+
+        done();
+    },
+    type: SHUFFLE_DECK,
+});
+
 export default [
     createDeckLogic,
     saveDeckLogic,
+    shuffleDeckLogic,
 ];
