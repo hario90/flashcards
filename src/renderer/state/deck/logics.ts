@@ -56,13 +56,17 @@ const getCurrentDeck = (draft: Deck): Deck => {
 const saveDeckLogic = createLogic({
     process: ({getState, action}: ReduxLogicDeps, dispatch: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
         const nextPage = getNextPage(getState());
+        const selectedDeck = getSelectedDeck(getState());
         const alert = getAlert(getState());
 
-        if (nextPage && (!alert || (alert.type !== AlertType.ERROR))) {
+        if (nextPage && selectedDeck && (!alert || (alert.type !== AlertType.ERROR))) {
             dispatch(batchActions([
                 setPage(nextPage),
                 clearNextPage(),
                 clearDraft(),
+                setCurrentCard(undefined),
+                setSeenCards([]),
+                setUnseenCards(shuffle(selectedDeck.cards)),
             ]));
         }
 
