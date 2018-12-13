@@ -8,6 +8,8 @@ import StackOfCards from "../../components/StackOfCards";
 import TwoSidedCard from "../../components/TwoSidedCard";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
+import { setPage } from "../../state/page/actions";
+import { Page, SetPageAction } from "../../state/page/types";
 import { getNextCard, getPreviousCard, shuffleDeck } from "../../state/selection/actions";
 import { getCurrentCard, getSeenCards, getUnseenCards } from "../../state/selection/selectors";
 import { GetNextCardAction, GetPreviousCardAction, ShuffleDeckAction } from "../../state/selection/types";
@@ -35,6 +37,7 @@ interface FlipProps {
     getNext: () => GetNextCardAction;
     getPrevious: () => GetPreviousCardAction;
     shuffleDeck: () => ShuffleDeckAction;
+    setPage: (page: Page) => SetPageAction;
 }
 
 interface FlipState {
@@ -57,6 +60,7 @@ class Flip extends React.Component<FlipProps, FlipState> {
         this.getPrevious = this.getPrevious.bind(this);
         this.renderBody = this.renderBody.bind(this);
         this.startOver = this.startOver.bind(this);
+        this.goToCreateDeck = this.goToCreateDeck.bind(this);
     }
 
     public componentDidMount() {
@@ -97,6 +101,10 @@ class Flip extends React.Component<FlipProps, FlipState> {
         this.props.getNext();
     }
 
+    public goToCreateDeck(): void {
+        this.props.setPage(Page.CreateDeck);
+    }
+
     public renderBody() {
         const { currentCard, seenCards, unseenCards } = this.props;
         if (!currentCard) {
@@ -107,7 +115,14 @@ class Flip extends React.Component<FlipProps, FlipState> {
             if (isEmpty(seenCards)) {
                 return (
                     <div className={styles.learningComplete}>
-                        No cards!
+                        <h2>No cards!</h2>
+                        <Button
+                            size="large"
+                            type="primary"
+                            onClick={this.goToCreateDeck}
+                        >
+                            Add cards to deck
+                        </Button>
                     </div>
                 );
             }
@@ -202,6 +217,7 @@ function mapStateToProps(state: State) {
 const dispatchToPropsMap = {
     getNext: getNextCard,
     getPrevious: getPreviousCard,
+    setPage,
     shuffleDeck,
 };
 
