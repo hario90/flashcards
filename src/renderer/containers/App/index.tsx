@@ -83,13 +83,16 @@ class App extends React.Component<AppProps, {}> {
                     message.warn(alertBody, 0, dispatchClearAlert);
                     break;
                 case AlertType.SUCCESS:
-                    message.success(alertBody, 3, dispatchClearAlert);
+                    message.success(alertBody, 2);
+                    dispatchClearAlert();
                     break;
                 case AlertType.ERROR:
-                    message.error(alertBody, 3, dispatchClearAlert);
+                    message.error(alertBody, 2);
+                    dispatchClearAlert();
                     break;
                 default:
-                    message.info(alertBody, 3, dispatchClearAlert);
+                    message.info(alertBody, 2);
+                    dispatchClearAlert();
                     break;
             }
         }
