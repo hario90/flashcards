@@ -4,18 +4,28 @@
   background-color: var(--brand-primary);
   align-items: center;
   display: flex;
+  color: white;
 
   & h1 {
     flex: 1;
-    color: white;
     text-align: center;
     margin: 0;
     font-size: 24px;
     padding: 0.25em 0;
+    color: white;
   }
 
   & .go-back {
     flex: 0 0 auto;
     margin: 0.25em;
+  }
+
+  & .spacer {
+    flex: 0 0 50px;
+  }
+
+  & .user {
+    flex: 0 0 auto;
+    margin: 0 1em;
   }
 }

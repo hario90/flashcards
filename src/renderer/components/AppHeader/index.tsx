@@ -30,7 +30,7 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
         } = this.props;
         return (
             <div className={classNames(styles.container, className)}>
-                {previousPage !== undefined &&
+                {previousPage !== undefined ?
                 <Button
                     className={styles.goBack}
                     type="default"
@@ -40,9 +40,10 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
                 >
                     <Icon type="left" />
                     {`Back to ${previousTitle}`}
-                </Button>
+                </Button> : <div className={styles.spacer}/>
                 }
                 <h1>{title}</h1>
+                <Button className={styles.user} shape="circle" ghost={true} icon="user"/>
             </div>
         );
     }
