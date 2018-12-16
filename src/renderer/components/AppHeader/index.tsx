@@ -1,4 +1,4 @@
-import { Button, Icon } from "antd";
+import { Button, Icon, Popover } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -14,11 +14,27 @@ interface AppHeaderProps {
     title: string;
 }
 
-class AppHeader extends React.Component<AppHeaderProps, {}> {
+interface AppHeaderState {
+    profileTooltipVisible: boolean;
+}
+
+class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
     constructor(props: AppHeaderProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            profileTooltipVisible: false,
+        };
         this.goBack = this.goBack.bind(this);
+    }
+
+    public hide = () => {
+        this.setState({
+            profileTooltipVisible: false,
+        });
+    }
+
+    public handleVisibleChange = (profileTooltipVisible: boolean) => {
+        this.setState({ profileTooltipVisible });
     }
 
     public render() {
@@ -28,6 +44,7 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
             previousTitle,
             title,
         } = this.props;
+        const content = "content";
         return (
             <div className={classNames(styles.container, className)}>
                 {previousPage !== undefined ?
@@ -43,7 +60,16 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
                 </Button> : <div className={styles.spacer}/>
                 }
                 <h1>{title}</h1>
-                <Button className={styles.user} shape="circle" ghost={true} icon="user"/>
+                <Popover
+                    placement="bottomRight"
+                    title="Lisa Harrylock"
+                    content={this.popoverContent()}
+                    trigger="click"
+                    visible={this.state.profileTooltipVisible}
+                    onVisibleChange={this.handleVisibleChange}
+                >
+                    <Button className={styles.user} shape="circle" ghost={true} icon="user"/>
+                </Popover>
             </div>
         );
     }
@@ -51,6 +77,13 @@ class AppHeader extends React.Component<AppHeaderProps, {}> {
     public goBack(): void {
         this.props.goBack();
     }
+
+    private popoverContent = () => (
+        <React.Fragment>
+            <a className={styles.userPopoverLink} onClick={this.hide}>Profile</a>
+            <a className={styles.userPopoverLink} onClick={this.hide}>Sign Out</a>
+        </React.Fragment>
+    )
 }
 
 export default AppHeader;
