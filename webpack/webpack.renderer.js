@@ -130,9 +130,10 @@ module.exports = ({ analyze, env } = {}) => ({
                                 modifyVars: {
                                     'primary-color': '#1DA57A',
                                     'link-color': '#1DA57A',
-                                    'border-radius-base': '2px',
+                                    'border-radius-base': '25px',
                                     'font-size-base': '18px',
-                                    'font-family'  : "Nunito"
+                                    'font-family'  : "Nunito",
+                                    'padding-md': '24px'
                                 },
                                 javascriptEnabled: true,
                             },
