@@ -4,6 +4,7 @@
     align-items: baseline;
     & .create-deck-btn {
         flex-basis: auto;
+        margin-left: 2em;
     }
     & .deck-input {
         flex: 8;

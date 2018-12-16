@@ -1,4 +1,4 @@
-import { find, isEmpty } from "lodash";
+import { find, isEmpty, uniq } from "lodash";
 import { createSelector } from "reselect";
 
 import { getSelectedDeckId } from "../selection/selectors";
@@ -100,6 +100,13 @@ export const getErrorMessage = createSelector([
 
     if (completeCards.length !== notEmptyDraftCards.length) {
         errorMessage += "There are incomplete cards in your deck.\n";
+    }
+
+    const fronts = completeCards.map((c) => c.front);
+    const frontsAreUnique = uniq(fronts).length === fronts.length;
+
+    if (!frontsAreUnique) {
+        errorMessage += "There are duplicate terms in your deck\n";
     }
 
     return errorMessage;
