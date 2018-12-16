@@ -8,8 +8,7 @@ import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 import { Deck } from "../deck/types";
 import { clearAlert, setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
-import { setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
-import { getRandomCardFromDeck } from "../selection/logics";
+import { deselectDeck, setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 
 import {
     ReduxLogicDeps,
@@ -59,6 +58,8 @@ const setPageLogic = createLogic({
                     cards: !isEmpty(selectedDeck.cards) ? [...selectedDeck.cards]
                         : [EMPTY_CARD, EMPTY_CARD, EMPTY_CARD],
                 }));
+        } else if (action.payload === Page.Home && selectedDeck) {
+            actions.push(action, deselectDeck());
         } else {
             actions.push(action);
         }

@@ -17,6 +17,7 @@ import {
     GoBackAction,
     Page, SetPageAction,
 } from "../../state/page/types";
+import { getDeckActionsDisabled } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import "../../styles/fonts.css";
 
@@ -30,6 +31,7 @@ const styles = require("./style.css");
 interface AppProps {
     alert?: AppAlert;
     className?: string;
+    disableDeckActions: boolean;
     dispatch: (action: AnyAction) => AnyAction;
     goBack: () => GoBackAction;
     page: Page;
@@ -100,6 +102,7 @@ class App extends React.Component<AppProps, {}> {
 
     public render() {
         const {
+            disableDeckActions,
             goBack: goBackProp,
             page,
             previousPage,
@@ -107,7 +110,6 @@ class App extends React.Component<AppProps, {}> {
             setPage: setPageProp,
             title,
         } = this.props;
-        const showSideNav = page !== Page.Home;
         const PageComponent = pageComponentMap.get(page) || ((className?: string) => <Home className={className}/>);
         return (
             <div className={styles.container}>
@@ -119,11 +121,12 @@ class App extends React.Component<AppProps, {}> {
                     className={styles.header}
                 />
                 <div className={styles.mainContent}>
-                    {showSideNav && <SideNav
+                    <SideNav
                         className={styles.sideNav}
                         currentPage={page}
+                        disableDeckActions={disableDeckActions}
                         setPage={setPageProp}
-                    />}
+                    />
                     {PageComponent(styles.page)}
                 </div>
             </div>
@@ -134,6 +137,7 @@ class App extends React.Component<AppProps, {}> {
 function mapStateToProps(state: State) {
     return {
         alert: getAlert(state),
+        disableDeckActions: getDeckActionsDisabled(state),
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
         previousTitle: getPreviousTitle(state),

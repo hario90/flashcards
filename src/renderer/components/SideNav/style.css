@@ -1,27 +1,28 @@
 @import "../../styles/colors.css";
 .container {
-  background-color: #202840;
+  background-color: white;
+  border: 1px solid var(--border-grey);
+  padding: 0 1em;
 
   & .side-nav-link {
-    color: #c8c0c0;
-    padding: 1em;
-    border-bottom: 1px solid #323e63;
-    text-transform: uppercase;
+    color: var(--grey);
+    padding: 2em 1em;
+    border-bottom: 1px solid var(--border-grey);
     display: flex;
+    flex-direction: column;
 
     &:hover {
       cursor: pointer;
-      background-color: #1d243a;
+      color: black;
     }
 
     &.active {
-      background-color: #283351;
-      color: white;
-      border-left: 4px solid var(--brand-primary);
+      color: black;
     }
 
     & .title {
       flex: 1;
+      text-align: center;
     }
 
     & .icon {

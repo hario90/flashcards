@@ -1,5 +1,7 @@
+@import "../../styles/colors.css";
+
 .container {
-  background-color: #4e4e4f;
+  background-color: var(--brand-primary);
   align-items: center;
   display: flex;
 

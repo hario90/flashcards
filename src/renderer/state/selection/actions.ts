@@ -25,9 +25,8 @@ export function selectDeck(deckId: number): SelectDeckAction {
     };
 }
 
-export function deselectDeck(deckId: number | number[]): DeselectDeckAction {
+export function deselectDeck(): DeselectDeckAction {
     return {
-        payload: deckId,
         type: DESELECT_DECK,
     };
 }

@@ -1,4 +1,5 @@
 :root {
     --brand-primary: #1DA57A;
-    --grey: rgba(173,173,173,0.4);
+    --grey: #bfc0c1;
+    --border-grey: #cccdce;
 }
