@@ -81,7 +81,6 @@ class SideNav extends React.Component<SideNavProps, {}> {
 
     public render() {
         const { className, currentPage, disableDeckActions } = this.props;
-        console.log(disableDeckActions)
         return (
             <div className={classNames(styles.container, className)}>
                 {PAGES.map((page: PageLink) => {
@@ -93,9 +92,7 @@ class SideNav extends React.Component<SideNavProps, {}> {
                     return (
                         <div
                             className={classNames(
-                                styles.sideNavLink,
-                                {[styles.active]: page.page === currentPage},
-                                )}
+                                styles.sideNavLink, {[styles.active]: page.page === currentPage})}
                             key={page.buttonTitle}
                             onClick={this.navigate(page.page)}
                         >
