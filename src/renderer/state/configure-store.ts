@@ -16,6 +16,7 @@ import {
     page,
     selection,
     State,
+    user,
 } from "./";
 
 const reducers = {
@@ -24,6 +25,7 @@ const reducers = {
     metadata: metadata.reducer,
     page: page.reducer,
     selection: selection.reducer,
+    user: user.reducer,
 };
 
 const logics = [

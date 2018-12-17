@@ -6,6 +6,7 @@ import { FeedbackStateBranch } from "./feedback/types";
 import { MetadataStateBranch } from "./metadata/types";
 import { PageStateBranch } from "./page/types";
 import { SelectionStateBranch } from "./selection/types";
+import { UserStateBranch } from "./user/types";
 
 export interface ActionDescription {
     accepts: (action: AnyAction) => boolean;
@@ -35,6 +36,7 @@ export interface State {
     metadata: MetadataStateBranch;
     page: PageStateBranch;
     selection: SelectionStateBranch;
+    user: UserStateBranch;
 }
 
 export interface TypeToDescriptionMap {

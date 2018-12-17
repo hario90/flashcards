@@ -3,6 +3,7 @@ export { default as feedback } from "./feedback";
 export { default as metadata } from "./metadata";
 export { default as page } from "./page";
 export { default as selection } from "./selection";
+export { default as user } from "./user";
 
 export { default as createReduxStore } from "./configure-store";
 

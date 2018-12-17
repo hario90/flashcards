@@ -1,4 +1,4 @@
-import { Button, Icon, Popover } from "antd";
+import { Avatar, Button, Icon, Popover } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -12,6 +12,9 @@ interface AppHeaderProps {
     previousPage: Page;
     previousTitle: string;
     title: string;
+    avatarSrc?: string;
+    firstName: string;
+    lastName: string;
 }
 
 interface AppHeaderState {
@@ -40,35 +43,37 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
     public render() {
         const {
             className,
+            firstName,
+            lastName,
             previousPage,
             previousTitle,
             title,
         } = this.props;
-        const content = "content";
+
         return (
             <div className={classNames(styles.container, className)}>
                 {previousPage !== undefined ?
-                <Button
-                    className={styles.goBack}
-                    type="default"
-                    onClick={this.goBack}
-                    ghost={true}
-                    size="large"
-                >
-                    <Icon type="left" />
-                    {`Back to ${previousTitle}`}
-                </Button> : <div className={styles.spacer}/>
+                    <Button
+                        className={styles.goBack}
+                        type="default"
+                        onClick={this.goBack}
+                        ghost={true}
+                        size="large"
+                    >
+                        <Icon type="left"/>
+                        {`Back to ${previousTitle}`}
+                    </Button> : <div className={styles.spacer}/>
                 }
                 <h1>{title}</h1>
                 <Popover
                     placement="bottomRight"
-                    title="Lisa Harrylock"
+                    title={`${firstName} ${lastName}`}
                     content={this.popoverContent()}
                     trigger="click"
                     visible={this.state.profileTooltipVisible}
                     onVisibleChange={this.handleVisibleChange}
                 >
-                    <Button className={styles.user} shape="circle" ghost={true} icon="user"/>
+                    {this.getAvatar()}
                 </Popover>
             </div>
         );
@@ -84,6 +89,20 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
             <a className={styles.userPopoverLink} onClick={this.hide}>Sign Out</a>
         </React.Fragment>
     )
+
+    private getAvatar = () => {
+        const {
+            avatarSrc,
+            firstName,
+            lastName,
+        } = this.props;
+
+        if (avatarSrc) {
+            return <Avatar className={styles.user} src={avatarSrc}/>;
+        }
+
+        return <Avatar className={styles.user}>{firstName.charAt(0) + lastName.charAt(0)}</Avatar>;
+    }
 }
 
 export default AppHeader;

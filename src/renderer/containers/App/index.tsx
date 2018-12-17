@@ -20,6 +20,7 @@ import {
 import { getDeckActionsDisabled } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import "../../styles/fonts.css";
+import { getAvatarSrc, getFirstName, getLastName } from "../../state/user/selectors";
 
 import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
@@ -29,11 +30,14 @@ import Test from "../Test";
 const styles = require("./style.css");
 
 interface AppProps {
+    avatarSrc?: string;
     alert?: AppAlert;
     className?: string;
     disableDeckActions: boolean;
     dispatch: (action: AnyAction) => AnyAction;
+    firstName: string;
     goBack: () => GoBackAction;
+    lastName: string;
     page: Page;
     previousPage: Page;
     previousTitle: string;
@@ -102,8 +106,11 @@ class App extends React.Component<AppProps, {}> {
 
     public render() {
         const {
+            avatarSrc,
             disableDeckActions,
+            firstName,
             goBack: goBackProp,
+            lastName,
             page,
             previousPage,
             previousTitle,
@@ -119,6 +126,9 @@ class App extends React.Component<AppProps, {}> {
                     previousTitle={previousTitle}
                     title={title}
                     className={styles.header}
+                    avatarSrc={avatarSrc}
+                    firstName={firstName}
+                    lastName={lastName}
                 />
                 <div className={styles.mainContent}>
                     <SideNav
@@ -137,7 +147,10 @@ class App extends React.Component<AppProps, {}> {
 function mapStateToProps(state: State) {
     return {
         alert: getAlert(state),
+        avatarSrc: getAvatarSrc(state),
         disableDeckActions: getDeckActionsDisabled(state),
+        firstName: getFirstName(state),
+        lastName: getLastName(state),
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
         previousTitle: getPreviousTitle(state),

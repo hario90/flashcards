@@ -27,6 +27,12 @@
   & .user {
     flex: 0 0 auto;
     margin: 0 1em;
+    color: #f56a00;
+    background-color: #fde3cf;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
