@@ -20,6 +20,7 @@ import {
 import { getDeckActionsDisabled } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import "../../styles/fonts.css";
+
 import { getAvatarSrc, getFirstName, getLastName } from "../../state/user/selectors";
 
 import CreateDeck from "../CreateDeck";

@@ -40,3 +40,12 @@
   display: block;
   padding: 1em 0;
 }
+
+:global(.ant-popover-inner) {
+  border: 1px solid var(--border-grey);
+}
+
+:global(.ant-popover-arrow) {
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+}

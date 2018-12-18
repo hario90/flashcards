@@ -133,7 +133,11 @@ module.exports = ({ analyze, env } = {}) => ({
                                     'border-radius-base': '25px',
                                     'font-size-base': '18px',
                                     'font-family'  : "Nunito",
-                                    'padding-md': '24px'
+                                    'padding-md': '24px',
+                                    'shadow-color': 'rgba(173,173,173,0.4)',
+                                    'shadow-1-left': 0,
+                                    'shadow-1-up': 0,
+                                    'shadow-1-down': '5px 6px 5px rgba(173, 173, 173, 0.4)',
                                 },
                                 javascriptEnabled: true,
                             },
