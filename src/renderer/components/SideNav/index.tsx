@@ -1,5 +1,6 @@
 import { Icon } from "antd";
 import * as classNames from "classnames";
+import { noop } from "lodash";
 import * as React from "react";
 
 import { Page, SetPageAction } from "../../state/page/types";
@@ -73,8 +74,8 @@ class SideNav extends React.Component<SideNavProps, {}> {
         this.navigate = this.navigate.bind(this);
     }
 
-    public navigate(page: Page): () => void {
-        return () => {
+    public navigate(page: Page, disabled: boolean): () => void {
+        return disabled ? noop : () => {
             this.props.setPage(page);
         };
     }
@@ -86,15 +87,13 @@ class SideNav extends React.Component<SideNavProps, {}> {
                 {PAGES.map((page: PageLink) => {
                     const disabled = page.requiresDeckSelected && disableDeckActions;
 
-                    if (disabled) {
-                        return null;
-                    }
                     return (
                         <div
                             className={classNames(
-                                styles.sideNavLink, {[styles.active]: page.page === currentPage})}
+                                styles.sideNavLink, {[styles.active]: page.page === currentPage},
+                                {[styles.disabled]: disabled})}
                             key={page.buttonTitle}
-                            onClick={this.navigate(page.page)}
+                            onClick={this.navigate(page.page, disabled)}
                         >
                             <Icon className={styles.icon} type={page.icon} theme={page.theme}/>
                             <div className={styles.title}>{page.buttonTitle}</div>

@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
 
-    &:hover {
+    &:hover:not(.disabled) {
       cursor: pointer;
       color: black;
     }
@@ -19,6 +19,19 @@
     &.active {
       color: black;
       font-weight: 700;
+    }
+
+    &.disabled {
+      animation: slideUp ease 500ms;
+      animation-fill-mode:forwards;
+      z-index: -1;
+    }
+
+    &:not(.disabled) {
+      animation: slideDown ease 500ms;
+      z-index: 1;
+      animation-fill-mode:forwards;
+      opacity: 1;
     }
 
     & .title {
@@ -33,3 +46,26 @@
     }
   }
 }
+
+@keyframes slideUp {
+  0% {
+    opacity:1;
+    transform:  translate(0, 0)  ;
+  }
+  100% {
+    opacity:0;
+    transform:  translate(0, -50px)  ;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    opacity:0;
+    transform:  translate(0, -50px)  ;
+  }
+  100% {
+    opacity:1;
+    transform:  translate(0, 0)  ;
+  }
+}
+
