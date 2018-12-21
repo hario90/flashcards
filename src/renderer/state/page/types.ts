@@ -11,6 +11,8 @@ export enum Page {
     Copy,
     Test,
     Share,
+    Login,
+    SignUp,
 }
 
 export interface SetPageAction {

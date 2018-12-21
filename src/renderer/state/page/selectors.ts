@@ -3,15 +3,16 @@ import { createSelector } from "reselect";
 import { getSelectedDeck } from "../deck/selectors";
 import { Deck } from "../deck/types";
 import { State } from "../types";
+import { getUserIsLoggedIn } from "../user/selectors";
 
 import { previousPageMap } from "./constants";
 
 import { Page } from "./types";
 
-export const getPage = (state: State) => state.page.page;
+export const getSelectedPage = (state: State) => state.page.page;
 export const getNextPage = (state: State) => state.page.next;
 export const getPreviousPage = createSelector([
-    getPage,
+    getSelectedPage,
 ], (page: Page) => {
     if (page !== undefined && previousPageMap.has(page)) {
         return previousPageMap.get(page);
@@ -29,7 +30,7 @@ export const PAGE_TO_TITLE_MAP = new Map([
     [Page.Share, "Share"],
 ]);
 export const getTitle = createSelector([
-    getPage,
+    getSelectedPage,
     getSelectedDeck,
 ], (page: Page, deck: Deck | undefined) => {
     if (PAGE_TO_TITLE_MAP.has(page)) {
@@ -47,4 +48,11 @@ export const getPreviousTitle = createSelector([
         return PAGE_TO_TITLE_MAP.get(page);
     }
     return "";
+});
+
+export const getPage = createSelector([
+    getSelectedPage,
+    getUserIsLoggedIn,
+], (page: Page, isLoggedIn: boolean) => {
+    return isLoggedIn ? page : Page.Login;
 });

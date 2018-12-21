@@ -1,5 +1,6 @@
 import { message } from "antd";
 import "antd/dist/antd.less";
+import { includes } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 import { AnyAction } from "redux";
@@ -26,6 +27,7 @@ import { getAvatarSrc, getFirstName, getLastName } from "../../state/user/select
 import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
 import Home from "../Home";
+import Login from "../Login";
 import Test from "../Test";
 
 const styles = require("./style.css");
@@ -51,7 +53,10 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
     [Page.CreateDeck, (className?: string) => <CreateDeck  className={className}/>],
     [Page.Test, (className?: string) => <Test  className={className}/>],
     [Page.Flip, (className?: string) => <Flip className={className}/>],
+    [Page.Login, (className?: string) => <Login className={className}/>],
 ]);
+
+const pagesWithoutSideNav = [Page.Login, Page.SignUp];
 
 class App extends React.Component<AppProps, {}> {
     constructor(props: AppProps) {
@@ -118,6 +123,7 @@ class App extends React.Component<AppProps, {}> {
             setPage: setPageProp,
             title,
         } = this.props;
+        const showSideNav = !includes(pagesWithoutSideNav, page);
         const PageComponent = pageComponentMap.get(page) || ((className?: string) => <Home className={className}/>);
         return (
             <div className={styles.container}>
@@ -132,12 +138,12 @@ class App extends React.Component<AppProps, {}> {
                     lastName={lastName}
                 />
                 <div className={styles.mainContent}>
-                    <SideNav
+                    {showSideNav && <SideNav
                         className={styles.sideNav}
                         currentPage={page}
                         disableDeckActions={disableDeckActions}
                         setPage={setPageProp}
-                    />
+                    />}
                     {PageComponent(styles.page)}
                 </div>
             </div>

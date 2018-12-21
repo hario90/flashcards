@@ -18,7 +18,7 @@ import { batchActions } from "../util";
 
 import { clearNextPage, setNextPage, setPage } from "./actions";
 import { GO_BACK, previousPageMap, SET_PAGE } from "./constants";
-import { getPage } from "./selectors";
+import { getSelectedPage } from "./selectors";
 import { Page } from "./types";
 const EMPTY_CARD = {
     back: "",
@@ -28,7 +28,7 @@ const setPageLogic = createLogic({
     transform: ({ getState, action }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
         const actions = [];
         const selectedDeck: Deck | undefined = getSelectedDeck(getState());
-        const currentPage: Page = getPage(getState());
+        const currentPage: Page = getSelectedPage(getState());
         const unsavedChangesExist: boolean = unsavedChanges(getState());
 
         if (currentPage === Page.CreateDeck && unsavedChangesExist) {
