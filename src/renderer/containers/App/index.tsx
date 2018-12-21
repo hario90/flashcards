@@ -22,7 +22,7 @@ import { getDeckActionsDisabled } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import "../../styles/fonts.css";
 
-import { getAvatarSrc, getFirstName, getLastName } from "../../state/user/selectors";
+import { getAvatarSrc, getFirstName, getLastName, getUserIsLoggedIn } from "../../state/user/selectors";
 
 import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
@@ -40,6 +40,7 @@ interface AppProps {
     dispatch: (action: AnyAction) => AnyAction;
     firstName: string;
     goBack: () => GoBackAction;
+    isLoggedIn: boolean;
     lastName: string;
     page: Page;
     previousPage: Page;
@@ -116,6 +117,7 @@ class App extends React.Component<AppProps, {}> {
             disableDeckActions,
             firstName,
             goBack: goBackProp,
+            isLoggedIn,
             lastName,
             page,
             previousPage,
@@ -129,6 +131,7 @@ class App extends React.Component<AppProps, {}> {
             <div className={styles.container}>
                 <AppHeader
                     goBack={goBackProp}
+                    isLoggedIn={isLoggedIn}
                     previousPage={previousPage}
                     previousTitle={previousTitle}
                     title={title}
@@ -157,6 +160,7 @@ function mapStateToProps(state: State) {
         avatarSrc: getAvatarSrc(state),
         disableDeckActions: getDeckActionsDisabled(state),
         firstName: getFirstName(state),
+        isLoggedIn: getUserIsLoggedIn(state),
         lastName: getLastName(state),
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),

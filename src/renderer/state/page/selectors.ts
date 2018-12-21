@@ -28,17 +28,9 @@ export const PAGE_TO_TITLE_MAP = new Map([
     [Page.CreateDeck, "Create New Study Set"],
     [Page.Copy, "Copy"],
     [Page.Share, "Share"],
+    [Page.Login, "Login"],
+    [Page.SignUp, "Signup"],
 ]);
-export const getTitle = createSelector([
-    getSelectedPage,
-    getSelectedDeck,
-], (page: Page, deck: Deck | undefined) => {
-    if (PAGE_TO_TITLE_MAP.has(page)) {
-        // todo handle create vs edit
-        return PAGE_TO_TITLE_MAP.get(page);
-    }
-    return "";
-});
 
 export const getPreviousTitle = createSelector([
     getPreviousPage,
@@ -55,4 +47,15 @@ export const getPage = createSelector([
     getUserIsLoggedIn,
 ], (page: Page, isLoggedIn: boolean) => {
     return isLoggedIn ? page : Page.Login;
+});
+
+export const getTitle = createSelector([
+    getPage,
+    getSelectedDeck,
+], (page: Page, deck: Deck | undefined) => {
+    if (PAGE_TO_TITLE_MAP.has(page)) {
+        // todo handle create vs edit
+        return PAGE_TO_TITLE_MAP.get(page);
+    }
+    return "";
 });

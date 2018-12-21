@@ -15,6 +15,7 @@ interface AppHeaderProps {
     avatarSrc?: string;
     firstName: string;
     lastName: string;
+    isLoggedIn: boolean;
 }
 
 interface AppHeaderState {
@@ -44,6 +45,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
         const {
             className,
             firstName,
+            isLoggedIn,
             lastName,
             previousPage,
             previousTitle,
@@ -65,7 +67,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
                     </Button> : <div className={styles.spacer}/>
                 }
                 <h1>{title}</h1>
-                <Popover
+                {isLoggedIn && <Popover
                     placement="bottomRight"
                     title={`${firstName} ${lastName}`}
                     content={this.popoverContent()}
@@ -74,7 +76,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
                     onVisibleChange={this.handleVisibleChange}
                 >
                     {this.getAvatar()}
-                </Popover>
+                </Popover>}
             </div>
         );
     }

@@ -6,10 +6,10 @@ import { makeReducer } from "../util";
 import { UserStateBranch } from "./types";
 
 export const initialState: UserStateBranch = {
-    avatarSrc: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    email: "",
-    firstName: "Lisa",
-    lastName: "Harrylock",
+    // avatarSrc: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    // email: "",
+    // firstName: "Lisa",
+    // lastName: "Harrylock",
 };
 
 const actionToConfigMap: TypeToDescriptionMap = {
