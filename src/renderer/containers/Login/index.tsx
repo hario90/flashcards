@@ -2,8 +2,8 @@ import { Button, Icon, Input } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import EmailInput from "../../components/EmailInput/index";
 
+import EmailInput from "../../components/EmailInput";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import {
