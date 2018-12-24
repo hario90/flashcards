@@ -1,6 +1,5 @@
 import { Button, Icon, Input } from "antd";
 import * as classNames from "classnames";
-import { ChangeEvent } from "react";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -31,7 +30,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     public updateData = (keyOnState: keyof LoginState) => {
-        return (event: ChangeEvent<HTMLInputElement>) => {
+        return (event: React.ChangeEvent<HTMLInputElement>) => {
             this.setState({[keyOnState]: event.target.value || ""});
         };
     }
@@ -55,14 +54,16 @@ class Login extends React.Component<LoginProps, LoginState> {
                 <Input
                     prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
                     type="email"
-                    onBlur={this.updateData("email")}
+                    onChange={this.updateData("email")}
+                    onPressEnter={this.login}
                     placeholder="Email"
                     className={styles.input}
                 />
                 <Input
                     prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
                     type="password"
-                    onBlur={this.updateData("password")}
+                    onChange={this.updateData("password")}
+                    onPressEnter={this.login}
                     placeholder="Password"
                     className={styles.input}
                 />
