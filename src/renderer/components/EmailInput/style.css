@@ -1,0 +1,9 @@
+.container {
+  & .error {
+    color: red;
+  }
+}
+
+.error :global(.ant-input){
+  border-color: red;
+}

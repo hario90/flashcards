@@ -2,6 +2,7 @@ import { Button, Icon, Input } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import EmailInput from "../../components/EmailInput/index";
 
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
@@ -63,12 +64,9 @@ class Login extends React.Component<LoginProps, LoginState> {
         return (
             <div className={classNames(styles.container, className)}>
                 <div className={styles.form}>
-                    <Input
-                        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-                        type="email"
+                    <EmailInput
                         onChange={this.updateData("email")}
                         onPressEnter={this.login}
-                        placeholder="Email"
                         className={styles.input}
                     />
                     <Input
