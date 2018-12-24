@@ -3,14 +3,15 @@ import { createLogic } from "redux-logic";
 
 import { setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
-import { ReduxLogicDeps, ReduxLogicNextCb } from "../types";
+import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
 
 import { setUser } from "./actions";
 import { LOGIN } from "./constants";
 import { User } from "./types";
 
 const loginLogic = createLogic({
-    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
+                next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
         httpClient.post(`${baseApiUrl}/users/login`, action.payload)
             .then((result: AxiosResponse<User>) => {
                 console.log("result", result);
@@ -24,7 +25,8 @@ const loginLogic = createLogic({
                         type: AlertType.ERROR,
                     }));
                 }
-            });
+            })
+            .then(done);
     },
     type: LOGIN,
 });

@@ -15,7 +15,6 @@ const actionToConfigMap: TypeToDescriptionMap =  {
     [CLEAR_ALERT]: {
         accepts: (action: AnyAction): action is ClearAlertAction => action.type === CLEAR_ALERT,
         perform: (state: FeedbackStateBranch) => {
-            message.destroy();
             return {
                 ...state,
                 alert: undefined,
