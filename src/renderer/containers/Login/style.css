@@ -16,4 +16,14 @@
       padding-left: 40px;
     }
   }
+
+  & .link-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    & .link {
+      flex: 0 0 auto;
+    }
+  }
 }

@@ -3,6 +3,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { setPage } from "../../state/page/actions";
+import { Page, SetPageAction } from "../../state/page/types";
 import {
     State,
 } from "../../state/types";
@@ -14,6 +16,7 @@ const styles = require("./style.css");
 interface LoginProps {
     className?: string;
     login: (email: string, password: string) => LoginAction;
+    setPage: (page: Page) => SetPageAction;
 }
 
 interface LoginState {
@@ -47,6 +50,14 @@ class Login extends React.Component<LoginProps, LoginState> {
         }
     }
 
+    public signUp = () => {
+        this.props.setPage(Page.SignUp);
+    }
+
+    public forgotPassword = () => {
+        this.props.setPage(Page.ForgotPassword);
+    }
+
     public render() {
         const { className } = this.props;
         return (
@@ -75,6 +86,10 @@ class Login extends React.Component<LoginProps, LoginState> {
                 >
                     Login
                 </Button>
+                <div className={styles.linkContainer}>
+                    <a onClick={this.forgotPassword} className={styles.link}>Forgot Password?</a>
+                    <a onClick={this.signUp} className={styles.link}>Sign Up</a>
+                </div>
             </div>
         );
     }
@@ -88,6 +103,7 @@ function mapStateToProps(state: State) {
 
 const dispatchToPropsMap = {
     login,
+    setPage,
 };
 
 export default connect(mapStateToProps, dispatchToPropsMap)(Login);

@@ -17,3 +17,9 @@ export const previousPageMap = new Map([
     [Page.Share, Page.CreateDeck],
     [Page.Copy, Page.CreateDeck],
 ]);
+
+export const pagesForAllUsers = [
+    Page.Login,
+    Page.SignUp,
+    Page.ForgotPassword,
+];

@@ -12,7 +12,7 @@ import { clearAlert } from "../../state/feedback/actions";
 import { getAlert } from "../../state/feedback/selectors";
 import { AlertType, AppAlert } from "../../state/feedback/types";
 import { goBack, setPage } from "../../state/page/actions";
-import { previousPageMap } from "../../state/page/constants";
+import { pagesForAllUsers, previousPageMap } from "../../state/page/constants";
 import { getPage, getPreviousTitle, getTitle } from "../../state/page/selectors";
 import {
     GoBackAction,
@@ -55,9 +55,11 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
     [Page.Test, (className?: string) => <Test  className={className}/>],
     [Page.Flip, (className?: string) => <Flip className={className}/>],
     [Page.Login, (className?: string) => <Login className={className}/>],
+    [Page.SignUp, (className?: string) => <div className={className}>Sign Up</div>],
+    [Page.ForgotPassword, (className?: string) => <div className={className}>Forgot Password</div>],
 ]);
 
-const pagesWithoutSideNav = [Page.Login, Page.SignUp];
+const pagesWithoutSideNav = pagesForAllUsers;
 
 class App extends React.Component<AppProps, {}> {
     constructor(props: AppProps) {

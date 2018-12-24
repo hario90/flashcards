@@ -1,3 +1,4 @@
+import { includes } from "lodash";
 import { createSelector } from "reselect";
 
 import { getSelectedDeck } from "../deck/selectors";
@@ -5,8 +6,7 @@ import { Deck } from "../deck/types";
 import { State } from "../types";
 import { getUserIsLoggedIn } from "../user/selectors";
 
-import { previousPageMap } from "./constants";
-
+import { pagesForAllUsers, previousPageMap } from "./constants";
 import { Page } from "./types";
 
 export const getSelectedPage = (state: State) => state.page.page;
@@ -30,6 +30,7 @@ export const PAGE_TO_TITLE_MAP = new Map([
     [Page.Share, "Share"],
     [Page.Login, "Flashcards"],
     [Page.SignUp, "Signup"],
+    [Page.ForgotPassword, "Retrieve Password"],
 ]);
 
 export const getPreviousTitle = createSelector([
@@ -46,6 +47,10 @@ export const getPage = createSelector([
     getSelectedPage,
     getUserIsLoggedIn,
 ], (page: Page, isLoggedIn: boolean) => {
+    if (includes(pagesForAllUsers, page)) {
+        return page;
+    }
+
     return isLoggedIn ? page : Page.Login;
 });
 

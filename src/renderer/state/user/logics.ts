@@ -1,6 +1,8 @@
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { createLogic } from "redux-logic";
 
+import { setAlert } from "../feedback/actions";
+import { AlertType } from "../feedback/types";
 import { ReduxLogicDeps, ReduxLogicNextCb } from "../types";
 
 import { setUser } from "./actions";
@@ -14,7 +16,15 @@ const loginLogic = createLogic({
                 console.log("result", result);
                 next(setUser(result.data));
             })
-            .catch((err: string) => console.log("err", err));
+            .catch((err: AxiosError) => {
+                if (err.response) {
+                    console.log("err", err.response.data);
+                    next(setAlert({
+                        message: err.response.data,
+                        type: AlertType.ERROR,
+                    }));
+                }
+            });
     },
     type: LOGIN,
 });

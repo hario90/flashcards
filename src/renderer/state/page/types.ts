@@ -13,6 +13,7 @@ export enum Page {
     Share,
     Login,
     SignUp,
+    ForgotPassword,
 }
 
 export interface SetPageAction {
