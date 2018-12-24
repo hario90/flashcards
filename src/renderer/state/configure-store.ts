@@ -33,6 +33,7 @@ const logics = [
     ...metadata.logics,
     ...page.logics,
     ...selection.logics,
+    ...user.logics,
 ];
 
 const reduxLogicDependencies = {

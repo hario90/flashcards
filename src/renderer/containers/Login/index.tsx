@@ -3,16 +3,18 @@ import * as classNames from "classnames";
 import { ChangeEvent } from "react";
 import * as React from "react";
 import { connect } from "react-redux";
-import LineInput from "../../components/LineInput/index";
 
 import {
     State,
 } from "../../state/types";
+import { login } from "../../state/user/actions";
+import { LoginAction } from "../../state/user/types";
 
 const styles = require("./style.css");
 
 interface LoginProps {
     className?: string;
+    login: (email: string, password: string) => LoginAction;
 }
 
 interface LoginState {
@@ -39,6 +41,13 @@ class Login extends React.Component<LoginProps, LoginState> {
         return !!email && !!password;
     }
 
+    public login = () => {
+        const { email, password } = this.state;
+        if (email && password) {
+            this.props.login(email, password);
+        }
+    }
+
     public render() {
         const { className } = this.props;
         return (
@@ -61,6 +70,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                     type="primary"
                     className={styles.button}
                     disabled={!this.canLogin()}
+                    onClick={this.login}
                 >
                     Login
                 </Button>
@@ -70,9 +80,13 @@ class Login extends React.Component<LoginProps, LoginState> {
 }
 
 function mapStateToProps(state: State) {
-    return {};
+    return {
+
+    };
 }
 
-const dispatchToPropsMap = {};
+const dispatchToPropsMap = {
+    login,
+};
 
 export default connect(mapStateToProps, dispatchToPropsMap)(Login);
