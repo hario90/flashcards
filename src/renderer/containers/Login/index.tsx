@@ -25,12 +25,15 @@ interface LoginState {
     password?: string;
     firstName?: string;
     lastName?: string;
+    emailValid?: boolean;
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: LoginProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            emailValid: false,
+        };
     }
 
     public updateData = (keyOnState: keyof LoginState) => {
@@ -40,8 +43,8 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     public canLogin = () => {
-        const { email, password } = this.state;
-        return !!email && !!password;
+        const { email, emailValid, password } = this.state;
+        return !!email && !!password && emailValid;
     }
 
     public login = () => {
@@ -59,6 +62,10 @@ class Login extends React.Component<LoginProps, LoginState> {
         this.props.setPage(Page.ForgotPassword);
     }
 
+    public updateIsEmailValid = (isValid: boolean) => {
+        this.setState({emailValid: isValid});
+    }
+
     public render() {
         const { className } = this.props;
         return (
@@ -68,6 +75,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                         onChange={this.updateData("email")}
                         onPressEnter={this.login}
                         className={styles.input}
+                        onIsEmailValidChange={this.updateIsEmailValid}
                     />
                     <Input
                         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}

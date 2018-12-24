@@ -8,6 +8,7 @@ interface EmailInputProps {
     className?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onPressEnter?: () => void;
+    onIsEmailValidChange?: (isValid: boolean) => void;
 }
 
 interface EmailInputState {
@@ -26,12 +27,16 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
     }
 
     public onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { onChange } = this.props;
+        const { onChange, onIsEmailValidChange } = this.props;
         const showError = !!event.target.value && !this.isEmailValid(event.target.value);
         this.setState({error: showError ? "Not a valid email" : undefined});
 
         if (onChange) {
             onChange(event);
+        }
+
+        if (onIsEmailValidChange) {
+            onIsEmailValidChange(!showError);
         }
     }
 
