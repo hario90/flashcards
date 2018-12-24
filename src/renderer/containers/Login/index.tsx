@@ -62,33 +62,35 @@ class Login extends React.Component<LoginProps, LoginState> {
         const { className } = this.props;
         return (
             <div className={classNames(styles.container, className)}>
-                <Input
-                    prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-                    type="email"
-                    onChange={this.updateData("email")}
-                    onPressEnter={this.login}
-                    placeholder="Email"
-                    className={styles.input}
-                />
-                <Input
-                    prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-                    type="password"
-                    onChange={this.updateData("password")}
-                    onPressEnter={this.login}
-                    placeholder="Password"
-                    className={styles.input}
-                />
-                <Button
-                    type="primary"
-                    className={styles.button}
-                    disabled={!this.canLogin()}
-                    onClick={this.login}
-                >
-                    Login
-                </Button>
-                <div className={styles.linkContainer}>
-                    <a onClick={this.forgotPassword} className={styles.link}>Forgot Password?</a>
-                    <a onClick={this.signUp} className={styles.link}>Sign Up</a>
+                <div className={styles.form}>
+                    <Input
+                        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+                        type="email"
+                        onChange={this.updateData("email")}
+                        onPressEnter={this.login}
+                        placeholder="Email"
+                        className={styles.input}
+                    />
+                    <Input
+                        prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+                        type="password"
+                        onChange={this.updateData("password")}
+                        onPressEnter={this.login}
+                        placeholder="Password"
+                        className={styles.input}
+                    />
+                    <Button
+                        type="primary"
+                        className={styles.button}
+                        disabled={!this.canLogin()}
+                        onClick={this.login}
+                    >
+                        Login
+                    </Button>
+                    <div className={styles.linkContainer}>
+                        <a onClick={this.forgotPassword} className={styles.link}>Forgot Password?</a>
+                        <a onClick={this.signUp} className={styles.link}>Sign Up</a>
+                    </div>
                 </div>
             </div>
         );
