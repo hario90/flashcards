@@ -20,6 +20,6 @@ export const previousPageMap = new Map([
 
 export const pagesForAllUsers = [
     Page.Login,
-    Page.SignUp,
+    Page.Signup,
     Page.ForgotPassword,
 ];

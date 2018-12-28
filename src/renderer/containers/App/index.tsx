@@ -20,14 +20,17 @@ import {
 } from "../../state/page/types";
 import { getDeckActionsDisabled } from "../../state/selection/selectors";
 import { State } from "../../state/types";
+import { signOut } from "../../state/user/actions";
 import "../../styles/fonts.css";
 
 import { getAvatarSrc, getFirstName, getLastName, getUserIsLoggedIn } from "../../state/user/selectors";
+import { SignOutAction } from "../../state/user/types";
 
 import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
 import Home from "../Home";
 import Login from "../Login";
+import Signup from "../SignUp";
 import Test from "../Test";
 
 const styles = require("./style.css");
@@ -46,6 +49,7 @@ interface AppProps {
     previousPage: Page;
     previousTitle: string;
     setPage: (page: Page) => SetPageAction;
+    signOut: () => SignOutAction;
     title: string;
 }
 
@@ -55,7 +59,7 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
     [Page.Test, (className?: string) => <Test  className={className}/>],
     [Page.Flip, (className?: string) => <Flip className={className}/>],
     [Page.Login, (className?: string) => <Login className={className}/>],
-    [Page.SignUp, (className?: string) => <div className={className}>Sign Up</div>],
+    [Page.Signup, (className?: string) => <Signup className={className}/>],
     [Page.ForgotPassword, (className?: string) => <div className={className}>Forgot Password</div>],
 ]);
 
@@ -125,6 +129,7 @@ class App extends React.Component<AppProps, {}> {
             previousPage,
             previousTitle,
             setPage: setPageProp,
+            signOut: signOutProp,
             title,
         } = this.props;
         const showSideNav = !includes(pagesWithoutSideNav, page);
@@ -141,6 +146,7 @@ class App extends React.Component<AppProps, {}> {
                     avatarSrc={avatarSrc}
                     firstName={firstName}
                     lastName={lastName}
+                    signOut={signOutProp}
                 />
                 <div className={styles.mainContent}>
                     {showSideNav && <SideNav
@@ -175,6 +181,7 @@ const dispatchToPropsMap = {
     dispatch: (action: AnyAction) => action,
     goBack,
     setPage,
+    signOut,
 };
 
 export default connect(mapStateToProps, dispatchToPropsMap)(App);

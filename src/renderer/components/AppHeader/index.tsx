@@ -3,6 +3,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { GoBackAction, Page } from "../../state/page/types";
+import { SignOutAction } from "../../state/user/types";
 
 const styles = require("./style.css");
 
@@ -16,6 +17,7 @@ interface AppHeaderProps {
     firstName: string;
     lastName: string;
     isLoggedIn: boolean;
+    signOut: () => SignOutAction;
 }
 
 interface AppHeaderState {
@@ -35,6 +37,11 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
         this.setState({
             profileTooltipVisible: false,
         });
+    }
+
+    public signOut = () => {
+        this.props.signOut();
+        this.hide();
     }
 
     public handleVisibleChange = (profileTooltipVisible: boolean) => {
@@ -88,7 +95,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
     private popoverContent = () => (
         <React.Fragment>
             <a className={styles.userPopoverLink} onClick={this.hide}>Profile</a>
-            <a className={styles.userPopoverLink} onClick={this.hide}>Sign Out</a>
+            <a className={styles.userPopoverLink} onClick={this.signOut}>Sign Out</a>
         </React.Fragment>
     )
 

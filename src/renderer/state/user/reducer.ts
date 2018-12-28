@@ -3,9 +3,9 @@ import { AnyAction } from "redux";
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { SET_USER } from "./constants";
+import { SET_USER, SIGN_OUT } from "./constants";
 
-import { SetUserAction, UserStateBranch } from "./types";
+import { SetUserAction, SignOutAction, UserStateBranch } from "./types";
 
 export const initialState: UserStateBranch = {
     // avatarSrc: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
@@ -17,6 +17,12 @@ const actionToConfigMap: TypeToDescriptionMap = {
         perform: (state: UserStateBranch, action: SetUserAction) => ({
             ...state,
             ...action.payload,
+        }),
+    },
+    [SIGN_OUT]: {
+        accepts: (action: AnyAction): action is SignOutAction => action.type === SIGN_OUT,
+        perform: () => ({
+            ...initialState,
         }),
     },
 };

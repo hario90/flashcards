@@ -23,7 +23,7 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
 
     public isEmailValid = (email: string) => {
         const regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-        return email === '' || email.match(regex);
+        return email === "" || email.match(regex);
     }
 
     public onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

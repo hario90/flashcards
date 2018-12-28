@@ -12,7 +12,7 @@ export enum Page {
     Test,
     Share,
     Login,
-    SignUp,
+    Signup,
     ForgotPassword,
 }
 

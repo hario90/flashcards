@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  & .requirement {
+    color: green;
+
+    &.missed {
+      color: red;
+    }
+
+    & .icon {
+      padding-right: 1em;
+    }
+  }
+  & .form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+  }
+
+  & .input, & .button, & .form-element {
+    flex: 0 0 auto;
+    margin: 0.5em 0;
+    width: 100%;
+  }
+
+  & .input {
+    & :global(.ant-input) {
+      padding-left: 40px;
+    }
+  }
+
+  & .link-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    & .link {
+      flex: 0 0 auto;
+    }
+  }
+}

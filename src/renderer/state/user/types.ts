@@ -13,6 +13,16 @@ export interface LoginAction {
     type: string;
 }
 
+export interface SignupAction {
+    payload: {
+        email: string,
+        password: string,
+        firstName: string,
+        lastName: string
+    };
+    type: string;
+}
+
 export interface User {
     email: string;
     firstName?: string;
@@ -22,5 +32,9 @@ export interface User {
 
 export interface SetUserAction {
     payload: User;
+    type: string;
+}
+
+export interface SignOutAction {
     type: string;
 }

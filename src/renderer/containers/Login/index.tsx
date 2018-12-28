@@ -55,7 +55,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     public signUp = () => {
-        this.props.setPage(Page.SignUp);
+        this.props.setPage(Page.Signup);
     }
 
     public forgotPassword = () => {

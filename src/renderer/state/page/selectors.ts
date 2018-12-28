@@ -29,7 +29,7 @@ export const PAGE_TO_TITLE_MAP = new Map([
     [Page.Copy, "Copy"],
     [Page.Share, "Share"],
     [Page.Login, "Flashcards"],
-    [Page.SignUp, "Signup"],
+    [Page.Signup, "Signup"],
     [Page.ForgotPassword, "Retrieve Password"],
 ]);
 
