@@ -1,5 +1,9 @@
 import { AxiosError, AxiosResponse } from "axios";
+import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
+
+import { setDecks } from "../deck/actions";
+import { CardResponse, RawDeck } from "../deck/types";
 
 import { setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
@@ -15,10 +19,34 @@ import { User } from "./types";
 const loginLogic = createLogic({
     transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
                 next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const actions: AnyAction[] = [];
         httpClient.post(`${baseApiUrl}/users/login`, action.payload)
-            .then((result: AxiosResponse<User>) => {
-                console.log("result", result);
-                next(setUser(result.data));
+            .then(({ data }: AxiosResponse<User>) => {
+                actions.push(setUser(data));
+
+                Promise.all([
+                    httpClient.get(`${baseApiUrl}/decks/users/${data.id}`),
+                    httpClient.get(`${baseApiUrl}/cards/users/${data.id}`),
+                ]).then(([{ data: decks }, { data: cards }]) => {
+                    const decksWithCards = decks.map((d: RawDeck) => {
+                        return {
+                            ...d,
+                            cards: cards.filter((c: CardResponse) => c.deckId === d.id),
+                        };
+                    });
+                    actions.push(setDecks(decksWithCards));
+                    next(batchActions(actions));
+                    done();
+                }).catch((err: AxiosError) => {
+                    if (err.response) {
+                        console.log("err", err.response.data);
+                        next(setAlert({
+                            message: err.response.data,
+                            type: AlertType.ERROR,
+                        }));
+                    }
+                    done();
+                });
             })
             .catch((err: AxiosError) => {
                 if (err.response) {
@@ -28,8 +56,8 @@ const loginLogic = createLogic({
                         type: AlertType.ERROR,
                     }));
                 }
-            })
-            .then(done);
+                done();
+            });
     },
     type: LOGIN,
 });

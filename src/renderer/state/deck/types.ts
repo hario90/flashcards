@@ -14,6 +14,15 @@ export interface Deck {
     cards: Card[];
 }
 
+export interface RawDeck {
+    id: number;
+    name: string;
+}
+
+export interface CardResponse extends Card {
+    deckId: number;
+}
+
 export interface CreateDeckAction {
     payload: Deck;
     type: string;

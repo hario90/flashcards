@@ -1,11 +1,12 @@
 import { isEmpty, shuffle } from "lodash";
+import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { clearDraft, saveDraft } from "../deck/actions";
+import { clearDraft, saveDraft, setDecks } from "../deck/actions";
 import { SAVE_DECK } from "../deck/constants";
 import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 
-import { Deck } from "../deck/types";
+import { CardResponse, Deck, RawDeck } from "../deck/types";
 import { clearAlert, setAlert } from "../feedback/actions";
 import { AlertType } from "../feedback/types";
 import { deselectDeck, setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
@@ -14,6 +15,8 @@ import {
     ReduxLogicDeps,
     ReduxLogicNextCb,
 } from "../types";
+import { getUser } from "../user/selectors";
+import { UserStateBranch } from "../user/types";
 import { batchActions } from "../util";
 
 import { clearNextPage, setNextPage, setPage } from "./actions";
@@ -25,8 +28,8 @@ const EMPTY_CARD = {
     front: "",
 };
 const setPageLogic = createLogic({
-    transform: ({ getState, action }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
-        const actions = [];
+    transform: ({ getState, action, httpClient, baseApiUrl }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        const actions: AnyAction[] = [];
         const selectedDeck: Deck | undefined = getSelectedDeck(getState());
         const currentPage: Page = getSelectedPage(getState());
         const unsavedChangesExist: boolean = unsavedChanges(getState());
@@ -41,6 +44,7 @@ const setPageLogic = createLogic({
                 }),
                 setNextPage(action.payload)
             );
+            next(batchActions(actions));
         } else if (action.payload === Page.Flip && selectedDeck) {
             actions.push(
                 action,
@@ -49,6 +53,7 @@ const setPageLogic = createLogic({
                 setSeenCards([]),
                 setUnseenCards(shuffle(selectedDeck.cards))
             );
+            next(batchActions(actions));
         } else if (action.payload === Page.CreateDeck && selectedDeck) {
             actions.push(
                 action,
@@ -58,13 +63,31 @@ const setPageLogic = createLogic({
                     cards: !isEmpty(selectedDeck.cards) ? [...selectedDeck.cards]
                         : [EMPTY_CARD, EMPTY_CARD, EMPTY_CARD],
                 }));
-        } else if (action.payload === Page.Home && selectedDeck) {
-            actions.push(action, deselectDeck());
+            next(batchActions(actions));
+        } else if (action.payload === Page.Home) {
+            actions.push(action);
+            if (selectedDeck) {
+                actions.push(deselectDeck());
+            }
+
+            const currentUser: UserStateBranch = getUser(getState());
+            Promise.all([
+                httpClient.get(`${baseApiUrl}/decks/users/${currentUser.id}`),
+                httpClient.get(`${baseApiUrl}/cards/users/${currentUser.id}`),
+            ]).then(([{ data: decks }, { data: cards }]) => {
+                const decksWithCards = decks.map((d: RawDeck) => {
+                    return {
+                        ...d,
+                        cards: cards.filter((c: CardResponse) => c.deckId === d.id),
+                    };
+                });
+                actions.push(setDecks(decksWithCards));
+                next(batchActions(actions));
+            });
         } else {
             actions.push(action);
+            next(batchActions(actions));
         }
-
-        next(batchActions(actions));
     },
     type: SET_PAGE,
 });
