@@ -3,6 +3,33 @@
   justify-content: center;
   align-items: center;
 
+  & .status-row {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    & .lives {
+      text-align: center;
+
+      & .life {
+        font-size: 1.5em;
+
+        &:not(:last-child) {
+          margin-right: 0.25em;
+        }
+      }
+    }
+
+    & .points-container {
+      text-align: center;
+    }
+
+    & .points {
+      font-size: 1.5em;
+    }
+  }
+
   & .prompt {
     flex: 3;
     display: flex;

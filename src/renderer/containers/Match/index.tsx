@@ -1,6 +1,6 @@
-import { Button } from "antd";
+import { Button, Icon } from "antd";
 import * as classNames from "classnames";
-import { includes, shuffle } from "lodash";
+import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -11,6 +11,8 @@ import {
 } from "../../state/types";
 
 const styles = require("./style.css");
+const TOTAL_LIVES = 4;
+const CORRECT_ANSWER_REWARD = 4;
 
 interface MatchProps {
     className?: string;
@@ -18,11 +20,13 @@ interface MatchProps {
 }
 
 interface MatchState {
+    livesLeft: number;
     useTerm: boolean;
     currentCard?: Card;
     usedCards: Card[];
     unusedCards: Card[];
     guessedOptions: string[];
+    points: number;
 }
 
 class Match extends React.Component<MatchProps, MatchState> {
@@ -32,6 +36,8 @@ class Match extends React.Component<MatchProps, MatchState> {
         this.state = {
             currentCard: cards.pop(),
             guessedOptions: [],
+            livesLeft: TOTAL_LIVES,
+            points: 0,
             unusedCards: cards,
             useTerm: false,
             usedCards: [],
@@ -43,16 +49,23 @@ class Match extends React.Component<MatchProps, MatchState> {
         const cards = [...unusedCards];
         this.setState({
             currentCard: cards.pop(),
+            guessedOptions: [],
+            points: this.state.points + CORRECT_ANSWER_REWARD,
             unusedCards: cards,
         });
     }
 
     public eliminateOption = (option: string) => {
-        const { guessedOptions } = this.state;
-        const guessedOptionsCopy = [...guessedOptions];
-        guessedOptionsCopy.push(option);
-        this.setState({
-            guessedOptions: guessedOptionsCopy,
+
+        this.setState( (prevState) => {
+            const { guessedOptions, livesLeft } = prevState;
+            const guessedOptionsCopy = [...guessedOptions];
+            guessedOptionsCopy.push(option);
+
+            return {
+                guessedOptions: guessedOptionsCopy,
+                livesLeft: livesLeft - 1,
+            };
         });
     }
 
@@ -96,27 +109,65 @@ class Match extends React.Component<MatchProps, MatchState> {
         ));
     }
 
-    public render() {
-        const { className } = this.props;
+    public getLives = () => {
+        const { livesLeft } = this.state;
+        if (livesLeft < 1) {
+            return null;
+        }
+
+        const result = [];
+        for (let i = 0; i < livesLeft; i++) {
+            result.push(<Icon className={styles.life} theme="twoTone" type="heart" key={i} twoToneColor="#db4369"/>);
+        }
+
+        return result;
+    }
+
+    public getBody = () => {
         const {
             currentCard,
             useTerm,
         } = this.state;
+
         if (!currentCard) {
             return (
-                <div className={classNames(styles.container, className)}>
+                <div>
                     No more cards
                 </div>
             );
         }
+
         return (
-            <div className={classNames(styles.container, className)}>
+            <React.Fragment>
                 <div className={styles.prompt}>
                     {useTerm ? currentCard.front : currentCard.back}
                 </div>
                 <div className={styles.options}>
                     {this.getOptions()}
                 </div>
+            </React.Fragment>
+        );
+    }
+
+    public render() {
+        const { className } = this.props;
+        const { points } = this.state;
+
+        return (
+            <div className={classNames(styles.container, className)}>
+                <div className={styles.statusRow}>
+                    <div className={styles.lives}>
+                        {this.getLives()}
+                        <div className={styles.livesLeftLabel}>
+                            LIVES LEFT
+                        </div>
+                    </div>
+                    <div className={styles.pointsContainer}>
+                        <div className={styles.points}>{points}</div>
+                        <div>POINTS</div>
+                    </div>
+                </div>
+                {this.getBody()}
             </div>
         );
     }

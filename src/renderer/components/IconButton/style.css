@@ -1,5 +1,0 @@
-.container {
-  &:global(.ant-btn) {
-    height: 85px;
-  }
-}
