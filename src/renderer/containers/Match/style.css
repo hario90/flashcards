@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & .prompt {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    font-size: 48px;
+  }
+
+  & .options {
+    flex: 1;
+
+    & .button {
+      margin-right: 1em;
+    }
+  }
+}
