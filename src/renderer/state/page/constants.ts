@@ -15,7 +15,7 @@ export const previousPageMap = new Map([
     [Page.Flip, Page.CreateDeck],
     [Page.Test, Page.CreateDeck],
     [Page.Share, Page.CreateDeck],
-    [Page.Copy, Page.CreateDeck],
+    [Page.Match, Page.CreateDeck],
 ]);
 
 export const pagesForAllUsers = [

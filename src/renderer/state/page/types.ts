@@ -8,7 +8,7 @@ export enum Page {
     Home,
     CreateDeck,
     Flip,
-    Copy,
+    Match,
     Test,
     Share,
     Login,

@@ -30,6 +30,7 @@ import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
 import Home from "../Home";
 import Login from "../Login";
+import Match from "../Match";
 import Signup from "../SignUp";
 import Test from "../Test";
 
@@ -61,6 +62,7 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
     [Page.Login, (className?: string) => <Login className={className}/>],
     [Page.Signup, (className?: string) => <Signup className={className}/>],
     [Page.ForgotPassword, (className?: string) => <div className={className}>Forgot Password</div>],
+    [Page.Match, (className?: string) => <Match className={className}/>],
 ]);
 
 const pagesWithoutSideNav = pagesForAllUsers;

@@ -45,9 +45,9 @@ const PAGES: PageLink[] = [
         theme: undefined,
     },
     {
-        buttonTitle: "Copy",
+        buttonTitle: "Match",
         icon: "copy",
-        page: Page.Copy,
+        page: Page.Match,
         requiresDeckSelected: true,
         theme: "filled",
     },

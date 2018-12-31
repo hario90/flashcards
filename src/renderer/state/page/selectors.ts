@@ -26,7 +26,7 @@ export const PAGE_TO_TITLE_MAP = new Map([
     [Page.Flip, "Flip"],
     [Page.Test, "Test"],
     [Page.CreateDeck, "Create New Study Set"],
-    [Page.Copy, "Copy"],
+    [Page.Match, "Match"],
     [Page.Share, "Share"],
     [Page.Login, "Flashcards"],
     [Page.Signup, "Signup"],

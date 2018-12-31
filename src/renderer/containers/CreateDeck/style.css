@@ -13,6 +13,10 @@
     & .title-read-only {
         display: flex;
         flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
         &:hover {
             cursor: pointer;
 
@@ -23,7 +27,8 @@
             }
         }
 
-        h1 {
+        & h1 {
+            margin: 0;
             flex: 1;
         }
 
@@ -60,5 +65,13 @@
     & .plus {
         padding-right: 1em;
         padding-top: 0.25em;
+    }
+}
+
+@media (min-width: 768px) {
+    .title-row {
+        & .title-input {
+            margin: 1em;
+        }
     }
 }
