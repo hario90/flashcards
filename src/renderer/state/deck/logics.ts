@@ -1,5 +1,7 @@
 import { message } from "antd";
+import { AxiosError, AxiosResponse } from "axios";
 import { isEmpty, shuffle } from "lodash";
+import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
 import { setAlert } from "../feedback/actions";
@@ -14,10 +16,11 @@ import {
     ReduxLogicDoneCb,
     ReduxLogicNextCb,
 } from "../types";
+import { getUser } from "../user/selectors";
 import { batchActions } from "../util";
 
 import { clearDraft, setDecks } from "./actions";
-import { CREATE_DECK, SAVE_DECK } from "./constants";
+import { CREATE_DECK, DELETE_DECK, SAVE_DECK } from "./constants";
 import { getDecks, getDraft, getErrorMessage, getSelectedDeck } from "./selectors";
 import { Card, Deck } from "./types";
 
@@ -72,8 +75,9 @@ const saveDeckLogic = createLogic({
 
         done();
     },
-    transform: ({getState, action}: ReduxLogicDeps, next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
-        const actions = [];
+    transform: ({getState, action, baseApiUrl, httpClient}: ReduxLogicDeps,
+                next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const actions: AnyAction[] = [];
         const decks = getDecks(getState());
         const draft = getDraft(getState());
 
@@ -97,7 +101,8 @@ const saveDeckLogic = createLogic({
             const decksCopy = [
                 ...decks,
             ];
-            decksCopy[index] = getCurrentDeck(draft);
+            const currentDeck = getCurrentDeck(draft);
+            decksCopy[index] = currentDeck;
             actions.push(
                 setDecks(decksCopy),
                 setAlert({
@@ -105,9 +110,24 @@ const saveDeckLogic = createLogic({
                     type: AlertType.SUCCESS,
                 })
             );
-            next(batchActions(actions));
 
-            done();
+            const requestBody = {
+                ...currentDeck,
+                userId: getUser(getState()).id,
+            };
+
+            httpClient.put(`${baseApiUrl}/decks`, requestBody)
+                .then(() => {
+                    next(batchActions(actions));
+                    done();
+                })
+                .catch((err: AxiosError) => {
+                    next(setAlert({
+                        message: err.message,
+                        type: AlertType.ERROR,
+                    }));
+                    done();
+                });
         }
     },
     type: SAVE_DECK,
@@ -131,8 +151,22 @@ const shuffleDeckLogic = createLogic({
     type: SHUFFLE_DECK,
 });
 
+const deleteDeckLogics = createLogic({
+    transform: ({action, baseApiUrl, httpClient, getState}: ReduxLogicDeps,
+                next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        httpClient.delete(`${baseApiUrl}/decks/${action.payload}`)
+            .then(() => {
+                next(action);
+                done();
+            })
+            .catch(done);
+    },
+    type: DELETE_DECK,
+});
+
 export default [
     createDeckLogic,
+    deleteDeckLogics,
     saveDeckLogic,
     shuffleDeckLogic,
 ];
