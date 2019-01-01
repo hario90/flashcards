@@ -1,6 +1,6 @@
 import { Button, Icon } from "antd";
 import * as classNames from "classnames";
-import { includes, shuffle } from "lodash";
+import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 import { clearInterval } from "timers";
@@ -136,7 +136,7 @@ class Match extends React.Component<MatchProps, MatchState> {
                     livesLeft--;
                 }
 
-                if (livesLeft === 0) {
+                if (livesLeft === 0 || isEmpty(prevState.unusedCards)) {
                     secondsLeft = 0;
                     clearInterval(this.interval);
                     this.interval = null;
