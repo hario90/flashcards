@@ -13,8 +13,13 @@ export enum AlertType {
     ERROR,
 }
 
+export enum HttpRequestType {
+    LOGIN = 1,
+}
+
 export interface FeedbackStateBranch {
     alert?: AppAlert;
+    requestsInProgress: Set<HttpRequestType>;
 }
 
 export interface SetAlertAction {
@@ -24,4 +29,14 @@ export interface SetAlertAction {
 
 export interface ClearAlertAction {
     type: string;
+}
+
+export interface AddRequestInProgressAction {
+    type: string;
+    payload: HttpRequestType;
+}
+
+export interface RemoveRequestInProgressAction {
+    type: string;
+    payload: HttpRequestType;
 }

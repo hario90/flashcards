@@ -4,6 +4,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import EmailInput from "../../components/EmailInput";
+import { getRequestsInProgressContains } from "../../state/feedback/selectors";
+import { HttpRequestType } from "../../state/feedback/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import {
@@ -18,6 +20,7 @@ interface LoginProps {
     className?: string;
     login: (email: string, password: string) => LoginAction;
     setPage: (page: Page) => SetPageAction;
+    isLoggingIn: boolean;
 }
 
 interface LoginState {
@@ -44,7 +47,8 @@ class Login extends React.Component<LoginProps, LoginState> {
 
     public canLogin = () => {
         const { email, emailValid, password } = this.state;
-        return !!email && !!password && emailValid;
+        const { isLoggingIn } = this.props;
+        return !!email && !!password && emailValid && !isLoggingIn;
     }
 
     public login = () => {
@@ -105,7 +109,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 
 function mapStateToProps(state: State) {
     return {
-
+        isLoggingIn: getRequestsInProgressContains(state, HttpRequestType.LOGIN),
     };
 }
 

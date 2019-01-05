@@ -5,8 +5,8 @@ import { createLogic } from "redux-logic";
 import { setDecks } from "../deck/actions";
 import { CardResponse, RawDeck } from "../deck/types";
 
-import { setAlert } from "../feedback/actions";
-import { AlertType } from "../feedback/types";
+import { addRequestToInProgress, removeRequestFromInProgress, setAlert } from "../feedback/actions";
+import { AlertType, HttpRequestType } from "../feedback/types";
 import { setPage } from "../page/actions";
 import { Page } from "../page/types";
 import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
@@ -17,13 +17,17 @@ import { LOGIN, SIGNUP } from "./constants";
 import { User } from "./types";
 
 const loginLogic = createLogic({
-    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
-                next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+    process: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
+              next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const loginAction = action.payload.find((a: AnyAction) => a.type === LOGIN);
+        if (!loginAction) {
+            done();
+        }
+
         const actions: AnyAction[] = [];
-        httpClient.post(`${baseApiUrl}/users/login`, action.payload)
+        httpClient.post(`${baseApiUrl}/users/login`, loginAction.payload)
             .then(({ data }: AxiosResponse<User>) => {
                 actions.push(setUser(data));
-
                 Promise.all([
                     httpClient.get(`${baseApiUrl}/decks/users/${data.id}`),
                     httpClient.get(`${baseApiUrl}/cards/users/${data.id}`),
@@ -34,7 +38,7 @@ const loginLogic = createLogic({
                             cards: cards.filter((c: CardResponse) => c.deckId === d.id),
                         };
                     });
-                    actions.push(setDecks(decksWithCards));
+                    actions.push(setDecks(decksWithCards), removeRequestFromInProgress(HttpRequestType.LOGIN));
                     next(batchActions(actions));
                     done();
                 }).catch((err: AxiosError) => {
@@ -58,6 +62,12 @@ const loginLogic = createLogic({
                 }
                 done();
             });
+    },
+    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        next(batchActions([
+            addRequestToInProgress(HttpRequestType.LOGIN),
+            action,
+        ]));
     },
     type: LOGIN,
 });

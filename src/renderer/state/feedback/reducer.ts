@@ -1,14 +1,20 @@
-import { message } from "antd";
 import { AnyAction } from "redux";
 
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { CLEAR_ALERT, SET_ALERT } from "./constants";
-import { ClearAlertAction, FeedbackStateBranch, SetAlertAction } from "./types";
+import { ADD_REQUEST_IN_PROGRESS, CLEAR_ALERT, REMOVE_REQUEST_IN_PROGRESS, SET_ALERT } from "./constants";
+import {
+    AddRequestInProgressAction,
+    ClearAlertAction,
+    FeedbackStateBranch,
+    RemoveRequestInProgressAction,
+    SetAlertAction,
+} from "./types";
 
 const initialState = {
     alert: undefined,
+    requestsInProgress: new Set(),
 };
 
 const actionToConfigMap: TypeToDescriptionMap =  {
@@ -27,6 +33,31 @@ const actionToConfigMap: TypeToDescriptionMap =  {
             return {
                 ...state,
                 alert: action.payload,
+            };
+        },
+    },
+    [ADD_REQUEST_IN_PROGRESS]: {
+        accepts: (action: AnyAction): action is AddRequestInProgressAction => action.type === ADD_REQUEST_IN_PROGRESS,
+        perform: (state: FeedbackStateBranch, action: AddRequestInProgressAction) => {
+            const requestsInProgress = new Set(state.requestsInProgress);
+            requestsInProgress.add(action.payload);
+
+            return {
+                ...state,
+                requestsInProgress,
+            };
+        },
+    },
+    [REMOVE_REQUEST_IN_PROGRESS]: {
+        accepts: (action: AnyAction): action is RemoveRequestInProgressAction =>
+            action.type === REMOVE_REQUEST_IN_PROGRESS,
+        perform: (state: FeedbackStateBranch, action: RemoveRequestInProgressAction) => {
+            const requestsInProgress = new Set(state.requestsInProgress);
+            requestsInProgress.delete(action.payload);
+
+            return {
+                ...state,
+                requestsInProgress,
             };
         },
     },
