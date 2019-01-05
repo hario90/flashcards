@@ -1,4 +1,5 @@
 import { State } from "../types";
+
 import { HttpRequestType } from "./types";
 
 export const getAlert = (state: State) => state.feedback.alert;
