@@ -13,17 +13,24 @@ interface EmailInputProps {
 
 interface EmailInputState {
     error?: string;
+    isDirty: boolean;
 }
 
 class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
     constructor(props: EmailInputProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            isDirty: false,
+        };
     }
 
     public isEmailValid = (email: string) => {
         const regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
         return email === "" || email.match(regex);
+    }
+
+    public setDirty = () => {
+        this.setState({isDirty: true});
     }
 
     public onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +56,7 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
 
     public render() {
         const { className } = this.props;
-        const { error } = this.state;
+        const { error, isDirty } = this.state;
         return (
             <div className={classNames(styles.container, className)}>
                 <Input
@@ -58,9 +65,10 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
                     onChange={this.onChange}
                     onPressEnter={this.onPressEnter}
                     placeholder="Email"
-                    className={classNames(styles.input, {[styles.error]: !!error})}
+                    onBlur={this.setDirty}
+                    className={classNames(styles.input, {[styles.error]: !!error && isDirty})}
                 />
-                {error && <div className={styles.error}>{error}</div>}
+                {error && isDirty && <div className={styles.error}>{error}</div>}
             </div>
         );
     }
