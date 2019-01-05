@@ -4,10 +4,10 @@
 .row {
     min-height: 103px;
     display: flex;
-    padding: 1em 2em;
+    padding: 1vw 2vw;
     vertical-align: center;
     background-color: white;
-    margin: 1.5em 0;
+    margin: 1.5vw 0;
     box-shadow: var(--box-shadow);
     border: 1px solid var(--border-grey);
 
@@ -18,7 +18,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-left: 2em;
+        padding-left: 2vw;
     }
 
     &:hover {
@@ -31,16 +31,18 @@
 }
 
 .front {
-    padding-right: 2em;
+    padding-right: 2vw;
     border-right: 1px solid #d6d7d8;
 }
 
 .back {
-    padding-left: 2em;
+    padding-left: 2vw;
 }
 
 .side {
     flex: 1;
+    font-size: 2vw;
+    min-width: 0;
 
     &.side-read-only {
         display: flex;
@@ -57,9 +59,11 @@
             }
         }
 
-        & h2 {
+        & .card-text {
+            min-width: 0;
             flex: 1;
-            margin-bottom: 0;
+            word-wrap: break-word;
+            display: inline;
         }
 
         & .edit-icon {
@@ -68,7 +72,7 @@
             transition: var(--transition);
             flex: 0 0 auto;
             font-size: 1.5em;
-            padding: 0 1em 0.25em 1em;
+            padding: 0 1vw 0.25vw 1vw;
         }
     }
 }
@@ -78,5 +82,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-right: 2em;
+    padding-right: 2vw;
 }

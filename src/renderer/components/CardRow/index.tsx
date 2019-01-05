@@ -124,7 +124,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         className={classNames(styles.side, styles.front, styles.sideReadOnly)}
                         onClick={this.makeEditable(true, true)}
                     >
-                        <h2>{card.front}</h2>
+                        <span className={styles.cardText}>{card.front}</span>
                         <Icon className={styles.editIcon} type="edit"/>
                     </div>
                 )}
@@ -143,7 +143,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         className={classNames(styles.side, styles.back, styles.sideReadOnly)}
                         onClick={this.makeEditable(false, true)}
                     >
-                        <h2>{card.back}</h2>
+                        <span className={styles.cardText}>{card.back}</span>
                         <Icon className={styles.editIcon} type="edit"/>
                     </div>
                 )}
