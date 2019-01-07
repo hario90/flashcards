@@ -52,7 +52,7 @@ class Timer extends React.Component<TimerProps, {}> {
         const { className, seconds } = this.props;
         return (
             <div className={classNames(styles.container, className)}>
-                {seconds}
+                {this.renderClock(seconds)}
             </div>
         );
     }
@@ -62,6 +62,14 @@ class Timer extends React.Component<TimerProps, {}> {
             clearInterval(this.timer);
             this.timer = null;
         }
+    }
+
+    private renderClock = (seconds: number) => {
+        const tensMinute = Math.floor(seconds / 600);
+        const onesMinute = Math.floor(seconds / 60);
+        const tensSecond = Math.floor(seconds % 60 / 10);
+        const onesSecond = Math.floor(seconds % 60 % 10);
+        return `${tensMinute}${onesMinute}:${tensSecond}${onesSecond}`;
     }
 }
 
