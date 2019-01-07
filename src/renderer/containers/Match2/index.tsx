@@ -21,7 +21,6 @@ interface Match2Props {
 }
 
 interface MatchState {
-    isPaused: boolean;
     isStarted: boolean;
     livesLeft: number;
     seconds: number;
@@ -31,7 +30,6 @@ class Match2 extends React.Component<Match2Props, MatchState> {
     constructor(props: Match2Props) {
         super(props);
         this.state = {
-            isPaused: false,
             isStarted: false,
             livesLeft: TOTAL_LIVES,
             seconds: SECONDS_PER_ROUND,
@@ -40,7 +38,7 @@ class Match2 extends React.Component<Match2Props, MatchState> {
 
     public render() {
         const { className } = this.props;
-        const { isPaused, isStarted, seconds } = this.state;
+        const {isStarted, seconds } = this.state;
         return (
             <div className={classNames(styles.container, className)}>
                 <div className={styles.statusRow}>
