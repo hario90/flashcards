@@ -4,6 +4,7 @@ import * as React from "react";
 import {
     State,
 } from "../../state/types";
+import Timer = NodeJS.Timer;
 
 const styles = require("./style.css");
 
@@ -16,11 +17,15 @@ interface TimerProps {
     updateSeconds: (seconds: number) => void;
 }
 
-class Timer extends React.Component<TimerProps, {}> {
-    private timer: any;
+class CountdownTimer extends React.Component<TimerProps, {}> {
+    private timer?: Timer;
 
     constructor(props: TimerProps) {
         super(props);
+    }
+
+    public componentWillUnmount() {
+        this.clearTimer();
     }
 
     public componentDidUpdate(prevProps: TimerProps) {
@@ -60,7 +65,7 @@ class Timer extends React.Component<TimerProps, {}> {
     private clearTimer = () => {
         if (this.timer) {
             clearInterval(this.timer);
-            this.timer = null;
+            this.timer = undefined;
         }
     }
 
@@ -73,4 +78,4 @@ class Timer extends React.Component<TimerProps, {}> {
     }
 }
 
-export default Timer;
+export default CountdownTimer;
