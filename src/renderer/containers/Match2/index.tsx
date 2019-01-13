@@ -37,7 +37,7 @@ interface MatchState {
 }
 
 class Match2 extends React.Component<Match2Props, MatchState> {
-    private timer?: number;
+    private timer?: any;
 
     constructor(props: Match2Props) {
         super(props);
@@ -87,9 +87,6 @@ class Match2 extends React.Component<Match2Props, MatchState> {
                     </div>
                 </div>
                 {this.getBody()}
-                <Button onClick={this.startGame}>Start Game</Button>
-                <Button onClick={this.pauseGame}>Pause</Button>
-                <Button onClick={this.resetGame}>Reset</Button>
             </div>
         );
     }
@@ -136,13 +133,13 @@ class Match2 extends React.Component<Match2Props, MatchState> {
 
             return (
                 <div className={classNames(styles.body, styles.transition)}>
-                    <div>{result}</div>
-                    <div className={classNames(styles.youChose)}>
+                    <span className={styles.result}>{result}</span>
+                    <span className={classNames(styles.youChose)}>
                         YOU CHOSE:&nbsp;
                         <span className={classNames({[styles.wrongAnswer]: !isCorrect})}>
                             {optionPicked}
                         </span>
-                    </div>
+                    </span>
                 </div>
             );
         }
@@ -253,14 +250,6 @@ class Match2 extends React.Component<Match2Props, MatchState> {
 
     private startGame = () => {
         this.setState({isStarted: true});
-    }
-
-    private pauseGame = () => {
-        this.setState({isStarted: false});
-    }
-
-    private resetGame = () => {
-        this.setState({seconds: SECONDS_PER_ROUND});
     }
 
     private onTimerComplete = () => {

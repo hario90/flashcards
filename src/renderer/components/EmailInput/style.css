@@ -1,9 +1,11 @@
+@import "../../styles/colors.css";
+
 .container {
   & .error {
-    color: red;
+    color: var(--error);
   }
 }
 
 .error :global(.ant-input){
-  border-color: red;
+  border-color: var(--error);
 }
