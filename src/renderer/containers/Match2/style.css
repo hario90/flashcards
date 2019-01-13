@@ -3,6 +3,21 @@
   justify-content: center;
   align-items: center;
 
+  & .transition {
+    flex-direction: column;
+
+    & .you-chose {
+      font-size: 24px;
+
+      & .wrong-answer {
+        color: red;
+      }
+      & :not(.wrong-answer) {
+        color: green;
+      }
+    }
+  }
+
   & .status-row {
     flex: 0 0 auto;
     width: 100%;
