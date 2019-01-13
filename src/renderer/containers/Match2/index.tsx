@@ -242,6 +242,9 @@ class Match2 extends React.Component<Match2Props, MatchState> {
                 className={styles.button}
                 onClick={this.selectOption(o)}
                 disabled={includes(guessedOptions, o)}
+                type="primary"
+                ghost={true}
+                size="large"
             >
                 {o}
             </Button>
