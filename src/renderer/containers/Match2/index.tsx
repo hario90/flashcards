@@ -1,6 +1,6 @@
 import { Button, Icon } from "antd";
 import * as classNames from "classnames";
-import { includes, isEmpty, shuffle } from "lodash";
+import { includes, isEmpty, sample, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -16,6 +16,8 @@ const TOTAL_LIVES = 4;
 const CORRECT_ANSWER_REWARD = 4;
 const SECONDS_PER_ROUND = 10;
 const TRANSITION_SECONDS = 3;
+const correctSynonyms = ["Correct!", "You got it!", "Right!", "Good job!", "Nice!"];
+const incorrectSynonyms = ["Incorrect", "Wrong!", "Not quite.", "So close", "Nope", "Oops"];
 
 interface Match2Props {
     className?: string;
@@ -129,7 +131,7 @@ class Match2 extends React.Component<Match2Props, MatchState> {
 
         if (transition) {
             const isCorrect = transition === "SUCCESS";
-            const result =  isCorrect ? "Correct!" : "Wrong!";
+            const result =  isCorrect ? sample(correctSynonyms) : sample(incorrectSynonyms);
 
             return (
                 <div className={classNames(styles.body, styles.transition)}>

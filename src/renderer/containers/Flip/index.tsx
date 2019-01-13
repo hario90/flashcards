@@ -1,6 +1,6 @@
 import { Button, Progress } from "antd";
 import * as classNames from "classnames";
-import { isEmpty } from "lodash";
+import { isEmpty, sample } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -127,8 +127,7 @@ class Flip extends React.Component<FlipProps, FlipState> {
                 );
             }
 
-            const index = Math.floor(Math.random() * Math.floor(congratulatoryPhrases.length));
-            const phrase = congratulatoryPhrases[index];
+            const phrase = sample(congratulatoryPhrases);
             return (
                 <div className={styles.learningComplete}>
                     <h2>{phrase}</h2>
