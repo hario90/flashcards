@@ -104,7 +104,6 @@ class Match extends React.Component<MatchProps, MatchState> {
             );
         }
 
-        console.log(this.state);
         return (
             <React.Fragment>
                 <div className={styles.prompt}>
@@ -226,7 +225,7 @@ class Match extends React.Component<MatchProps, MatchState> {
     }
 
     private onTimerComplete = () => {
-        this.handleWrongAnswer(undefined);
+        this.setState({isStarted: false, livesLeft: 0});
     }
 
     private updateSeconds = (seconds: number) => {
