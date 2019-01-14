@@ -1,3 +1,5 @@
+@import "../../styles/colors.css";
+
 .container {
   display: flex;
   justify-content: center;
@@ -39,6 +41,11 @@
     display: flex;
     align-items: center;
     font-size: 48px;
+
+    &.you-lose {
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 
   & .options {

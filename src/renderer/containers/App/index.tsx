@@ -30,7 +30,7 @@ import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
 import Home from "../Home";
 import Login from "../Login";
-import Match from "../Match2";
+import Match from "../Match";
 import Signup from "../SignUp";
 import Test from "../Test";
 

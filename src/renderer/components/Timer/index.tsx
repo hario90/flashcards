@@ -10,7 +10,6 @@ const styles = require("./style.css");
 
 interface TimerProps {
     className?: string;
-    startSeconds: number;
     isStarted?: boolean;
     onComplete?: () => void;
     seconds: number;

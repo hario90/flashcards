@@ -3,8 +3,8 @@ import * as classNames from "classnames";
 import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
-import { clearInterval } from "timers";
 
+import CountdownTimer from "../../components/Timer";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 import {
@@ -14,7 +14,7 @@ import {
 const styles = require("./style.css");
 const TOTAL_LIVES = 4;
 const CORRECT_ANSWER_REWARD = 4;
-const SECONDS_PER_ROUND = 10;
+const SECONDS_PER_WORD = 5;
 
 interface MatchProps {
     className?: string;
@@ -22,76 +22,155 @@ interface MatchProps {
 }
 
 interface MatchState {
+    isStarted: boolean;
     livesLeft: number;
+    seconds: number;
     useTerm: boolean;
     currentCard?: Card;
     usedCards: Card[];
     unusedCards: Card[];
     guessedOptions: string[];
     points: number;
-    secondsLeft: number;
-    isStarted: boolean;
 }
 
 class Match extends React.Component<MatchProps, MatchState> {
-    private interval: any;
     constructor(props: MatchProps) {
         super(props);
-        const cards = shuffle(props.deck.cards);
-        this.state = {
-            currentCard: cards.pop(),
-            guessedOptions: [],
-            isStarted: false,
-            livesLeft: TOTAL_LIVES,
-            points: 0,
-            secondsLeft: SECONDS_PER_ROUND,
-            unusedCards: cards,
-            useTerm: false,
-            usedCards: [],
-        };
+        this.state = this.getStartState();
     }
 
-    public getNextCard = () => {
-        const { unusedCards } = this.state;
-        const cards = [...unusedCards];
-        this.setState({
-            currentCard: cards.pop(),
-            guessedOptions: [],
-            points: this.state.points + CORRECT_ANSWER_REWARD,
-            secondsLeft: SECONDS_PER_ROUND,
-            unusedCards: cards,
-        });
+    public render() {
+        const { className } = this.props;
+        const {isStarted, points, seconds } = this.state;
+        return (
+            <div className={classNames(styles.container, className)}>
+                <div className={styles.statusRow}>
+                    <div className={styles.lives}>
+                        {this.getLives()}
+                        <div>
+                            LIVES LEFT
+                        </div>
+                    </div>
+                    <CountdownTimer
+                        className={styles.timeLeft}
+                        onComplete={this.onTimerComplete}
+                        seconds={seconds}
+                        updateSeconds={this.updateSeconds}
+                        isStarted={isStarted}
+                    />
+                    <div className={styles.pointsContainer}>
+                        <div className={styles.points}>{points}</div>
+                        <div>POINTS</div>
+                    </div>
+                </div>
+                {this.getBody()}
+            </div>
+        );
     }
 
-    public eliminateOption = (option: string) => {
+    private getBody = () => {
+        const {
+            currentCard,
+            isStarted,
+            livesLeft,
+            seconds,
+            usedCards,
+            useTerm,
+        } = this.state;
 
-        this.setState( (prevState) => {
-            const { guessedOptions, livesLeft } = prevState;
-            const guessedOptionsCopy = [...guessedOptions];
-            guessedOptionsCopy.push(option);
+        if (!currentCard) {
+            // todo replace
+            return (
+                <div className={styles.body}>
+                    Good Job!
+                </div>
+            );
+        }
+
+        if (!isStarted && isEmpty(usedCards) && livesLeft > 0) {
+            return (
+                <div className={styles.body}>
+                    <Button onClick={this.startGame} type="primary" size="large">Start Game</Button>
+                </div>
+            );
+        }
+
+        if (livesLeft <= 0 || seconds <= 0) {
+            return (
+                <div className={classNames(styles.body, styles.youLose)}>
+                    <div>You Lose!</div>
+                    <Button type="primary" size="large" onClick={this.restartGame}>Start Over</Button>
+                </div>
+            );
+        }
+
+        console.log(this.state);
+        return (
+            <React.Fragment>
+                <div className={styles.prompt}>
+                    {useTerm ? currentCard.front : currentCard.back}
+                </div>
+                <div className={styles.options}>
+                    {this.getOptions()}
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    private getNextCard = () => {
+        const usedCards = [...this.state.usedCards];
+
+        if (this.state.currentCard) {
+            usedCards.push(this.state.currentCard);
+        }
+
+        this.setState((prevState) => {
+            const { points, unusedCards } = prevState;
+            const cards = [...unusedCards];
+            const currentCard = cards.pop();
 
             return {
-                guessedOptions: guessedOptionsCopy,
-                livesLeft: livesLeft - 1,
+                currentCard,
+                guessedOptions: [],
+                points: !isEmpty(unusedCards) ? points + CORRECT_ANSWER_REWARD : points,
+                unusedCards: cards,
+                usedCards,
             };
         });
     }
 
-    public selectOption = (option: string) => () => {
+    private handleWrongAnswer = (option?: string) => {
+        const { guessedOptions, livesLeft } = this.state;
+        const guessedOptionsCopy = [...guessedOptions];
+        if (option) {
+            guessedOptionsCopy.push(option);
+        }
+
+        const isStarted = livesLeft - 1 > 0;
+
+        this.setState({
+            guessedOptions: guessedOptionsCopy,
+            isStarted,
+            livesLeft: livesLeft - 1,
+        });
+    }
+
+    private selectOption = (option: string) => () => {
         const { useTerm, currentCard } = this.state;
         if (!currentCard) {
             return;
         }
 
         const answer = useTerm ? currentCard.back : currentCard.front;
-        if (option === answer) {
+        const isCorrect = option === answer;
+        if (isCorrect && this.state.currentCard) {
             this.getNextCard();
         } else {
-            this.eliminateOption(option);
+            this.handleWrongAnswer(option);
         }
     }
 
-    public getOptions = () => {
+    private getOptions = () => {
         const {
             currentCard,
             guessedOptions,
@@ -111,46 +190,50 @@ class Match extends React.Component<MatchProps, MatchState> {
                 className={styles.button}
                 onClick={this.selectOption(o)}
                 disabled={includes(guessedOptions, o)}
+                type="primary"
+                ghost={true}
+                size="large"
             >
                 {o}
             </Button>
         ));
     }
 
-    public startGame = () => {
-        this.setState({isStarted: true});
-        if (this.interval) {
-            clearInterval(this.interval);
-        }
-
-        this.interval = setInterval(() => {
-            if (!this.interval) {
-                return;
-            }
-
-            this.setState((prevState) => {
-                let secondsLeft = prevState.secondsLeft - 1;
-                let livesLeft = prevState.livesLeft;
-                if (secondsLeft < 0 && livesLeft > 0) {
-                    secondsLeft = SECONDS_PER_ROUND;
-                    livesLeft--;
-                }
-
-                if (livesLeft === 0 || isEmpty(prevState.unusedCards)) {
-                    secondsLeft = 0;
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-
-                return {
-                    livesLeft,
-                    secondsLeft,
-                };
-            });
-        }, 1000);
+    private getStartState = () => {
+        const cards = shuffle(this.props.deck.cards);
+        return {
+            currentCard: cards.pop(),
+            guessedOptions: [],
+            isStarted: false,
+            livesLeft: TOTAL_LIVES,
+            points: 0,
+            seconds: SECONDS_PER_WORD * cards.length,
+            unusedCards: cards,
+            useTerm: false,
+            usedCards: [],
+        };
     }
 
-    public getLives = () => {
+    private startGame = () => {
+        this.setState({isStarted: true});
+    }
+
+    private restartGame = () => {
+        this.setState({
+            ...this.getStartState(),
+            isStarted: true,
+        });
+    }
+
+    private onTimerComplete = () => {
+        this.handleWrongAnswer(undefined);
+    }
+
+    private updateSeconds = (seconds: number) => {
+        this.setState({seconds});
+    }
+
+    private getLives = () => {
         const { livesLeft } = this.state;
 
         const result = [];
@@ -160,85 +243,6 @@ class Match extends React.Component<MatchProps, MatchState> {
         }
 
         return result;
-    }
-
-    public getBody = () => {
-        const {
-            currentCard,
-            isStarted,
-            livesLeft,
-            useTerm,
-        } = this.state;
-
-        if (!currentCard) {
-            // todo replace
-            return (
-                <div className={styles.body}>
-                    Good Job!
-                </div>
-            );
-        }
-
-        if (!isStarted) {
-            return (
-                <div className={styles.body}>
-                    <Button onClick={this.startGame} type="primary" size="large">Start Game</Button>
-                </div>
-            );
-        }
-
-        if (livesLeft <= 0) {
-            return (
-                <div className={styles.body}>
-                    You Lose!
-                </div>
-            );
-        }
-
-        return (
-            <React.Fragment>
-                <div className={styles.prompt}>
-                    {useTerm ? currentCard.front : currentCard.back}
-                </div>
-                <div className={styles.options}>
-                    {this.getOptions()}
-                </div>
-            </React.Fragment>
-        );
-    }
-
-    public renderClock = (seconds: number) => {
-        const tensMinute = Math.floor(seconds / 600);
-        const onesMinute = Math.floor(seconds / 60);
-        const tensSecond = Math.floor(seconds % 60 / 10);
-        const onesSecond = Math.floor(seconds % 60 % 10);
-        return `${tensMinute}${onesMinute}:${tensSecond}${onesSecond}`;
-    }
-
-    public render() {
-        const { className } = this.props;
-        const { points, secondsLeft } = this.state;
-
-        return (
-            <div className={classNames(styles.container, className)}>
-                <div className={styles.statusRow}>
-                    <div className={styles.lives}>
-                        {this.getLives()}
-                        <div>
-                            LIVES LEFT
-                        </div>
-                    </div>
-                    <div className={styles.timeLeft}>
-                        {this.renderClock(secondsLeft)}
-                    </div>
-                    <div className={styles.pointsContainer}>
-                        <div className={styles.points}>{points}</div>
-                        <div>POINTS</div>
-                    </div>
-                </div>
-                {this.getBody()}
-            </div>
-        );
     }
 }
 
