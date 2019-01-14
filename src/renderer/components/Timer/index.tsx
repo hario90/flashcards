@@ -55,7 +55,7 @@ class CountdownTimer extends React.Component<TimerProps, {}> {
     public render() {
         const { className, seconds } = this.props;
         return (
-            <div className={classNames(styles.container, className)}>
+            <div className={classNames(styles.container, className, {[styles.warning]: seconds < 6})}>
                 {this.renderClock(seconds)}
             </div>
         );
