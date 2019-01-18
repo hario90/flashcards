@@ -42,23 +42,27 @@ const loginLogic = createLogic({
                     next(batchActions(actions));
                     done();
                 }).catch((err: AxiosError) => {
+                    actions.push(removeRequestFromInProgress(HttpRequestType.LOGIN));
                     if (err.response) {
                         console.log("err", err.response.data);
-                        next(setAlert({
+                        actions.push(setAlert({
                             message: err.response.data,
                             type: AlertType.ERROR,
                         }));
+                        next(batchActions(actions));
                     }
                     done();
                 });
             })
             .catch((err: AxiosError) => {
+                actions.push(removeRequestFromInProgress(HttpRequestType.LOGIN));
                 if (err.response) {
                     console.log("err", err.response.data);
-                    next(setAlert({
+                    actions.push(setAlert({
                         message: err.response.data,
                         type: AlertType.ERROR,
                     }));
+                    next(batchActions(actions));
                 }
                 done();
             });
