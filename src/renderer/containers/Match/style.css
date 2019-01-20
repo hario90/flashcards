@@ -24,8 +24,11 @@
 
   & .options {
     flex: 1;
+    display: flex;
+    flex-wrap: wrap;
 
     & .button {
+      display: block;
       margin: 0 1em 1em 0;
     }
   }

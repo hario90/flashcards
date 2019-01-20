@@ -191,7 +191,7 @@ class Match extends React.Component<MatchProps, MatchState> {
         } = this.state;
 
         const options: string[] = optionCards.map((c) => useTerm ? c.back : c.front);
-        return options.map((o) => (
+        return options.map((o, i) => (
             <Button
                 key={o}
                 className={styles.button}
@@ -201,7 +201,7 @@ class Match extends React.Component<MatchProps, MatchState> {
                 ghost={true}
                 size="large"
             >
-                {o}
+                {String.fromCharCode(97 + i).toUpperCase()})&nbsp;{o}
             </Button>
         ));
     }
