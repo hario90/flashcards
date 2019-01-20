@@ -1,10 +1,10 @@
-import { Button, Icon } from "antd";
+import { Button } from "antd";
 import * as classNames from "classnames";
 import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import CountdownTimer from "../../components/Timer";
+import MatchBanner from "../../components/MatchBanner";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 import {
@@ -12,10 +12,11 @@ import {
 } from "../../state/types";
 
 const styles = require("./style.css");
-const TOTAL_LIVES = 4;
+
 const CORRECT_ANSWER_REWARD = 4;
 const SECONDS_PER_WORD = 5;
 const MAX_NUMBER_OPTIONS = 6;
+const TOTAL_LIVES = 4;
 
 interface MatchProps {
     className?: string;
@@ -43,28 +44,20 @@ class Match extends React.Component<MatchProps, MatchState> {
 
     public render() {
         const { className } = this.props;
-        const {isStarted, points, seconds } = this.state;
+        const {isStarted, livesLeft, points, seconds, unusedCards } = this.state;
         return (
             <div className={classNames(styles.container, className)}>
-                <div className={styles.statusRow}>
-                    <div className={styles.lives}>
-                        {this.getLives()}
-                        <div>
-                            LIVES LEFT
-                        </div>
-                    </div>
-                    <CountdownTimer
-                        className={styles.timeLeft}
-                        onComplete={this.onTimerComplete}
-                        seconds={seconds}
-                        updateSeconds={this.updateSeconds}
-                        isStarted={isStarted}
-                    />
-                    <div className={styles.pointsContainer}>
-                        <div className={styles.points}>{points}</div>
-                        <div>POINTS</div>
-                    </div>
-                </div>
+                <MatchBanner
+                    className={styles.statusRow}
+                    isStarted={isStarted}
+                    livesLeft={livesLeft}
+                    maxLives={TOTAL_LIVES}
+                    onTimerComplete={this.onTimerComplete}
+                    points={points}
+                    seconds={seconds}
+                    unusedCards={unusedCards}
+                    updateSeconds={this.updateSeconds}
+                />
                 {this.getBody()}
             </div>
         );
@@ -249,17 +242,7 @@ class Match extends React.Component<MatchProps, MatchState> {
         this.setState({seconds});
     }
 
-    private getLives = () => {
-        const { livesLeft } = this.state;
 
-        const result = [];
-        for (let i = 0; i < TOTAL_LIVES; i++) {
-            const color = i < livesLeft ?  "#db4369" : "#d1d2d3";
-            result.push(<Icon className={styles.life} theme="twoTone" type="heart" key={i} twoToneColor={color}/>);
-        }
-
-        return result;
-    }
 }
 
 function mapStateToProps(state: State) {

@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & .lives {
+    text-align: center;
+
+    & .life {
+      font-size: 1.5em;
+
+      &:not(:last-child) {
+        margin-right: 0.25em;
+      }
+    }
+  }
+
+  & .time-left {
+    font-size: 1.5em;
+  }
+
+  & .points-container, & .cards-left-container {
+    text-align: center;
+  }
+
+  & .points, & .cards-left {
+    font-size: 1.5em;
+  }
+}
