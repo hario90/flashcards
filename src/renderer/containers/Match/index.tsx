@@ -15,6 +15,7 @@ const styles = require("./style.css");
 const TOTAL_LIVES = 4;
 const CORRECT_ANSWER_REWARD = 4;
 const SECONDS_PER_WORD = 5;
+const MAX_NUMBER_OPTIONS = 6;
 
 interface MatchProps {
     className?: string;
@@ -30,6 +31,7 @@ interface MatchState {
     usedCards: Card[];
     unusedCards: Card[];
     guessedOptions: string[];
+    options: Card[];
     points: number;
 }
 
@@ -110,7 +112,7 @@ class Match extends React.Component<MatchProps, MatchState> {
                     {useTerm ? currentCard.front : currentCard.back}
                 </div>
                 <div className={styles.options}>
-                    {this.getOptions()}
+                    {this.renderOptions()}
                 </div>
             </React.Fragment>
         );
@@ -125,13 +127,14 @@ class Match extends React.Component<MatchProps, MatchState> {
 
         this.setState((prevState) => {
             const { points, unusedCards } = prevState;
-            const cards = [...unusedCards];
+            const cards = shuffle([...unusedCards]);
             const currentCard = cards.pop();
 
             return {
                 currentCard,
                 guessedOptions: [],
                 isStarted: !!currentCard,
+                options: this.getOptions(cards, currentCard),
                 points: !isEmpty(unusedCards) ? points + CORRECT_ANSWER_REWARD : points,
                 unusedCards: cards,
                 usedCards,
@@ -170,20 +173,31 @@ class Match extends React.Component<MatchProps, MatchState> {
         }
     }
 
-    private getOptions = () => {
-        const {
-            currentCard,
-            guessedOptions,
-            useTerm,
-            unusedCards,
-        } = this.state;
-
+    private getOptions = (unusedCards: Card[], currentCard?: Card): Card[] => {
         if (!currentCard) {
-            return;
+            return [];
         }
 
-        const optionsCards = [...unusedCards, currentCard];
-        const options: string[] = optionsCards.map((c) => useTerm ? c.back : c.front);
+        const shuffledUnusedCards = shuffle([...unusedCards]);
+        const optionCards: Card[] = [];
+        while (!isEmpty(shuffledUnusedCards) && optionCards.length < MAX_NUMBER_OPTIONS - 1) {
+            const card = shuffledUnusedCards.pop();
+            if (card) {
+                optionCards.push(card);
+            }
+        }
+        optionCards.push(currentCard);
+        return shuffle(optionCards);
+    }
+
+    private renderOptions = () => {
+        const {
+            guessedOptions,
+            options: optionCards,
+            useTerm,
+        } = this.state;
+
+        const options: string[] = optionCards.map((c) => useTerm ? c.back : c.front);
         return options.map((o) => (
             <Button
                 key={o}
@@ -201,11 +215,13 @@ class Match extends React.Component<MatchProps, MatchState> {
 
     private getStartState = () => {
         const cards = shuffle(this.props.deck.cards);
+        const currentCard = cards.pop();
         return {
-            currentCard: cards.pop(),
+            currentCard,
             guessedOptions: [],
             isStarted: false,
             livesLeft: TOTAL_LIVES,
+            options: this.getOptions(cards, currentCard),
             points: 0,
             seconds: SECONDS_PER_WORD * cards.length,
             unusedCards: cards,
