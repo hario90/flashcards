@@ -49,21 +49,25 @@ const loginLogic = createLogic({
                             message: err.response.data,
                             type: AlertType.ERROR,
                         }));
-                        next(batchActions(actions));
                     }
+                    next(batchActions(actions));
                     done();
                 });
             })
             .catch((err: AxiosError) => {
                 actions.push(removeRequestFromInProgress(HttpRequestType.LOGIN));
-                if (err.response) {
-                    console.log("err", err.response.data);
-                    actions.push(setAlert({
-                        message: err.response.data,
-                        type: AlertType.ERROR,
-                    }));
-                    next(batchActions(actions));
+                let message = "Unknown Error";
+                if (err.response && err.response.data) {
+                    message = err.response.data;
+                } else if (err.message) {
+                    message = err.message;
                 }
+
+                actions.push(setAlert({
+                    message,
+                    type: AlertType.ERROR,
+                }));
+                next(batchActions(actions));
                 done();
             });
     },
