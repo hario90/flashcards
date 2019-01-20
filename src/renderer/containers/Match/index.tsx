@@ -131,6 +131,7 @@ class Match extends React.Component<MatchProps, MatchState> {
             return {
                 currentCard,
                 guessedOptions: [],
+                isStarted: !!currentCard,
                 points: !isEmpty(unusedCards) ? points + CORRECT_ANSWER_REWARD : points,
                 unusedCards: cards,
                 usedCards,
