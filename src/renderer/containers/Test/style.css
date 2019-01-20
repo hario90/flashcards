@@ -1,3 +1,35 @@
-.container {
+@import "../../styles/colors.css";
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & .status-row {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  & .prompt, & .start-game, & .body {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    font-size: 48px;
+
+    &.you-lose {
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  & .options {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+
+    & .button {
+      display: block;
+      margin: 0 1em 1em 0;
+    }
+  }
 }

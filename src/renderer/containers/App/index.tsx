@@ -57,7 +57,7 @@ interface AppProps {
 const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map([
     [Page.Home, (className?: string) => <Home className={className}/>],
     [Page.CreateDeck, (className?: string) => <CreateDeck  className={className}/>],
-    [Page.Test, (className?: string) => <Test  className={className}/>],
+    [Page.Test, (className?: string) => <Test className={className}/>],
     [Page.Flip, (className?: string) => <Flip className={className}/>],
     [Page.Login, (className?: string) => <Login className={className}/>],
     [Page.Signup, (className?: string) => <Signup className={className}/>],
