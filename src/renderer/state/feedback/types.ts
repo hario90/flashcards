@@ -15,6 +15,7 @@ export enum AlertType {
 
 export enum HttpRequestType {
     LOGIN = 1,
+    SIGNUP,
 }
 
 export interface FeedbackStateBranch {

@@ -41,7 +41,7 @@ const loginLogic = createLogic({
                     actions.push(
                         setDecks(decksWithCards),
                         removeRequestFromInProgress(HttpRequestType.LOGIN),
-                        setPage(Page.Home),
+                        setPage(Page.Home)
                         );
                     next(batchActions(actions));
                     done();
@@ -85,9 +85,13 @@ const loginLogic = createLogic({
 });
 
 const signupLogic = createLogic({
-    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
-                next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
-        httpClient.post(`${baseApiUrl}/users/`, action.payload)
+    process: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps,
+              next: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const signupAction = action.payload.find((a: AnyAction) => a.type === SIGNUP);
+        if (!signupAction) {
+            done();
+        }
+        httpClient.post(`${baseApiUrl}/users/`, signupAction.payload)
             .then((result: AxiosResponse<User>) => {
                 console.log("result", result);
                 next(batchActions([
@@ -96,18 +100,28 @@ const signupLogic = createLogic({
                         type: AlertType.SUCCESS,
                     }),
                     setPage(Page.Login),
+                    removeRequestFromInProgress(HttpRequestType.LOGIN),
                 ]));
             })
             .catch((err: AxiosError) => {
                 if (err.response) {
                     console.log("err", err.response.data);
-                    next(setAlert({
-                        message: err.response.data,
-                        type: AlertType.ERROR,
-                    }));
+                    next(batchActions([
+                        setAlert({
+                            message: err.response.data,
+                            type: AlertType.ERROR,
+                        }),
+                        removeRequestFromInProgress(HttpRequestType.LOGIN),
+                    ]));
                 }
             })
             .then(done);
+    },
+    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        next(batchActions([
+            addRequestToInProgress(HttpRequestType.SIGNUP),
+            action,
+        ]));
     },
     type: SIGNUP,
 });
