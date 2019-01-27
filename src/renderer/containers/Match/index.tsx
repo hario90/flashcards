@@ -1,5 +1,6 @@
+import { Button } from "antd";
 import * as classNames from "classnames";
-import { includes, shuffle } from "lodash";
+import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -36,7 +37,14 @@ interface HalfCard extends Card {
 class Match extends React.Component<MatchProps, MatchState> {
     constructor(props: MatchProps) {
         super(props);
-        const fronts: MatchCard[] = props.deck.cards.map((c) => ({
+
+        this.state = {
+            cards: this.createCardsForGame(),
+        };
+    }
+
+    public createCardsForGame = () => {
+        const fronts: MatchCard[] = this.props.deck.cards.map((c) => ({
             card: {
                 back: c.front,
                 front: "",
@@ -44,7 +52,7 @@ class Match extends React.Component<MatchProps, MatchState> {
             },
             isMatched: false,
         }));
-        const backs: MatchCard[] = props.deck.cards.map((c) => ({
+        const backs: MatchCard[] = this.props.deck.cards.map((c) => ({
             card: {
                 back: c.back,
                 front: "",
@@ -53,9 +61,7 @@ class Match extends React.Component<MatchProps, MatchState> {
             isMatched: false,
         }));
 
-        this.state = {
-            cards: shuffle([...fronts, ...backs]),
-        };
+        return shuffle([...fronts, ...backs]);
     }
 
     public render() {
@@ -64,12 +70,21 @@ class Match extends React.Component<MatchProps, MatchState> {
 
         const unmatched = cards.filter((c) => !c.isMatched);
 
+        if (isEmpty(unmatched)) {
+            return (
+                <div className={styles.body}>
+                    <div>Good Job!</div>
+                    <Button type="primary" size="large" onClick={this.restartGame}>Start Over</Button>
+                </div>
+            );
+        }
+
         return (
             <div className={classNames(className, styles.container)}>
                 <div className={styles.cards}>
                     {cards.map((matchCard: MatchCard, i: number) => (
                         <TwoSidedCardPassive
-                            className={styles.card}
+                            className={classNames(styles.card, {[styles.fadeOut]: matchCard.isMatched})}
                             currentCard={matchCard.card}
                             height={180}
                             width={200}
@@ -77,8 +92,8 @@ class Match extends React.Component<MatchProps, MatchState> {
                             showTitle={false}
                             onFlip={this.handleFlip(i)}
                             isFlipped={includes([flipIndex1, flipIndex2], i)}
-                            frontColor="#b9cdf7"
-                            backColor="#f7b9f7"
+                            frontColor="#92C8A8"
+                            backColor="#C5ECAC"
                         />
                     ))}
                 </div>
@@ -124,6 +139,12 @@ class Match extends React.Component<MatchProps, MatchState> {
                 this.setState({flipIndex2: undefined});
             }
         };
+    }
+
+    private restartGame = () => {
+        this.setState({
+            cards: this.createCardsForGame(),
+        });
     }
 }
 

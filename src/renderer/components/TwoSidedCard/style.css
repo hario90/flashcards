@@ -2,6 +2,11 @@
 
 .flip-container {
   perspective: 1000px;
+  margin: 0.5em;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   & :global(.ant-card-body) {
     height: 100%;
