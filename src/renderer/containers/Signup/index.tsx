@@ -146,12 +146,14 @@ class Signup extends React.Component<SignupProps, SignupState> {
                         </div>
                     </div>
                     <Input
+                        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
                         className={styles.input}
                         onPressEnter={this.signup}
                         placeholder="First Name"
                         onChange={this.updateData("firstName")}
                     />
                     <Input
+                        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
                         className={styles.input}
                         onPressEnter={this.signup}
                         placeholder="Last Name"
