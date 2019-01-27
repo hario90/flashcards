@@ -1,0 +1,60 @@
+@import "../../styles/variables.css";
+
+.flip-container {
+  perspective: 1000px;
+  margin: 0;
+
+  & :global(.ant-card-body) {
+    height: 100%;
+    font-size: 36px;
+  }
+
+  & :global(.ant-card-head) {
+    font-size: 18px;
+  }
+
+  &.hover .flipper {
+    transform: rotateY(180deg);
+  }
+
+  & .card {
+    box-shadow: var(--box-shadow);
+    width: 100%;
+
+    & .card-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100% - 50px);
+      width: 100%;
+    }
+  }
+
+  /* flip speed goes here */
+  & .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+
+  /* hide back of pane during swap */
+  & .front, & .back {
+    backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* front pane, placed above back */
+  & .front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+  }
+
+  /* back, initially hidden pane */
+  & .back {
+    transform: rotateY(180deg);
+  }
+}
