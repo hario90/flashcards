@@ -38,7 +38,11 @@ const loginLogic = createLogic({
                             cards: cards.filter((c: CardResponse) => c.deckId === d.id),
                         };
                     });
-                    actions.push(setDecks(decksWithCards), removeRequestFromInProgress(HttpRequestType.LOGIN));
+                    actions.push(
+                        setDecks(decksWithCards),
+                        removeRequestFromInProgress(HttpRequestType.LOGIN),
+                        setPage(Page.Home),
+                        );
                     next(batchActions(actions));
                     done();
                 }).catch((err: AxiosError) => {
