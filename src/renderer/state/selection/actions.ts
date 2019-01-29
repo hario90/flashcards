@@ -1,9 +1,10 @@
-import { Card, Deck } from "../deck/types";
+import { Card } from "../deck/types";
 
 import {
     DESELECT_DECK,
     GET_NEXT_CARD,
     GET_PREVIOUS_CARD,
+    RESET_SELECTIONS,
     SELECT_DECK,
     SELECT_METADATA,
     SET_CURRENT_CARD,
@@ -75,5 +76,11 @@ export function setUnseenCards(unseenCards: Card[]) {
     return {
         payload: unseenCards,
         type: SET_UNSEEN_CARDS,
+    };
+}
+
+export function resetSelections() {
+    return {
+        type: RESET_SELECTIONS,
     };
 }

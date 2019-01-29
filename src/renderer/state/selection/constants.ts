@@ -10,3 +10,4 @@ export const SET_CURRENT_CARD = makeConstant("selection", "set-current-card");
 export const SET_SEEN_CARDS = makeConstant("selection", "set-seen-cards");
 export const SET_UNSEEN_CARDS = makeConstant("selection", "set-unseen-cards");
 export const SHUFFLE_DECK = makeConstant("selection", "shuffle-deck");
+export const RESET_SELECTIONS = makeConstant("selection", "reset-selections");

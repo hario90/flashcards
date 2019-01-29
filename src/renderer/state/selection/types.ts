@@ -57,3 +57,7 @@ export interface SetUnseenCardsAction {
     payload: Card[];
     type: string;
 }
+
+export interface ResetSelectionsAction {
+    type: string;
+}

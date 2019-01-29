@@ -8,6 +8,7 @@ import {
     GET_NEXT_CARD,
     GET_PREVIOUS_CARD,
     RESET_DECK,
+    RESET_SELECTIONS,
     SELECT_DECK,
     SELECT_METADATA, SET_CURRENT_CARD, SET_SEEN_CARDS, SET_UNSEEN_CARDS,
 } from "./constants";
@@ -16,6 +17,7 @@ import {
     GetNextCardAction,
     GetPreviousCardAction,
     ResetDeckAction,
+    ResetSelectionsAction,
     SelectDeckAction,
     SelectionStateBranch,
     SelectMetadataAction, SetCurrentCardAction, SetSeenCardsAction, SetUnseenCardsAction,
@@ -92,6 +94,12 @@ const actionToConfigMap: TypeToDescriptionMap = {
         perform: (state: SelectionStateBranch, action: SetUnseenCardsAction) => ({
             ...state,
             unseenCards: action.payload,
+        }),
+    },
+    [RESET_SELECTIONS]: {
+        accepts: (action: AnyAction): action is ResetSelectionsAction => action.type === RESET_SELECTIONS,
+        perform: () => ({
+            ...initialState,
         }),
     },
 };

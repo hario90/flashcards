@@ -2,18 +2,19 @@ import { AxiosError, AxiosResponse } from "axios";
 import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { setDecks } from "../deck/actions";
+import { clearDeck, clearDraft, setDecks } from "../deck/actions";
 import { CardResponse, RawDeck } from "../deck/types";
 
 import { addRequestToInProgress, removeRequestFromInProgress, setAlert } from "../feedback/actions";
 import { AlertType, HttpRequestType } from "../feedback/types";
 import { setPage } from "../page/actions";
 import { Page } from "../page/types";
+import { resetSelections } from "../selection/actions";
 import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
 import { batchActions } from "../util";
 
 import { setUser } from "./actions";
-import { LOGIN, SIGNUP } from "./constants";
+import { LOGIN, SIGN_OUT, SIGNUP } from "./constants";
 import { User } from "./types";
 
 const loginLogic = createLogic({
@@ -47,7 +48,11 @@ const loginLogic = createLogic({
                     done();
                 }).catch((err: AxiosError) => {
                     actions.push(removeRequestFromInProgress(HttpRequestType.LOGIN));
-                    if (err.response) {
+                    if (err.response && err.response.status === 404) {
+                        actions.push(
+                            setPage(Page.Home)
+                        );
+                    } else if (err.response && err.response.data) {
                         console.log("err", err.response.data);
                         actions.push(setAlert({
                             message: err.response.data,
@@ -126,7 +131,20 @@ const signupLogic = createLogic({
     type: SIGNUP,
 });
 
+const signoutLogic = createLogic({
+    transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        next(batchActions([
+            clearDeck(),
+            clearDraft(),
+            resetSelections(),
+            action,
+        ]));
+    },
+    type: SIGN_OUT,
+});
+
 export default [
     loginLogic,
     signupLogic,
+    signoutLogic,
 ];

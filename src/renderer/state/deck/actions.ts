@@ -1,8 +1,10 @@
 import {
+    CLEAR_DECKS,
     CLEAR_DRAFT,
     CREATE_DECK, DELETE_DECK, SAVE_DECK, SAVE_DRAFT, SET_DECKS,
 } from "./constants";
 import {
+    ClearDecksAction,
     ClearDraftAction,
     CreateDeckAction,
     Deck, DeleteDeckAction, SaveDeckAction, SaveDraftAction, SetDecksAction,
@@ -45,5 +47,11 @@ export function setDecks(payload: Deck[]): SetDecksAction {
 export function clearDraft(): ClearDraftAction {
     return {
         type: CLEAR_DRAFT,
+    };
+}
+
+export function clearDeck(): ClearDecksAction {
+    return {
+        type: CLEAR_DECKS,
     };
 }

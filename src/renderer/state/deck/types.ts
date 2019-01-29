@@ -50,3 +50,7 @@ export interface SetDecksAction {
 export interface ClearDraftAction {
     type: string;
 }
+
+export interface ClearDecksAction {
+    type: string;
+}
