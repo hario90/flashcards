@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import * as classNames from "classnames";
 import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
@@ -43,8 +43,14 @@ class Match extends React.Component<MatchProps, MatchState> {
         };
     }
 
-    public createCardsForGame = () => {
-        const fronts: MatchCard[] = this.props.deck.cards.map((c) => ({
+    public createCardsForGame = (limit?: number) => {
+        let cards = [...this.props.deck.cards];
+        if (limit) {
+            cards = shuffle(cards);
+            cards = cards.slice(0, limit / 2);
+        }
+
+        const fronts: MatchCard[] = cards.map((c) => ({
             card: {
                 back: c.front,
                 front: "",
@@ -52,7 +58,7 @@ class Match extends React.Component<MatchProps, MatchState> {
             },
             isMatched: false,
         }));
-        const backs: MatchCard[] = this.props.deck.cards.map((c) => ({
+        const backs: MatchCard[] = cards.map((c) => ({
             card: {
                 back: c.back,
                 front: "",
@@ -62,6 +68,35 @@ class Match extends React.Component<MatchProps, MatchState> {
         }));
 
         return shuffle([...fronts, ...backs]);
+    }
+
+    public onMenuItemClick = ({ key }: {key: string}) => {
+        this.restartGameWithLimit(parseInt(key, 10));
+    }
+
+    public renderMenu = () => {
+        const max = this.props.deck.cards.length * 2;
+        const min = 4;
+
+        if (max <= min) {
+            return null;
+        }
+
+        const numbers = [];
+        let i = min;
+        while (i <= max) {
+            if (i !== this.state.cards.length) {
+                numbers.push(i);
+            }
+
+            i += 2;
+        }
+
+        return (
+            <Menu onClick={this.onMenuItemClick}>
+                {numbers.map((num) => <Menu.Item key={num}>{num}</Menu.Item>)}
+            </Menu>
+        );
     }
 
     public render() {
@@ -79,8 +114,16 @@ class Match extends React.Component<MatchProps, MatchState> {
             );
         }
 
+        const menu = this.renderMenu();
+
         return (
             <div className={classNames(className, styles.container)}>
+                <div className={styles.controls}>
+                    {menu && <Dropdown overlay={menu}>
+                        <a href="#">Change number of cards</a>
+                    </Dropdown>}
+
+                </div>
                 <div className={styles.cards}>
                     {cards.map((matchCard: MatchCard, i: number) => (
                         <TwoSidedCardPassive
@@ -139,6 +182,12 @@ class Match extends React.Component<MatchProps, MatchState> {
                 this.setState({flipIndex2: undefined});
             }
         };
+    }
+
+    private restartGameWithLimit = (limit: number) => {
+        this.setState({
+            cards: this.createCardsForGame(limit),
+        });
     }
 
     private restartGame = () => {
