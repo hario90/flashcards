@@ -61,4 +61,10 @@
   & .back {
     transform: rotateY(180deg);
   }
+
+  & :global(.ant-card) {
+    & :global(.ant-card-body) {
+      padding: 12px;
+    }
+  }
 }

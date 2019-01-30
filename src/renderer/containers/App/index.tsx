@@ -31,6 +31,7 @@ import Flip from "../Flip";
 import Home from "../Home";
 import Login from "../Login";
 import Match from "../Match";
+import Profile from "../Profile";
 import Signup from "../SignUp";
 import Test from "../Test";
 
@@ -63,6 +64,7 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
     [Page.Signup, (className?: string) => <Signup className={className}/>],
     [Page.ForgotPassword, (className?: string) => <div className={className}>Forgot Password</div>],
     [Page.Match, (className?: string) => <Match className={className}/>],
+    [Page.Profile, (className?: string) => <Profile className={className}/>],
 ]);
 
 const pagesWithoutSideNav = pagesForAllUsers;
@@ -148,6 +150,7 @@ class App extends React.Component<AppProps, {}> {
                     avatarSrc={avatarSrc}
                     firstName={firstName}
                     lastName={lastName}
+                    setPage={setPageProp}
                     signOut={signOutProp}
                 />
                 <div className={styles.mainContent}>

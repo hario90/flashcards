@@ -14,6 +14,7 @@ export enum Page {
     Login,
     Signup,
     ForgotPassword,
+    Profile,
 }
 
 export interface SetPageAction {

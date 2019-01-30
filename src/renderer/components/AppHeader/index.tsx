@@ -2,7 +2,7 @@ import { Avatar, Button, Icon, Popover } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { GoBackAction, Page } from "../../state/page/types";
+import { GoBackAction, Page, SetPageAction } from "../../state/page/types";
 import { SignOutAction } from "../../state/user/types";
 
 const styles = require("./style.css");
@@ -18,6 +18,7 @@ interface AppHeaderProps {
     lastName: string;
     isLoggedIn: boolean;
     signOut: () => SignOutAction;
+    setPage: (page: Page) => SetPageAction;
 }
 
 interface AppHeaderState {
@@ -41,6 +42,11 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
 
     public signOut = () => {
         this.props.signOut();
+        this.hide();
+    }
+
+    public goToProfile = () => {
+        this.props.setPage(Page.Profile);
         this.hide();
     }
 
@@ -94,7 +100,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
 
     private popoverContent = () => (
         <React.Fragment>
-            <a className={styles.userPopoverLink} onClick={this.hide}>Profile</a>
+            <a className={styles.userPopoverLink} onClick={this.goToProfile}>Profile</a>
             <a className={styles.userPopoverLink} onClick={this.signOut}>Sign Out</a>
         </React.Fragment>
     )
