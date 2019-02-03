@@ -1,3 +1,41 @@
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  & .avatar-container {
+    flex: 0 0 auto;
+  }
+
+  & .name-read-only {
+    display: flex;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      cursor: pointer;
+
+      & .edit-icon {
+        visibility: visible;
+        opacity: 1;
+        transition: var(--transition);
+      }
+    }
+
+    & h1 {
+      margin: 0;
+      flex: 1;
+    }
+
+    & .edit-icon {
+      visibility: hidden;
+      opacity: 0;
+      transition: var(--transition);
+      flex: 0 0 auto;
+      font-size: 2em;
+      padding: 0.25em 1em;
+    }
+  }
 }
