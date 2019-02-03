@@ -1,0 +1,40 @@
+@import "../../styles/variables.css";
+
+.read-only {
+  display: flex;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    cursor: pointer;
+
+    & .edit-icon {
+      visibility: visible;
+      opacity: 1;
+      transition: var(--transition);
+    }
+  }
+
+  & span {
+    margin: 0;
+    flex: 1;
+  }
+
+  & .edit-icon {
+    padding: 0.25em 1em;
+    flex: 0 0 auto;
+
+    &.always-show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:not(.always-show) {
+      visibility: hidden;
+      opacity: 0;
+      transition: var(--transition);
+    }
+  }
+}
