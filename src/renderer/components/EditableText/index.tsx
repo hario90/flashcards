@@ -15,10 +15,12 @@ interface EditableTextProps {
     onBlur: (value: string) => void;
     placeholder?: string;
     alwaysShowEditIcon?: boolean;
+    onIsValidChange?: (isValid: boolean) => void;
 }
 
 interface EditableTextState {
     isEditing: boolean;
+    isValid: boolean;
     newValue: string;
 }
 
@@ -31,8 +33,10 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
 
     constructor(props: EditableTextProps) {
         super(props);
+        const isValid = props.type === "text" ? true : EmailInput.isEmailValid(props.value);
         this.state = {
             isEditing: false,
+            isValid,
             newValue: props.value,
         };
     }
@@ -61,9 +65,12 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
         if (type === "email") {
             return (
                 <EmailInput
+                    value={newValue}
                     onChange={this.updateValue}
                     ref={(i) => { this.input = i ? i.input : undefined; }}
                     onBlur={this.setIsEditing(false)}
+                    useDirtyCheck={false}
+                    onIsEmailValidChange={this.setIsValid}
                 />
             );
         }
@@ -94,6 +101,13 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                 this.props.onBlur(this.state.newValue);
             }
         };
+    }
+
+    private setIsValid = (isValid: boolean) => {
+        this.setState({isValid});
+        if (this.props.onIsValidChange) {
+            this.props.onIsValidChange(isValid);
+        }
     }
 }
 

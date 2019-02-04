@@ -1,14 +1,44 @@
+@import "../../styles/variables.css";
+
+:root {
+  --avatar-width: 4em;
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
 
   & .avatar-container {
+    & .avatar {
+      height: var(--avatar-width);
+      width: var(--avatar-width);
+      line-height: var(--avatar-width);
+      font-size: calc(3 * (var(--avatar-width) / 4));
+    }
+
+    & :global(.ant-avatar-lg) > * {
+      line-height: var(--avatar-width);
+    }
+  }
+
+  & .name, & .avatar-container, & .email, & .password {
     flex: 0 0 auto;
+    margin-bottom: 1rem;
   }
 
   & .name {
-    flex: 0 0 auto;
     font-size: 2em;
+  }
+
+  & .save {
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition);
+
+    &:not(.is-hidden) {
+      visibility: visible;
+      opacity: 1;
+    }
   }
 }

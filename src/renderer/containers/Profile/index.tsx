@@ -1,4 +1,4 @@
-import { Avatar } from "antd";
+import { Avatar, Button } from "antd";
 import * as classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -23,6 +23,7 @@ interface ProfileProps {
 interface ProfileState {
     emailNew: string;
     firstNameNew: string;
+    isDirty: boolean;
     lastNameNew: string;
     showPasswordInput: boolean;
 }
@@ -33,6 +34,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         this.state = {
             emailNew: props.email,
             firstNameNew: props.firstName,
+            isDirty: false,
             lastNameNew: props.lastName,
             showPasswordInput: false,
         };
@@ -40,7 +42,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 
     public render() {
         const { className } = this.props;
-        const { emailNew, firstNameNew, lastNameNew, showPasswordInput } = this.state;
+        const { emailNew, firstNameNew, isDirty, lastNameNew, showPasswordInput } = this.state;
         return (
             <div className={classNames(styles.container, className)}>
                 <div className={styles.avatarContainer}>{this.getAvatar()}</div>
@@ -59,7 +61,14 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                     alwaysShowEditIcon={true}
                     placeholder="Email"
                 />
-                <a href="#" onClick={this.changePassword}>Change Password</a>
+                <a href="#" onClick={this.changePassword} className={styles.password}>Change Password</a>
+                <Button
+                    size={"large"}
+                    disabled={!this.canSave()}
+                    className={classNames(styles.save, {[styles.isHidden]: !isDirty})}
+                >
+                    Save Changes
+                </Button>
             </div>
         );
     }
@@ -72,30 +81,50 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         } = this.props;
 
         if (avatarSrc) {
-            return <Avatar size="large" src={avatarSrc}/>;
+            return <Avatar size="large" src={avatarSrc} className={styles.avatar}/>;
         }
 
-        return <Avatar size="large">{firstName.charAt(0) + lastName.charAt(0)}</Avatar>;
+        return <Avatar size="large" className={styles.avatar}>{firstName.charAt(0) + lastName.charAt(0)}</Avatar>;
     }
 
     private updateName = (value: string) => {
         const nameParts = value
             .split(" ")
             .filter((part) => !!part);
+
         const firstNameNew = nameParts[0];
         const lastNameNew = nameParts.length > 1 ? nameParts[1] : "";
+
+        const firstNameChanged = firstNameNew !== this.props.firstName;
+        const lastNameChanged = lastNameNew !== this.props.lastName;
+        const isDirty = this.state.isDirty ? true : firstNameChanged || lastNameChanged;
+
         this.setState({
             firstNameNew,
+            isDirty,
             lastNameNew,
         });
     }
 
     private updateEmail = (value: string) => {
-        this.setState({emailNew: value});
+        const isDirty = this.state.isDirty ? true : value !== this.props.email;
+        this.setState({
+            emailNew: value,
+            isDirty,
+        });
     }
 
     private changePassword = () => {
         this.setState({showPasswordInput: true});
+    }
+
+    private canSave = () => {
+        const { firstName, lastName, email } = this.props;
+        const { firstNameNew, lastNameNew, emailNew } = this.state;
+        const firstNameChanged = firstName !== firstNameNew;
+        const lastNameChanged = lastName !== lastNameNew;
+        const emailChanged = email !== emailNew;
+        return emailChanged || firstNameChanged || lastNameChanged;
     }
 }
 
