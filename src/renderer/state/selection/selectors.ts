@@ -8,6 +8,6 @@ export const getCurrentCard = (state: State) => state.selection.currentCard;
 export const getSeenCards = (state: State) => state.selection.seenCards;
 export const getUnseenCards = (state: State) => state.selection.unseenCards;
 
-export const getDeckActionsDisabled = createSelector([
+export const getDeckActionsHidden = createSelector([
     getSelectedDeckId,
 ], (deckId?: number) => !deckId || deckId < 1);

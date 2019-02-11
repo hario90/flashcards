@@ -111,3 +111,7 @@ export const getErrorMessage = createSelector([
 
     return errorMessage;
 });
+
+export const getDeckActionsDisabled = createSelector([
+    getSelectedDeck,
+], (deck?: Deck) => !deck || isEmpty(deck.cards));

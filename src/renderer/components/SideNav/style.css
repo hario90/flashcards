@@ -21,13 +21,13 @@
       font-weight: 700;
     }
 
-    &.disabled {
+    &.hidden {
       animation: slideUp ease 500ms;
       animation-fill-mode:forwards;
       z-index: -1;
     }
 
-    &:not(.disabled) {
+    &:not(.hidden) {
       animation: slideDown ease 500ms;
       z-index: 1;
       animation-fill-mode:forwards;

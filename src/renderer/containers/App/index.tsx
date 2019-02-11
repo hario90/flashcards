@@ -8,6 +8,7 @@ import { AnyAction } from "redux";
 import AlertBody from "../../components/AlertBody";
 import AppHeader from "../../components/AppHeader";
 import SideNav from "../../components/SideNav";
+import { getDeckActionsDisabled } from "../../state/deck/selectors";
 import { clearAlert } from "../../state/feedback/actions";
 import { getAlert } from "../../state/feedback/selectors";
 import { AlertType, AppAlert } from "../../state/feedback/types";
@@ -18,7 +19,7 @@ import {
     GoBackAction,
     Page, SetPageAction,
 } from "../../state/page/types";
-import { getDeckActionsDisabled } from "../../state/selection/selectors";
+import { getDeckActionsHidden } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import { signOut } from "../../state/user/actions";
 import "../../styles/fonts.css";
@@ -51,6 +52,7 @@ interface AppProps {
     previousPage: Page;
     previousTitle: string;
     setPage: (page: Page) => SetPageAction;
+    showDeckActions: boolean;
     signOut: () => SignOutAction;
     title: string;
 }
@@ -133,6 +135,7 @@ class App extends React.Component<AppProps, {}> {
             previousPage,
             previousTitle,
             setPage: setPageProp,
+            showDeckActions,
             signOut: signOutProp,
             title,
         } = this.props;
@@ -159,6 +162,7 @@ class App extends React.Component<AppProps, {}> {
                         currentPage={page}
                         disableDeckActions={disableDeckActions}
                         setPage={setPageProp}
+                        showDeckActions={showDeckActions}
                     />}
                     {PageComponent(styles.page)}
                 </div>
@@ -178,6 +182,7 @@ function mapStateToProps(state: State) {
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
         previousTitle: getPreviousTitle(state),
+        showDeckActions: !getDeckActionsHidden(state),
         title: getTitle(state),
     };
 }
