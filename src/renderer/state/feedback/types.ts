@@ -1,9 +1,5 @@
-import { AnyAction } from "redux";
-
 export interface AppAlert {
     message: string;
-    onNo?: AnyAction;
-    onYes?: AnyAction;
     type: AlertType;
 }
 

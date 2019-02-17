@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog, Event, ipcMain } from "electron";
 import * as url from "url";
+
+import { events } from "../shared";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -51,3 +53,19 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on(events.SHOW_SAVE_DECK_MESSAGE, (event: Event) => {
+    const opts = {
+        buttons: ["Save", "Cancel"],
+        message: "Save Deck?",
+        title: "Question",
+        type: "question",
+    };
+
+    if (win) {
+        dialog.showMessageBox(win, opts, (response) => {
+            console.log(response);
+            event.sender.send(events.SAVE_DECK, response === 0);
+        });
+    }
+});

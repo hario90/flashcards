@@ -71,55 +71,38 @@ const pageComponentMap: Map<Page, (className?: string) => JSX.Element> = new Map
 
 const pagesWithoutSideNav = pagesForAllUsers;
 
+const ALERT_DURATION_SECONDS = 2;
+
 class App extends React.Component<AppProps, {}> {
     constructor(props: AppProps) {
         super(props);
     }
 
-    public dismissAlert = (): void => {
-        const { alert, dispatch } = this.props;
-        if (alert && alert.onNo) {
-            dispatch(alert.onNo);
-        }
-    }
-
-    public acceptAlert = () => {
-        const { alert, dispatch } = this.props;
-        if (alert && alert.onYes) {
-            dispatch(alert.onYes);
-        }
-    }
-
     public componentDidUpdate() {
         const { alert, dispatch } = this.props;
         if (alert) {
-            const { message: alertText, type, onNo, onYes} = alert;
+            const { message: alertText, type} = alert;
             const alertBody = (
                 <AlertBody
                     message={alertText}
-                    onNo={onNo ? this.dismissAlert : undefined}
-                    onYes={onYes ? this.acceptAlert : undefined}
                 />
             );
 
-            const dispatchClearAlert = () => dispatch(clearAlert());
             switch (type) {
                 case AlertType.WARN:
-                    message.warn(alertBody, 0, dispatchClearAlert);
+                    message.warn(alertBody, ALERT_DURATION_SECONDS);
                     break;
                 case AlertType.SUCCESS:
-                    message.success(alertBody, 2);
-                    dispatchClearAlert();
+                    message.success(alertBody, ALERT_DURATION_SECONDS);
                     break;
                 case AlertType.ERROR:
-                    message.error(alertBody, 2);
-                    dispatchClearAlert();
+                    message.error(alertBody, ALERT_DURATION_SECONDS);
                     break;
                 default:
-                    message.info(alertBody, 2);
-                    dispatchClearAlert();
+                    message.info(alertBody, ALERT_DURATION_SECONDS);
                     break;
             }
+            dispatch(clearAlert());
         }
     }
 

@@ -1,18 +1,18 @@
+import { Event, ipcRenderer } from "electron";
 import { isEmpty, shuffle } from "lodash";
 import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { clearDraft, saveDraft, setDecks } from "../deck/actions";
-import { SAVE_DECK } from "../deck/constants";
+import { events } from "../../../shared";
+
+import { clearDraft, saveDeck, saveDraft, setDecks } from "../deck/actions";
 import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
 
 import { CardResponse, Deck, RawDeck } from "../deck/types";
-import { clearAlert, setAlert } from "../feedback/actions";
-import { AlertType } from "../feedback/types";
 import { deselectDeck, setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
 
 import {
-    ReduxLogicDeps,
+    ReduxLogicDeps, ReduxLogicDoneCb,
     ReduxLogicNextCb,
 } from "../types";
 import { getUser } from "../user/selectors";
@@ -27,7 +27,19 @@ const EMPTY_CARD = {
     back: "",
     front: "",
 };
+
 const setPageLogic = createLogic({
+    process: ({ getState, action }: ReduxLogicDeps, dispatch: ReduxLogicNextCb, done: ReduxLogicDoneCb) => {
+        const state = getState();
+        const currentPage: Page = getSelectedPage(state);
+        const unsavedChangesExist: boolean = unsavedChanges(state);
+
+        if (currentPage === Page.CreateDeck && unsavedChangesExist) {
+            dispatch(saveDeck());
+        }
+
+        done();
+    },
     transform: ({ getState, action, httpClient, baseApiUrl }: ReduxLogicDeps, next: ReduxLogicNextCb) => {
         const actions: AnyAction[] = [];
         const selectedDeck: Deck | undefined = getSelectedDeck(getState());
@@ -35,16 +47,14 @@ const setPageLogic = createLogic({
         const unsavedChangesExist: boolean = unsavedChanges(getState());
 
         if (currentPage === Page.CreateDeck && unsavedChangesExist) {
-            actions.push(
-                setAlert({
-                    message: "Save Deck?",
-                    onNo: batchActions([action, clearDraft(), clearAlert()]),
-                    onYes: { type: SAVE_DECK },
-                    type: AlertType.WARN,
-                }),
-                setNextPage(action.payload)
-            );
-            next(batchActions(actions));
+            ipcRenderer.send(events.SHOW_SAVE_DECK_MESSAGE);
+            ipcRenderer.on(events.SAVE_DECK, (event: Event, saveClicked: boolean) => {
+                if (saveClicked) {
+                    next(setNextPage(action.payload));
+                } else {
+                    next(batchActions([action, clearDraft(), setPage(action.payload)]));
+                }
+            });
         } else if (action.payload === Page.Flip && selectedDeck) {
             actions.push(
                 action,

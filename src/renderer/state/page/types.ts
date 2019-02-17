@@ -5,16 +5,16 @@ export interface PageStateBranch {
 }
 
 export enum Page {
-    Home,
-    CreateDeck,
-    Flip,
-    Match,
-    Test,
-    Share,
-    Login,
-    Signup,
-    ForgotPassword,
-    Profile,
+    Home = "Home",
+    CreateDeck = "Create Deck",
+    Flip = "Flip",
+    Match = "Match",
+    Test = "Test",
+    Share = "Share",
+    Login = "Login",
+    Signup = "Signup",
+    ForgotPassword = "Forgot Password",
+    Profile = "Profile",
 }
 
 export interface SetPageAction {

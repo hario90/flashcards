@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import { isEmpty, shuffle } from "lodash";
 import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
@@ -88,12 +88,15 @@ const saveDeckLogic = createLogic({
         }
 
         const errorMessage = getErrorMessage(getState());
-        message.destroy();
+        message.destroy(); // todo remove and set max messages to 1?
         if (errorMessage) {
-            next(setAlert({
-                message: errorMessage,
-                type: AlertType.ERROR,
-            }));
+            next(batchActions([
+                setAlert({
+                    message: errorMessage,
+                    type: AlertType.ERROR,
+                }),
+                clearNextPage(),
+            ]));
             done();
         } else {
             const ids = decks.map((deck: Deck) => deck.id);
