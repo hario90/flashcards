@@ -4,7 +4,6 @@ import {
     Icon,
     Input,
 } from "antd";
-import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -154,7 +153,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         const { cards, name } = draft;
         const {  editingTitle, error } = this.state;
         return (
-            <div className={classNames(className)}>
+            <div className={className}>
                 <div className={styles.titleRow}>
                     {(editingTitle || !name) ? (
                         <LineInput
