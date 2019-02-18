@@ -70,8 +70,6 @@
 
 @media (min-width: 768px) {
     .title-row {
-        & .title-input {
-            margin: 1em;
-        }
+        margin-bottom: 1em;
     }
 }
