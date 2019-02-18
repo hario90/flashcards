@@ -82,6 +82,12 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
         }
     }
 
+    public componentDidMount() {
+        if (this.frontInput && this.state.isFrontEditable) {
+            this.frontInput.focus();
+        }
+    }
+
     public render() {
         const { card, className, index } = this.props;
         const { isBackEditable, isFrontEditable } = this.state;

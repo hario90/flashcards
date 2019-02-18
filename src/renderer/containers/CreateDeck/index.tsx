@@ -149,6 +149,11 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             this.onSavePressed();
             return false;
         });
+
+        Mousetrap.bind(["command+n", "ctrl+n"], () => {
+           this.addCard();
+           return false;
+        });
     }
 
     public componentDidUpdate(prevProps: DeckProps, prevState: DeckState): void {
