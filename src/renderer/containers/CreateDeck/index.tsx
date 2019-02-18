@@ -5,6 +5,7 @@ import {
     Input,
 } from "antd";
 import { isEmpty } from "lodash";
+import * as Mousetrap from "mousetrap";
 import { ChangeEvent } from "react";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -79,8 +80,10 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public onSavePressed = (): void => {
-        this.setState({editingTitle: false});
-        this.props.saveDeck();
+        if (this.props.enableSave) {
+            this.setState({editingTitle: false});
+            this.props.saveDeck();
+        }
     }
 
     public updateFront = (cardIndex: number, front: string): void => {
@@ -141,6 +144,11 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         if (this.firstInput) {
             this.firstInput.focus();
         }
+
+        Mousetrap.bind(["command+s", "ctrl+s"], () => {
+            this.onSavePressed();
+            return false;
+        });
     }
 
     public componentDidUpdate(prevProps: DeckProps, prevState: DeckState): void {

@@ -22,6 +22,7 @@
     "@types/axios": "^0.14.0",
     "@types/chai": "^4.1.4",
     "@types/electron": "^1.6.10",
+    "@types/mousetrap": "^1.6.1",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
     "@types/react-redux": "^6.0.4",
@@ -64,6 +65,7 @@
     "classnames": "^2.2.6",
     "core-js": "^2.5.7",
     "lodash": "^4.17.10",
+    "mousetrap": "^1.6.2",
     "react-hot-loader": "^4.3.4",
     "redux-logic": "^0.15.0",
     "reselect": "^3.0.1"
