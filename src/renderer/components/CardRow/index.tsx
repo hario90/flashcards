@@ -23,8 +23,8 @@ interface CardRowState {
 }
 
 class CardRow extends React.Component<CardRowProps, CardRowState>  {
-    private frontInput?: Input;
-    private backInput?: Input;
+    public frontInput?: Input;
+    public backInput?: Input;
 
     constructor(props: CardRowProps) {
         super(props);
@@ -61,14 +61,6 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
         deleteCard(index);
     }
 
-    public componentDidUpdate(prevProps: CardRowProps, prevState: CardRowState): void {
-        if (this.frontInput && prevState.isFrontEditable !== this.state.isFrontEditable) {
-            this.frontInput.focus();
-        } else if (this.backInput && prevState.isBackEditable !== this.state.isBackEditable) {
-            this.backInput.focus();
-        }
-    }
-
     public makeEditable = (isFront: boolean, isEditable: boolean) => {
         const { card } = this.props;
         if (isFront) {
@@ -87,18 +79,6 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
 
                 this.setState({ isBackEditable: isEditable });
             };
-        }
-    }
-
-    public componentDidMount() {
-        if (this.backInput) {
-            this.backInput.blur();
-        }
-
-        // todo get this to work
-        if (this.frontInput && this.props.index === 0) {
-            console.log(this.frontInput.focus);
-            this.frontInput.focus();
         }
     }
 

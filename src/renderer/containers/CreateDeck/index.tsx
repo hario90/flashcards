@@ -48,6 +48,7 @@ const EMPTY_CARD = {
 class CreateDeck extends React.Component<DeckProps, DeckState> {
     private readonly editing: boolean = false;
     private nameInput?: Input;
+    private firstInput?: Input;
 
     constructor(props: DeckProps) {
         super(props);
@@ -137,8 +138,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     }
 
     public componentDidMount(): void {
-        if (this.nameInput) {
-            this.nameInput.focus();
+        if (this.firstInput) {
+            this.firstInput.focus();
         }
     }
 
@@ -191,16 +192,34 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         type="error"
                         showIcon={true}
                     />}
-                    {cards.map((card: Card, i: number) => (
-                        <CardRow
-                            updateFront={this.updateFront}
-                            updateBack={this.updateBack}
-                            deleteCard={this.deleteCard}
-                            key={i}
-                            index={i}
-                            card={card}
-                        />
-                    ))}
+                    {cards.map((card: Card, i: number) => {
+                        if (i === 0) {
+                            return (
+                                <CardRow
+                                    updateFront={this.updateFront}
+                                    updateBack={this.updateBack}
+                                    deleteCard={this.deleteCard}
+                                    key={i}
+                                    index={i}
+                                    card={card}
+                                    ref={(row) => {
+                                        this.firstInput = row ? row.frontInput : undefined;
+                                    }}
+                                />
+                            );
+                        }
+
+                        return (
+                            <CardRow
+                                updateFront={this.updateFront}
+                                updateBack={this.updateBack}
+                                deleteCard={this.deleteCard}
+                                key={i}
+                                index={i}
+                                card={card}
+                            />
+                        );
+                    })}
                     <div className={styles.addCard} onClick={this.addCard}>
                         <Icon type="plus" className={styles.plus}/>Add Card
                     </div>

@@ -93,6 +93,9 @@ const setPageLogic = createLogic({
                 });
                 actions.push(setDecks(decksWithCards));
                 next(batchActions(actions));
+            }).catch((err) => {
+                console.log(err);
+                next(action);
             });
         } else {
             actions.push(action);
