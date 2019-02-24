@@ -72,6 +72,10 @@
     }
 }
 
+.add-card-shortcut-hint {
+    @apply --shortcut;
+}
+
 @media (min-width: 768px) {
     .title-row {
         margin-bottom: 1em;

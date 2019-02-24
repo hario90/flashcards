@@ -240,7 +240,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         );
                     })}
                     <div className={styles.addCard} onClick={this.addCard}>
-                        <Icon type="plus" className={styles.plus}/>Add Card
+                        <Icon type="plus" className={styles.plus}/>Add Card&nbsp;
+                        <div className={classNames(styles.addCardShortcutHint, styles.visible)}>{getCtrlOrCmd()}+N</div>
                     </div>
                 </div>
             </div>
