@@ -11,3 +11,12 @@ export function bindAll<T>(obj: T, methods: Array<() => any>) {
         }
     });
 }
+
+export function getCtrlOrCmd(): string {
+    switch (process.platform) {
+        case "darwin":
+            return "⌘";
+        default:
+            return "Ctrl";
+    }
+}

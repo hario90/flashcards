@@ -1,4 +1,16 @@
 :root {
   --box-shadow: 5px 6px 5px 0px rgba(173,173,173,0.4);
   --transition: visibility 800s linear 800ms, opacity 800ms;
+  --shortcut: {
+    text-align: center;
+    color: var(--grey);
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition);
+
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 }

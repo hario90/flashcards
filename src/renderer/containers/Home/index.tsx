@@ -26,6 +26,7 @@ import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
+import { getCtrlOrCmd } from "../../util/index";
 
 const styles = require("./style.css");
 interface HomeProps {
@@ -42,6 +43,7 @@ interface HomeState {
     error: string;
     showAlert: boolean;
     deckToDelete?: number;
+    showNewDeckShortcut: boolean;
 }
 
 class Home extends React.Component<HomeProps, HomeState> {
@@ -49,6 +51,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         deckName: "",
         error: "",
         showAlert: false,
+        showNewDeckShortcut: true,
     };
 
     constructor(props: HomeProps) {
@@ -59,6 +62,8 @@ class Home extends React.Component<HomeProps, HomeState> {
         this.showAlert = this.showAlert.bind(this);
         this.deleteDeck = this.deleteDeck.bind(this);
         this.clearDeckToDelete = this.clearDeckToDelete.bind(this);
+        this.onDeckNameInputBlur = this.onDeckNameInputBlur.bind(this);
+        this.onDeckNameInputFocus = this.onDeckNameInputFocus.bind(this);
     }
 
     public selectDeck(deck: Deck): void {
@@ -112,7 +117,7 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     public render() {
         const { className } = this.props;
-        const { error, showAlert } = this.state;
+        const { error, showAlert, showNewDeckShortcut } = this.state;
         const alertButtons = (
             <div className={styles.alertButtonRow}>
                 <div onClick={this.clearDeckToDelete}>Cancel</div>
@@ -126,18 +131,24 @@ class Home extends React.Component<HomeProps, HomeState> {
                         placeholder="Deck Name"
                         className={styles.deckInput}
                         value={this.state.deckName}
+                        onBlur={this.onDeckNameInputBlur}
+                        onFocus={this.onDeckNameInputFocus}
                         onChange={this.updateDeckName}
                         onPressEnter={this.createDeck}
                         label="title"
                     />
-                    <Button
-                        className={styles.createDeckBtn}
-                        type="primary"
-                        size="large"
-                        onClick={this.createDeck}
-                    >
-                        New Deck
-                    </Button>
+                    <div className={styles.createDeckBtn}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            onClick={this.createDeck}
+                        >
+                            New Deck
+                        </Button>
+                        <div className={classNames(styles.shortcutHint, {[styles.visible]: showNewDeckShortcut})}>
+                            {getCtrlOrCmd()}+N
+                        </div>
+                    </div>
                 </div>
                 {showAlert && <Alert
                     message="Are you sure you want to delete this deck?"
@@ -178,6 +189,14 @@ class Home extends React.Component<HomeProps, HomeState> {
                     />))}
             </div>
         );
+    }
+
+    private onDeckNameInputBlur(): void {
+        this.setState({showNewDeckShortcut: false});
+    }
+
+    private onDeckNameInputFocus(): void {
+        this.setState({showNewDeckShortcut: true});
     }
 }
 

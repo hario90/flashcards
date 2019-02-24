@@ -11,6 +11,7 @@ interface LineInputProps {
     placeholder?: string;
     value?: string;
     onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
+    onFocus?: (event: ChangeEvent<HTMLInputElement>) => void;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onPressEnter?: () => void;
 }
@@ -34,6 +35,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
             className,
             label,
             onBlur,
+            onFocus,
             onChange,
             onPressEnter,
             placeholder,
@@ -46,6 +48,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
                     placeholder={placeholder || ""}
                     value={value}
                     onBlur={onBlur}
+                    onFocus={onFocus}
                     onChange={onChange}
                     onPressEnter={onPressEnter}
                     className={classNames(className, "mousetrap")}
