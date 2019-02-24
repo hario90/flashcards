@@ -36,3 +36,18 @@
         }
     }
 }
+
+:global(.ant-popover-inner) {
+    border: var(--border);
+}
+
+:global(.ant-popover-placement-bottomRight) {
+    & :global(.ant-popover-arrow) {
+        border-top: var(--border);
+        border-left: var(--border);
+    }
+}
+
+:global(.ant-menu-vertical) {
+    border-right: none;
+}

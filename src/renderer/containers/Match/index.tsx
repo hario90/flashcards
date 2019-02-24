@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Menu, Popover } from "antd";
 import * as classNames from "classnames";
 import { includes, isEmpty, shuffle } from "lodash";
 import * as React from "react";
@@ -119,9 +119,9 @@ class Match extends React.Component<MatchProps, MatchState> {
         return (
             <div className={classNames(className, styles.container)}>
                 <div className={styles.controls}>
-                    {menu && <Dropdown overlay={menu}>
+                    {menu && <Popover content={menu} trigger="click">
                         <a href="#">Change number of cards</a>
-                    </Dropdown>}
+                    </Popover>}
 
                 </div>
                 <div className={styles.cards}>
