@@ -4,6 +4,7 @@ import {
     Icon,
     Input,
 } from "antd";
+import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as Mousetrap from "mousetrap";
 import { ChangeEvent } from "react";
@@ -22,6 +23,7 @@ import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
+import { getCtrlOrCmd } from "../../util/index";
 
 const styles = require("./style.css");
 
@@ -188,15 +190,19 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                             />
                         </div>
                     )}
-                    <Button
-                        className={styles.saveButton}
-                        type="primary"
-                        onClick={this.onSavePressed}
-                        size="large"
-                        disabled={!enableSave}
-                    >
-                        Save
-                    </Button>
+                    <div className={styles.saveButton}>
+                        <Button
+                            type="primary"
+                            onClick={this.onSavePressed}
+                            size="large"
+                            disabled={!enableSave}
+                        >
+                            Save
+                        </Button>
+                        <div className={classNames(styles.shortcutHint, {[styles.visible]: enableSave})}>
+                            {getCtrlOrCmd()}+S
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.cards}>
                     {error && <Alert

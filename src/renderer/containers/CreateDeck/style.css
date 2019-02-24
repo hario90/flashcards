@@ -44,6 +44,10 @@
 
     & .save-button {
         flex: 0 0 auto;
+
+        & .shortcutHint {
+            @apply --shortcut;
+        }
     }
 }
 

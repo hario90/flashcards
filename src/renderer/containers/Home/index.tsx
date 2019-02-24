@@ -146,7 +146,7 @@ class Home extends React.Component<HomeProps, HomeState> {
                             New Deck
                         </Button>
                         <div className={classNames(styles.shortcutHint, {[styles.visible]: showNewDeckShortcut})}>
-                            {getCtrlOrCmd()}+N
+                            Enter
                         </div>
                     </div>
                 </div>
