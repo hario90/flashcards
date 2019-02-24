@@ -24,6 +24,12 @@ class TwoSidedCard extends React.Component<TwoSidedCardProps, TwoSidedCardState>
         this.flipCard = this.flipCard.bind(this);
     }
 
+    public componentDidUpdate(prevProps: TwoSidedCardProps) {
+        if (prevProps.currentCard !== this.props.currentCard) {
+            this.setState({showFront: true});
+        }
+    }
+
     public render() {
         const { className, currentCard } = this.props;
         const { showFront } = this.state;
