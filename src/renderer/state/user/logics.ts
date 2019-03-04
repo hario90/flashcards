@@ -14,7 +14,8 @@ import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
 import { batchActions } from "../util";
 
 import { setUser } from "./actions";
-import { LOGIN, SIGN_OUT, SIGNUP } from "./constants";
+import { LOGIN, SIGN_OUT, SIGNUP, UPDATE_USER } from "./constants";
+import { getUserId } from "./selectors";
 import { User } from "./types";
 
 const loginLogic = createLogic({
@@ -143,8 +144,34 @@ const signoutLogic = createLogic({
     type: SIGN_OUT,
 });
 
+const updateUserLogic = createLogic({
+    process: ({httpClient, getState, baseApiUrl}: ReduxLogicDeps, dispatch: ReduxLogicNextCb,
+              done: ReduxLogicDoneCb) => {
+        const userId = getUserId(getState());
+        httpClient
+            .put(`${baseApiUrl}/user/${userId}`)
+            .then((resp: AxiosResponse) => {
+                dispatch(batchActions([
+                    removeRequestFromInProgress(HttpRequestType.UPDATE_USER),
+                    setUser(resp.data),
+                ]));
+            })
+            .catch((err) => {
+                // set an error message.
+                // tslint:ignore-next-line
+                console.log(err);
+            })
+            .then(done);
+    },
+    transform: (deps: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        next(addRequestToInProgress(HttpRequestType.UPDATE_USER));
+    },
+    type: UPDATE_USER,
+});
+
 export default [
     loginLogic,
     signupLogic,
     signoutLogic,
+    updateUserLogic,
 ];

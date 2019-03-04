@@ -1,14 +1,20 @@
-import { Avatar, Button } from "antd";
+import { Avatar, Button, Modal } from "antd";
 import * as classNames from "classnames";
+import { ChangeEvent } from "react";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import EditableText from "../../components/EditableText/index";
+import LineInput from "../../components/LineInput/index";
+import { getRequestsInProgressContains } from "../../state/feedback/selectors";
+import { HttpRequestType } from "../../state/feedback/types";
 
 import {
     State,
 } from "../../state/types";
+import { updateUser } from "../../state/user/actions";
 import { getAvatarSrc, getEmail, getFirstName, getLastName } from "../../state/user/selectors";
+import { UpdateUserAction, UpdateUserRequest } from "../../state/user/types";
 
 const styles = require("./style.css");
 
@@ -18,6 +24,8 @@ interface ProfileProps {
     firstName: string;
     lastName: string;
     email: string;
+    saveChanges: (payload: UpdateUserRequest) => UpdateUserAction;
+    saveInProgress: boolean;
 }
 
 interface ProfileState {
@@ -25,7 +33,8 @@ interface ProfileState {
     firstNameNew: string;
     isDirty: boolean;
     lastNameNew: string;
-    showPasswordInput: boolean;
+    password: string;
+    showPasswordModal: boolean;
 }
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
@@ -36,13 +45,31 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
             firstNameNew: props.firstName,
             isDirty: false,
             lastNameNew: props.lastName,
-            showPasswordInput: false,
+            password: "",
+            showPasswordModal: false,
         };
     }
 
+    public componentDidUpdate(prevProps: ProfileProps) {
+        // todo don't do this if there was an error when saving
+        if (prevProps.saveInProgress && !this.props.saveInProgress) {
+            this.setState({
+                password: "",
+                showPasswordModal: false,
+            });
+        }
+    }
+
     public render() {
-        const { className } = this.props;
-        const { emailNew, firstNameNew, isDirty, lastNameNew, showPasswordInput } = this.state;
+        const { className, saveInProgress } = this.props;
+        const {
+            emailNew,
+            firstNameNew,
+            isDirty,
+            lastNameNew,
+            password,
+            showPasswordModal,
+        } = this.state;
         return (
             <div className={classNames(styles.container, className)}>
                 <div className={styles.avatarContainer}>{this.getAvatar()}</div>
@@ -62,13 +89,30 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                     placeholder="Email"
                 />
                 <a href="#" onClick={this.changePassword} className={styles.password}>Change Password</a>
+
                 <Button
                     size={"large"}
                     disabled={!this.canSave()}
                     className={classNames(styles.save, {[styles.isHidden]: !isDirty})}
+                    onClick={this.showPasswordModal}
                 >
                     Save Changes
                 </Button>
+                <Modal
+                    title="Enter Password To Continue"
+                    visible={showPasswordModal}
+                    onOk={this.save}
+                    onCancel={this.cancelSave}
+                    confirmLoading={saveInProgress}
+                >
+                    <LineInput
+                        onChange={this.enterCurrentPassword}
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        className={classNames(styles.currentPassword, {[styles.isHidden]: !showPasswordModal})}
+                    />
+                </Modal>
             </div>
         );
     }
@@ -114,8 +158,14 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         });
     }
 
+    private enterCurrentPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            password: e.target.value,
+        });
+    }
+
     private changePassword = () => {
-        this.setState({showPasswordInput: true});
+        // this.setState({showPasswordModal: true});
     }
 
     private canSave = () => {
@@ -126,6 +176,32 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         const emailChanged = email !== emailNew;
         return emailChanged || firstNameChanged || lastNameChanged;
     }
+
+    private save = () => {
+        // todo password?
+        const {
+            firstNameNew: firstName,
+            lastNameNew: lastName,
+            emailNew: email,
+        } = this.state;
+        const user: UpdateUserRequest = {
+            email,
+            firstName,
+            lastName,
+        };
+        this.props.saveChanges(user);
+    }
+
+    private cancelSave = () => {
+        this.setState({
+            password: "",
+            showPasswordModal: false,
+        });
+    }
+
+    private showPasswordModal = () => {
+        this.setState({showPasswordModal: true});
+    }
 }
 
 function mapStateToProps(state: State) {
@@ -134,9 +210,12 @@ function mapStateToProps(state: State) {
         email: getEmail(state),
         firstName: getFirstName(state),
         lastName: getLastName(state),
+        saveInProgress: getRequestsInProgressContains(state, HttpRequestType.UPDATE_USER),
     };
 }
 
-const dispatchToPropsMap = {};
+const dispatchToPropsMap = {
+    saveChanges: updateUser,
+};
 
 export default connect(mapStateToProps, dispatchToPropsMap)(Profile);

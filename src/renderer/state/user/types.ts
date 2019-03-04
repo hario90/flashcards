@@ -40,3 +40,15 @@ export interface SetUserAction {
 export interface SignOutAction {
     type: string;
 }
+
+export interface UpdateUserAction {
+    payload: UpdateUserRequest;
+    type: string;
+}
+
+export interface UpdateUserRequest {
+    email?: string;
+    password?: string;
+    firstName?: string;
+    lastName?: string;
+}

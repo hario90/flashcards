@@ -1,5 +1,6 @@
 import { Input } from "antd";
 import * as classNames from "classnames";
+import { noop } from "lodash";
 import { ChangeEvent } from "react";
 import * as React from "react";
 
@@ -9,6 +10,7 @@ interface LineInputProps {
     className?: string;
     label?: string;
     placeholder?: string;
+    type?: "text" | "email" | "password";
     value?: string;
     onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
     onFocus?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -17,6 +19,10 @@ interface LineInputProps {
 }
 
 class LineInput extends React.Component<LineInputProps, {}> {
+    private static defaultProps: LineInputProps = {
+        onChange: noop,
+        type: "text",
+    };
     public input?: Input;
 
     constructor(props: LineInputProps) {
@@ -39,6 +45,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
             onChange,
             onPressEnter,
             placeholder,
+            type,
             value,
         } = this.props;
 
@@ -46,6 +53,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
             <div className={classNames(className, styles.container)}>
                 <Input
                     placeholder={placeholder || ""}
+                    type={type}
                     value={value}
                     onBlur={onBlur}
                     onFocus={onFocus}

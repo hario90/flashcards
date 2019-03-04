@@ -1,5 +1,5 @@
-import { LOGIN, SET_USER, SIGN_OUT, SIGNUP } from "./constants";
-import { LoginAction, User } from "./types";
+import { LOGIN, SET_USER, SIGN_OUT, SIGNUP, UPDATE_USER } from "./constants";
+import { LoginAction, UpdateUserRequest, User } from "./types";
 
 export function login(email: string, password: string): LoginAction {
     return {
@@ -12,6 +12,13 @@ export function setUser(user: User) {
     return {
         payload: user,
         type: SET_USER,
+    };
+}
+
+export function updateUser(payload: UpdateUserRequest) {
+    return {
+        payload,
+        type: UPDATE_USER,
     };
 }
 
