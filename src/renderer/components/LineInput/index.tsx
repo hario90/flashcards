@@ -60,7 +60,7 @@ class LineInput extends React.Component<LineInputProps, {}> {
                     onChange={onChange}
                     onPressEnter={onPressEnter}
                     className={classNames(className, "mousetrap")}
-                    ref={(input) => { this.input = input || undefined; }}
+                    ref={(input: Input) => { this.input = input || undefined; }}
                 />
                 <div className={styles.label}>{label && label.toUpperCase()}</div>
             </div>

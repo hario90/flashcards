@@ -8,6 +8,7 @@ import { AnyAction } from "redux";
 import AlertBody from "../../components/AlertBody";
 import AppHeader from "../../components/AppHeader";
 import SideNav from "../../components/SideNav";
+import { State } from "../../state";
 import { getDeckActionsDisabled } from "../../state/deck/selectors";
 import { clearAlert } from "../../state/feedback/actions";
 import { getAlert } from "../../state/feedback/selectors";
@@ -20,9 +21,7 @@ import {
     Page, SetPageAction,
 } from "../../state/page/types";
 import { getDeckActionsHidden } from "../../state/selection/selectors";
-import { State } from "../../state/types";
 import { signOut } from "../../state/user/actions";
-import "../../styles/fonts.css";
 import { getAvatarSrc, getFirstName, getLastName, getUserIsLoggedIn } from "../../state/user/selectors";
 import { SignOutAction } from "../../state/user/types";
 

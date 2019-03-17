@@ -32,12 +32,9 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
             isBackEditable: true,
             isFrontEditable: true,
         };
-        this.updateFront = this.updateFront.bind(this);
-        this.updateBack = this.updateBack.bind(this);
-        this.deleteCard = this.deleteCard.bind(this);
     }
 
-    public updateFront(event: ChangeEvent<HTMLInputElement>): void {
+    public updateFront = (event: ChangeEvent<HTMLInputElement>): void => {
         const {
             index,
             updateFront,
@@ -45,7 +42,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
         updateFront(index, event.target.value);
     }
 
-    public updateBack(event: ChangeEvent<HTMLInputElement>): void {
+    public updateBack = (event: ChangeEvent<HTMLInputElement>): void => {
         const {
             index,
             updateBack,
@@ -53,7 +50,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
         updateBack(index, event.target.value);
     }
 
-    public deleteCard(): void {
+    public deleteCard = (): void => {
         const {
             deleteCard,
             index,
@@ -102,7 +99,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         onChange={this.updateFront}
                         placeholder="Enter term"
                         label="term"
-                        ref={(input) => { this.frontInput = input ? input.input : undefined; }}
+                        ref={(input: LineInput) => { this.frontInput = input ? input.input : undefined; }}
                         onBlur={this.makeEditable(true, false)}
                     />
                 ) : (
@@ -121,7 +118,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         onChange={this.updateBack}
                         placeholder="Enter definition"
                         label="definition"
-                        ref={(input) => { this.backInput = input ? input.input : undefined; }}
+                        ref={(input: LineInput) => { this.backInput = input ? input.input : undefined; }}
                         onBlur={this.makeEditable(false, false)}
                     />
                 ) : (

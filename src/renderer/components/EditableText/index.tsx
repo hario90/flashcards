@@ -67,7 +67,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                 <EmailInput
                     value={newValue}
                     onChange={this.updateValue}
-                    ref={(i) => { this.input = i ? i.input : undefined; }}
+                    ref={(i: EmailInput) => { this.input = i ? i.input : undefined; }}
                     onBlur={this.setIsEditing(false)}
                     useDirtyCheck={false}
                     onIsEmailValidChange={this.setIsValid}
@@ -80,7 +80,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                 placeholder={placeholder}
                 onChange={this.updateValue}
                 value={newValue}
-                ref={(i) => { this.input = i ? i.input : undefined; }}
+                ref={(i: LineInput) => { this.input = i ? i.input : undefined; }}
                 onBlur={this.setIsEditing(false)}
             />
         );

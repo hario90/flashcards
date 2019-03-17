@@ -79,10 +79,9 @@ class SideNav extends React.Component<SideNavProps, {}> {
     constructor(props: SideNavProps) {
         super(props);
         this.state = {};
-        this.navigate = this.navigate.bind(this);
     }
 
-    public navigate(page: Page, disabled: boolean, hidden: boolean): () => void {
+    public navigate = (page: Page, disabled: boolean, hidden: boolean): () => void => {
         return disabled || hidden ? noop : () => {
             this.props.setPage(page);
         };

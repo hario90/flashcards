@@ -89,7 +89,7 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
                     placeholder="Email"
                     onBlur={this.onBlur}
                     className={classNames(styles.input, {[styles.error]: !!error && isDirty})}
-                    ref={(input) => { this.input = input || undefined; }}
+                    ref={(input: Input) => { this.input = input || undefined; }}
                     value={value}
                 />
                 {error && (!useDirtyCheck || isDirty) && <div className={styles.error}>{error}</div>}

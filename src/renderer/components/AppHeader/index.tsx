@@ -31,7 +31,6 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
         this.state = {
             profileTooltipVisible: false,
         };
-        this.goBack = this.goBack.bind(this);
     }
 
     public hide = () => {
@@ -94,7 +93,7 @@ class AppHeader extends React.Component<AppHeaderProps, AppHeaderState> {
         );
     }
 
-    public goBack(): void {
+    public goBack = (): void => {
         this.props.goBack();
     }
 
