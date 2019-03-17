@@ -6,7 +6,7 @@ import * as React from "react";
 import EmailInput from "../EmailInput/index";
 import LineInput from "../LineInput/index";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface EditableTextProps {
     className?: string;
@@ -25,11 +25,11 @@ interface EditableTextState {
 }
 
 class EditableText extends React.Component<EditableTextProps, EditableTextState> {
-    private static defaultProps = {
+    public static defaultProps = {
         type: "text",
     };
 
-    private input?: Input;
+    public input?: Input;
 
     constructor(props: EditableTextProps) {
         super(props);

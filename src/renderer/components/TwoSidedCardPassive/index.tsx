@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Card } from "../../state/deck/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface TwoSidedCardPassiveProps {
     className?: string;
@@ -21,13 +21,14 @@ interface TwoSidedCardPassiveProps {
 }
 
 class TwoSidedCardPassive extends React.Component<TwoSidedCardPassiveProps, {}> {
-    private static defaultProps: Partial<TwoSidedCardPassiveProps> = {
+    public static defaultProps: Partial<TwoSidedCardPassiveProps> = {
         disabled: false,
         height: 300,
         isFlipped: false,
         showTitle: true,
         width: 320,
     };
+
     constructor(props: TwoSidedCardPassiveProps) {
         super(props);
         this.state = {

@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { Page, SetPageAction } from "../../state/page/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface SideNavProps {
     className?: string;

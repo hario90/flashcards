@@ -6,7 +6,7 @@ import * as React from "react";
 import { Card } from "../../state/deck/types";
 import LineInput from "../LineInput/index";
 
-const styles = require("./styles.css");
+const styles = require("./styles.pcss");
 
 interface CardRowProps {
     className?: string;

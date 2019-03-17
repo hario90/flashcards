@@ -5,13 +5,13 @@ import * as React from "react";
 import { GoBackAction, Page, SetPageAction } from "../../state/page/types";
 import { SignOutAction } from "../../state/user/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface AppHeaderProps {
     className?: string;
     goBack: () => GoBackAction;
-    previousPage: Page;
-    previousTitle: string;
+    previousPage?: Page;
+    previousTitle?: string;
     title: string;
     avatarSrc?: string;
     firstName: string;

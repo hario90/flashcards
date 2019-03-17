@@ -30,7 +30,7 @@ To use a CSS variable declared in this directory, use `@import`. For example, gi
 src/
     components/
         Button/
-            style.css
+            style.pcss
     styles/
         layout.css
         typography.css
@@ -70,10 +70,10 @@ src/
     components/
         Button/
             index.tsx
-            style.css
+            style.pcss
 ```
 
-And the contents of `style.css`:
+And the contents of `style.pcss`:
 ```
 .container {
     background-color: blue;
@@ -88,7 +88,7 @@ To apply these CSS classes, in `index.tsx`:
 ```
 import * as React from "react";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 const button = (props) => {
     return (

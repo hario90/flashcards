@@ -12,7 +12,7 @@ are named according to their display name.
 
 ### Styling
 
-CSS is applied to components by applying CSS classes. Classes are declared in `style.css` files in component folders and
+CSS is applied to components by applying CSS classes. Classes are declared in `style.pcss` files in component folders and
 are imported into components. Use the `classnames` library to add more than one CSS class, or to conditionally
 apply a CSS class to a component.
 
@@ -27,7 +27,7 @@ src/
     components/
         Button/
             index.tsx
-            style.css
+            style.pcss
 ```
 
 To use a `Button`: `import Button from "relative/path/to/components/Button"`
@@ -40,6 +40,6 @@ src/
         List/
             index.tsx
             list-item.tsx
-            style.css
+            style.pcss
 ```
 To use a `List`: `import List from "relative/path/to/components/List"`

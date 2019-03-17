@@ -5,7 +5,6 @@ import {
     Input,
 } from "antd";
 import * as classNames from "classnames";
-import { isEmpty } from "lodash";
 import * as Mousetrap from "mousetrap";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -14,6 +13,7 @@ import { connect } from "react-redux";
 import CardRow from "../../components/CardRow/index";
 import LineInput from "../../components/LineInput/index";
 import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
+import { defaultDeck } from "../../state/deck/constants";
 import { getCanSave, getDraft, getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck, SaveDeckAction, SaveDraftAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
@@ -25,7 +25,7 @@ import {
 } from "../../state/types";
 import { getCtrlOrCmd } from "../../util/index";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface DeckProps {
     className?: string;
@@ -49,13 +49,11 @@ const EMPTY_CARD = {
 };
 
 class CreateDeck extends React.Component<DeckProps, DeckState> {
-    private readonly editing: boolean = false;
     private nameInput?: Input;
     private firstInput?: Input;
 
     constructor(props: DeckProps) {
         super(props);
-        this.editing = !isEmpty(props.deck.cards);
         this.state = {
             editingTitle: false,
         };
@@ -251,12 +249,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
 function mapStateToProps(state: State) {
     return {
-        deck: getSelectedDeck(state) || {
-            cards: [],
-            id: 0,
-            name: "",
-        },
-        draft: getDraft(state),
+        deck: getSelectedDeck(state) || defaultDeck,
+        draft: getDraft(state) || defaultDeck,
         enableSave: getCanSave(state),
     };
 }

@@ -14,7 +14,7 @@ const cardsAreEqual = (card1: Card, card2: Card) => card1.front === card2.front 
 export const getSelectedDeck = createSelector([
     getSelectedDeckId,
     getDecks,
-], (deckId: number | undefined, decks: Deck[]) => {
+], (deckId: number | undefined, decks: Deck[]): Deck | undefined => {
     if (!deckId) {
         return undefined;
     }
@@ -42,7 +42,6 @@ export const unsavedChanges = createSelector([
     }
 
     const nameChanged = selected.name !== draft.name;
-    const { cards: draftCards } = draft;
     const { cards: savedCards } = selected;
 
     let cardsChanged: boolean = false;

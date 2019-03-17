@@ -5,6 +5,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import TwoSidedCardPassive from "../../components/TwoSidedCardPassive/index";
+import { defaultDeck } from "../../state/deck/constants";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 
@@ -12,7 +13,7 @@ import {
     State,
 } from "../../state/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface MatchCard {
     card: HalfCard;
@@ -199,7 +200,7 @@ class Match extends React.Component<MatchProps, MatchState> {
 
 function mapStateToProps(state: State) {
     return {
-        deck: getSelectedDeck(state),
+        deck: getSelectedDeck(state) || defaultDeck,
     };
 }
 

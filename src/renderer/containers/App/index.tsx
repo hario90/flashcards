@@ -23,7 +23,6 @@ import { getDeckActionsHidden } from "../../state/selection/selectors";
 import { State } from "../../state/types";
 import { signOut } from "../../state/user/actions";
 import "../../styles/fonts.css";
-
 import { getAvatarSrc, getFirstName, getLastName, getUserIsLoggedIn } from "../../state/user/selectors";
 import { SignOutAction } from "../../state/user/types";
 
@@ -36,7 +35,7 @@ import Profile from "../Profile";
 import Signup from "../SignUp";
 import Test from "../Test";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface AppProps {
     avatarSrc?: string;
@@ -49,8 +48,8 @@ interface AppProps {
     isLoggedIn: boolean;
     lastName: string;
     page: Page;
-    previousPage: Page;
-    previousTitle: string;
+    previousPage?: Page;
+    previousTitle?: string;
     setPage: (page: Page) => SetPageAction;
     showDeckActions: boolean;
     signOut: () => SignOutAction;
@@ -159,9 +158,9 @@ function mapStateToProps(state: State) {
         alert: getAlert(state),
         avatarSrc: getAvatarSrc(state),
         disableDeckActions: getDeckActionsDisabled(state),
-        firstName: getFirstName(state),
+        firstName: getFirstName(state) || "",
         isLoggedIn: getUserIsLoggedIn(state),
-        lastName: getLastName(state),
+        lastName: getLastName(state) || "",
         page: getPage(state),
         previousPage: previousPageMap.get(getPage(state)),
         previousTitle: getPreviousTitle(state),

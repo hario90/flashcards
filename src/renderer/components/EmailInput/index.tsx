@@ -3,7 +3,7 @@ import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface EmailInputProps {
     className?: string;
@@ -27,7 +27,7 @@ class EmailInput extends React.Component<EmailInputProps, EmailInputState> {
         return email === "" || !isEmpty(email.match(regex));
     }
 
-    private static defaultProps = {
+    public static defaultProps = {
         useDirtyCheck: true,
     };
 

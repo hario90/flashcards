@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Deck } from "../../state/deck/types";
 
-const styles = require("./styles.css");
+const styles = require("./styles.pcss");
 
 interface DeckRowProps {
     deck: Deck;

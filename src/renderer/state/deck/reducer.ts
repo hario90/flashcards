@@ -4,7 +4,7 @@ import { AnyAction } from "redux";
 import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
-import { CLEAR_DECKS, CLEAR_DRAFT, CREATE_DECK, DELETE_DECK, SAVE_DECK, SAVE_DRAFT, SET_DECKS } from "./constants";
+import { CLEAR_DECKS, CLEAR_DRAFT, CREATE_DECK, DELETE_DECK, SAVE_DRAFT, SET_DECKS } from "./constants";
 import {
     ClearDecksAction,
     ClearDraftAction,

@@ -1,7 +1,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface StackOfCardsProps {
     className?: string;

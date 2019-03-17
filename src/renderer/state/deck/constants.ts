@@ -9,3 +9,9 @@ export const DELETE_DECK = makeConstant(BRANCH_NAME, "delete");
 export const SET_DECKS = makeConstant(BRANCH_NAME, "set-decks");
 export const CLEAR_DRAFT = makeConstant(BRANCH_NAME, "clear-draft");
 export const CLEAR_DECKS = makeConstant(BRANCH_NAME, "clear-deck");
+
+export const defaultDeck = {
+    cards: [],
+    id: 0,
+    name: "",
+};

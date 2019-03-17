@@ -14,7 +14,7 @@ import {
 import { login } from "../../state/user/actions";
 import { LoginAction } from "../../state/user/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface LoginProps {
     className?: string;

@@ -10,7 +10,7 @@
         "jsx-no-multiline-js": [false],
         "jsx-wrap-multiline": true,
         "no-console": false,
-        "no-var-requires": false, // needed for CSS Modules; const styles = require('./style.css')
+        "no-var-requires": false, // needed for CSS Modules; const styles = require('./style.pcss')
         "ordered-imports": [
           true,
           {

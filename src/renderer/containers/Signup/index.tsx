@@ -13,7 +13,7 @@ import {
 import { signup } from "../../state/user/actions";
 import { SignupAction } from "../../state/user/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface PasswordRequirement {
     requirement: string;

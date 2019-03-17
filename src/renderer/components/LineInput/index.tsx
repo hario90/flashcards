@@ -4,7 +4,7 @@ import { noop } from "lodash";
 import { ChangeEvent } from "react";
 import * as React from "react";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface LineInputProps {
     className?: string;
@@ -19,7 +19,7 @@ interface LineInputProps {
 }
 
 class LineInput extends React.Component<LineInputProps, {}> {
-    private static defaultProps: LineInputProps = {
+    public static defaultProps: LineInputProps = {
         onChange: noop,
         type: "text",
     };

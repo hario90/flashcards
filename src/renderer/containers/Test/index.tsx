@@ -5,13 +5,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import MatchBanner from "../../components/TestBanner";
-import { getSelectedDeck } from "../../state/deck/selectors";
-import { Card, Deck } from "../../state/deck/types";
 import {
     State,
-} from "../../state/types";
+} from "../../state";
+import { defaultDeck } from "../../state/deck/constants";
+import { getSelectedDeck } from "../../state/deck/selectors";
+import { Card, Deck } from "../../state/deck/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 const CORRECT_ANSWER_REWARD = 4;
 const SECONDS_PER_WORD = 5;
@@ -244,8 +245,10 @@ class Test extends React.Component<TestProps, TestState> {
 }
 
 function mapStateToProps(state: State) {
+    const deck: Deck = getSelectedDeck(state) || defaultDeck;
+
     return {
-        deck: getSelectedDeck(state),
+        deck,
     };
 }
 

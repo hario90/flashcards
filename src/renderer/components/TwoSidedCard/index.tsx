@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Card } from "../../state/deck/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface TwoSidedCardProps {
     className?: string;

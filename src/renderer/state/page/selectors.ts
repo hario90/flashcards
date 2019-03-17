@@ -1,8 +1,6 @@
 import { includes } from "lodash";
 import { createSelector } from "reselect";
 
-import { getSelectedDeck } from "../deck/selectors";
-import { Deck } from "../deck/types";
 import { State } from "../types";
 import { getUserIsLoggedIn } from "../user/selectors";
 
@@ -46,7 +44,7 @@ export const getPreviousTitle = createSelector([
 export const getPage = createSelector([
     getSelectedPage,
     getUserIsLoggedIn,
-], (page: Page, isLoggedIn: boolean) => {
+], (page: Page, isLoggedIn: boolean): Page => {
     if (includes(pagesForAllUsers, page)) {
         return page;
     }
@@ -56,11 +54,6 @@ export const getPage = createSelector([
 
 export const getTitle = createSelector([
     getPage,
-    getSelectedDeck,
-], (page: Page, deck: Deck | undefined) => {
-    if (PAGE_TO_TITLE_MAP.has(page)) {
-        // todo handle create vs edit
-        return PAGE_TO_TITLE_MAP.get(page);
-    }
-    return "";
+], (page: Page) => {
+    return PAGE_TO_TITLE_MAP.get(page) || "";
 });

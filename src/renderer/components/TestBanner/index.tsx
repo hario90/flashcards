@@ -5,7 +5,7 @@ import * as React from "react";
 import { Card } from "../../state/deck/types";
 import CountdownTimer from "../Timer/index";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface MatchBannerProps {
     className?: string;

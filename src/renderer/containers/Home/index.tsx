@@ -26,9 +26,8 @@ import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
-import { getCtrlOrCmd } from "../../util/index";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 interface HomeProps {
     className?: string;
     decks: Deck[];

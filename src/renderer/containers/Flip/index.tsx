@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 
 import StackOfCards from "../../components/StackOfCards";
 import TwoSidedCard from "../../components/TwoSidedCard";
+import { defaultDeck } from "../../state/deck/constants";
 import { getSelectedDeck } from "../../state/deck/selectors";
 import { Card, Deck } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
@@ -18,7 +19,7 @@ import {
     State,
 } from "../../state/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 const congratulatoryPhrases = [
     "Good Job!",
     "Nice Work!",
@@ -207,7 +208,7 @@ class Flip extends React.Component<FlipProps, FlipState> {
 function mapStateToProps(state: State) {
     return {
         currentCard: getCurrentCard(state),
-        deck: getSelectedDeck(state),
+        deck: getSelectedDeck(state) || defaultDeck,
         seenCards: getSeenCards(state),
         unseenCards: getUnseenCards(state),
     };

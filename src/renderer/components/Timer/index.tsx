@@ -1,12 +1,9 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    State,
-} from "../../state/types";
 import Timer = NodeJS.Timer;
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface TimerProps {
     className?: string;

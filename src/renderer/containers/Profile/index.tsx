@@ -16,7 +16,7 @@ import { updateUser } from "../../state/user/actions";
 import { getAvatarSrc, getEmail, getFirstName, getLastName } from "../../state/user/selectors";
 import { UpdateUserAction, UpdateUserRequest } from "../../state/user/types";
 
-const styles = require("./style.css");
+const styles = require("./style.pcss");
 
 interface ProfileProps {
     className?: string;
@@ -206,10 +206,10 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 
 function mapStateToProps(state: State) {
     return {
-        avatarSrc: getAvatarSrc(state),
-        email: getEmail(state),
-        firstName: getFirstName(state),
-        lastName: getLastName(state),
+        avatarSrc: getAvatarSrc(state) || "",
+        email: getEmail(state) || "",
+        firstName: getFirstName(state) || "",
+        lastName: getLastName(state) || "",
         saveInProgress: getRequestsInProgressContains(state, HttpRequestType.UPDATE_USER),
     };
 }

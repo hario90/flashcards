@@ -18,7 +18,7 @@ or `mount` utilities to accomplish these tests. Container tests are found in a `
 
 ### Styling
 
-Like the components they compose, CSS is applied to containers by applying CSS classes. Classes are declared in `style.css` files 
+Like the components they compose, CSS is applied to containers by applying CSS classes. Classes are declared in `style.pcss` files 
 in container folders and are imported into containers. Use the `classnames` library to add more than one CSS class, or to conditionally
 apply a CSS class to a container.
 
