@@ -47,8 +47,12 @@ export interface UpdateUserAction {
 }
 
 export interface UpdateUserRequest {
-    email?: string;
-    password?: string;
-    firstName?: string;
-    lastName?: string;
+    update: {
+        email?: string;
+        password?: string;
+        firstName?: string;
+        lastName?: string;
+    };
+    email: string;
+    password: string;
 }

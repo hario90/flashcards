@@ -11,7 +11,7 @@ import { setPage } from "../page/actions";
 import { Page } from "../page/types";
 import { resetSelections } from "../selection/actions";
 import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
-import { batchActions } from "../util";
+import { batchActions, getActionFromBatch } from "../util";
 
 import { setUser } from "./actions";
 import { LOGIN, SIGN_OUT, SIGNUP, UPDATE_USER } from "./constants";
@@ -145,26 +145,40 @@ const signoutLogic = createLogic({
 });
 
 const updateUserLogic = createLogic({
-    process: ({httpClient, getState, baseApiUrl}: ReduxLogicDeps, dispatch: ReduxLogicNextCb,
+    process: ({httpClient, getState, baseApiUrl, action}: ReduxLogicDeps, dispatch: ReduxLogicNextCb,
               done: ReduxLogicDoneCb) => {
         const userId = getUserId(getState());
-        httpClient
-            .put(`${baseApiUrl}/user/${userId}`)
-            .then((resp: AxiosResponse) => {
-                dispatch(batchActions([
-                    removeRequestFromInProgress(HttpRequestType.UPDATE_USER),
-                    setUser(resp.data),
-                ]));
-            })
-            .catch((err) => {
-                // set an error message.
-                // tslint:ignore-next-line
-                console.log(err);
-            })
-            .then(done);
+        const updateUserAction = getActionFromBatch(action, UPDATE_USER);
+
+        if (!updateUserAction) {
+            done();
+        } else {
+            httpClient
+                .put(`${baseApiUrl}/users/${userId}`, updateUserAction.payload)
+                .then((resp: AxiosResponse) => {
+                    dispatch(setUser(resp.data));
+                })
+                .catch((err: AxiosError) => {
+                    // set an error message.
+                    // tslint:ignore-next-line
+                    console.log(err);
+                    const message = (err && err.response && err.response.data) || "No message";
+                    dispatch(setAlert({
+                        message,
+                        type: AlertType.ERROR,
+                    }));
+                })
+                .then(() => {
+                    dispatch(removeRequestFromInProgress(HttpRequestType.UPDATE_USER));
+                    done();
+                });
+        }
     },
     transform: (deps: ReduxLogicDeps, next: ReduxLogicNextCb) => {
-        next(addRequestToInProgress(HttpRequestType.UPDATE_USER));
+        next(batchActions([
+            addRequestToInProgress(HttpRequestType.UPDATE_USER),
+            deps.action,
+        ]));
     },
     type: UPDATE_USER,
 });

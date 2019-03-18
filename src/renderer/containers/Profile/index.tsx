@@ -107,6 +107,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                 >
                     <LineInput
                         onChange={this.enterCurrentPassword}
+                        onPressEnter={this.save}
                         type="password"
                         placeholder="Password"
                         value={password}
@@ -183,11 +184,16 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
             firstNameNew: firstName,
             lastNameNew: lastName,
             emailNew: email,
+            password,
         } = this.state;
         const user: UpdateUserRequest = {
-            email,
-            firstName,
-            lastName,
+            email: this.props.email,
+            password,
+            update: {
+                email,
+                firstName,
+                lastName,
+            },
         };
         this.props.saveChanges(user);
     }

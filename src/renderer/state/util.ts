@@ -48,3 +48,14 @@ export function enableBatching<S>(reducer: Reducer<S>): Reducer<S> {
         return reducer(state, action);
     };
 }
+
+export function getActionFromBatch(batchAction: AnyAction, type: string): AnyAction | undefined {
+    if (actionIsBatched(batchAction) && type) {
+        const actions = batchAction.payload;
+        return actions.find((a) => a.type === type);
+    } else if (batchAction.type === type) {
+        return batchAction;
+    }
+
+    return undefined;
+}

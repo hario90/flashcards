@@ -24,7 +24,7 @@ import { getDeckActionsHidden } from "../../state/selection/selectors";
 import { signOut } from "../../state/user/actions";
 import { getAvatarSrc, getFirstName, getLastName, getUserIsLoggedIn } from "../../state/user/selectors";
 import { SignOutAction } from "../../state/user/types";
-
+import "../../styles/fonts.pcss";
 import CreateDeck from "../CreateDeck";
 import Flip from "../Flip";
 import Home from "../Home";
