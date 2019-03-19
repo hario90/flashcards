@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 
 import DeckRow from "../../components/DeckRow/index";
 import LineInput from "../../components/LineInput/index";
+import ShortcutHint from "../../components/ShortcutHint";
 import { createDeck, deleteDeck } from "../../state/deck/actions";
 import { getDecks } from "../../state/deck/selectors";
 import {
@@ -144,9 +145,7 @@ class Home extends React.Component<HomeProps, HomeState> {
                         >
                             New Deck
                         </Button>
-                        <div className={classNames(styles.shortcutHint, {[styles.visible]: showNewDeckShortcut})}>
-                            Enter
-                        </div>
+                        <ShortcutHint hint="Enter" visible={showNewDeckShortcut}/>
                     </div>
                 </div>
                 {showAlert && <Alert

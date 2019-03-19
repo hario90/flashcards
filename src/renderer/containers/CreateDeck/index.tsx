@@ -4,7 +4,6 @@ import {
     Icon,
     Input,
 } from "antd";
-import * as classNames from "classnames";
 import * as Mousetrap from "mousetrap";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -12,6 +11,7 @@ import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
 import LineInput from "../../components/LineInput/index";
+import ShortcutHint from "../../components/ShortcutHint";
 import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
 import { defaultDeck } from "../../state/deck/constants";
 import { getCanSave, getDraft, getSelectedDeck } from "../../state/deck/selectors";
@@ -23,7 +23,7 @@ import { SelectDeckAction } from "../../state/selection/types";
 import {
     State
 } from "../../state/types";
-import { getCtrlOrCmd } from "../../util/index";
+import { getCtrlOrCmd } from "../../util";
 
 const styles = require("./style.pcss");
 
@@ -197,9 +197,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         >
                             Save
                         </Button>
-                        <div className={classNames(styles.shortcutHint, {[styles.visible]: enableSave})}>
-                            {getCtrlOrCmd()}+S
-                        </div>
+                        <ShortcutHint visible={enableSave} hint={`${getCtrlOrCmd()}+S`}/>
                     </div>
                 </div>
                 <div className={styles.cards}>
@@ -239,7 +237,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                     })}
                     <div className={styles.addCard} onClick={this.addCard}>
                         <Icon type="plus" className={styles.plus}/>Add Card&nbsp;
-                        <div className={classNames(styles.addCardShortcutHint, styles.visible)}>{getCtrlOrCmd()}+N</div>
+                        <ShortcutHint hint={`${getCtrlOrCmd()}+N`} visible={true}/>
                     </div>
                 </div>
             </div>
