@@ -1,7 +1,9 @@
 import {
     Alert,
-    Button,
+    Button, Radio,
 } from "antd";
+import { RadioChangeEvent } from "antd/es/radio";
+import RadioGroup from "antd/es/radio/group";
 import * as classNames from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
@@ -11,6 +13,9 @@ import { connect } from "react-redux";
 import DeckRow from "../../components/DeckRow/index";
 import LineInput from "../../components/LineInput/index";
 import ShortcutHint from "../../components/ShortcutHint";
+import {
+    State
+} from "../../state";
 import { createDeck, deleteDeck } from "../../state/deck/actions";
 import { getDecks } from "../../state/deck/selectors";
 import {
@@ -24,22 +29,20 @@ import {
 } from "../../state/page/types";
 import { selectDeck } from "../../state/selection/actions";
 import { SelectDeckAction } from "../../state/selection/types";
-import {
-    State
-} from "../../state/types";
 
 const styles = require("./style.pcss");
 interface HomeProps {
     className?: string;
     decks: Deck[];
     deleteDeck: (id: number) => DeleteDeckAction;
-    createDeck: (id: Deck) => CreateDeckAction;
+    createDeck: (deck: Deck) => CreateDeckAction;
     selectDeck: (id: number) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
 
 interface HomeState {
     deckName: string;
+    deckType: "BASIC" | "THREE_WAY";
     error: string;
     showAlert: boolean;
     deckToDelete?: number;
@@ -49,6 +52,7 @@ interface HomeState {
 class Home extends React.Component<HomeProps, HomeState> {
     public state: HomeState = {
         deckName: "",
+        deckType: "BASIC",
         error: "",
         showAlert: false,
         showNewDeckShortcut: true,
@@ -78,7 +82,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 
     public createDeck(): void {
-        const { deckName } = this.state;
+        const { deckName, deckType } = this.state;
         if (this.props.decks.find((deck: Deck) => deck.name === deckName)) {
             this.setState({
                 deckName: "",
@@ -90,6 +94,7 @@ class Home extends React.Component<HomeProps, HomeState> {
                 cards: [],
                 id: 0, // this get populated in the logics
                 name: deckName,
+                type: deckType,
             });
             this.setState({
                 deckName: "",
@@ -117,13 +122,18 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     public render() {
         const { className } = this.props;
-        const { error, showAlert, showNewDeckShortcut } = this.state;
+        const { deckType, error, showAlert, showNewDeckShortcut } = this.state;
         const alertButtons = (
             <div className={styles.alertButtonRow}>
                 <div onClick={this.clearDeckToDelete}>Cancel</div>
                 <div onClick={this.deleteDeck}>Continue</div>
             </div>
         );
+        const radioStyle = {
+            display: "block",
+            height: "30px",
+            lineHeight: "30px",
+        };
         return (
             <div className={classNames(className)}>
                 <div className={styles.createDeckRow}>
@@ -137,6 +147,10 @@ class Home extends React.Component<HomeProps, HomeState> {
                         onPressEnter={this.createDeck}
                         label="title"
                     />
+                    <RadioGroup onChange={this.setDeckType} value={deckType}>
+                        <Radio value="BASIC" style={radioStyle}>Basic</Radio>
+                        <Radio value="THREE_WAY" style={radioStyle}>Japanese Support</Radio>
+                    </RadioGroup>
                     <div className={styles.createDeckBtn}>
                         <Button
                             type="primary"
@@ -195,6 +209,11 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     private onDeckNameInputFocus(): void {
         this.setState({showNewDeckShortcut: true});
+    }
+
+    private setDeckType = (e: RadioChangeEvent): void => {
+        const deckType = e.target.value;
+        this.setState({deckType});
     }
 }
 

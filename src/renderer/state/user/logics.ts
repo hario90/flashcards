@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
 import { clearDeck, clearDraft, setDecks } from "../deck/actions";
-import { CardResponse, Deck, RawDeck } from "../deck/types";
+import { CardResponse, RawDeck } from "../deck/types";
 import { addRequestToInProgress, removeRequestFromInProgress, setAlert } from "../feedback/actions";
 import { AlertType, HttpRequestType } from "../feedback/types";
 import { setPage } from "../page/actions";
@@ -31,7 +31,7 @@ const loginLogic = createLogic({
             const loginUrl = `${baseApiUrl}/users/login`;
             const { data }: AxiosResponse<User> = await httpClient.post(loginUrl, loginAction.payload);
             actions.push(setUser(data));
-            const response: [{data: Deck[]}, {data: CardResponse[]}] = await Promise.all([
+            const response: [{data: RawDeck[]}, {data: CardResponse[]}] = await Promise.all([
                 httpClient.get(`${baseApiUrl}/decks/users/${data.id}`),
                 httpClient.get(`${baseApiUrl}/cards/users/${data.id}`),
             ]);

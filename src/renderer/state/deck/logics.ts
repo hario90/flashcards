@@ -47,12 +47,13 @@ const createDeckLogic = createLogic({
 });
 
 const getCurrentDeck = (draft: Deck): Deck => {
-    const { cards, id, name } = draft;
+    const { cards, type, id, name } = draft;
     const completeCards = cards.filter((card: Card) => card.front && card.back);
     return {
         cards: completeCards,
         id,
         name: name || "",
+        type,
     };
 };
 

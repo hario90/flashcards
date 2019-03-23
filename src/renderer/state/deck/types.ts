@@ -6,17 +6,17 @@ export interface DeckStateBranch {
 export interface Card {
     front: string;
     back: string;
-}
-
-export interface Deck {
-    id: number;
-    name: string;
-    cards: Card[];
+    middle?: string;
 }
 
 export interface RawDeck {
     id: number;
     name: string;
+    type: "BASIC" | "THREE_WAY";
+}
+
+export interface Deck extends RawDeck {
+    cards: Card[];
 }
 
 export interface CardResponse extends Card {
