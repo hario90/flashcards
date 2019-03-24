@@ -13,8 +13,10 @@ interface CardRowProps {
     card: Card;
     deleteCard: (cardIndex: number) => void;
     index: number;
+    onFrontBlur: (index: number, front: string) => Promise<void>;
     updateFront: (i: number, value: string) => void;
     updateBack: (i: number, value: string) => void;
+    showMiddle: boolean;
 }
 
 interface CardRowState {
@@ -86,8 +88,10 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
     }
 
     public render() {
-        const { card, className, index } = this.props;
+        const { card, className, index, showMiddle } = this.props;
         const { isBackEditable, isFrontEditable } = this.state;
+        const frontLabel = showMiddle ? "Japanese" : "term";
+        const backLabel = showMiddle ? "English" : "definition";
 
         return (
             <div className={classNames(className, styles.row)}>
@@ -97,10 +101,10 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         value={card.front}
                         className={classNames(styles.side, styles.front)}
                         onChange={this.updateFront}
-                        placeholder="Enter term"
-                        label="term"
+                        placeholder={`Enter ${frontLabel}`}
+                        label={frontLabel}
                         ref={(input: LineInput) => { this.frontInput = input ? input.input : undefined; }}
-                        onBlur={this.makeEditable(true, false)}
+                        onBlur={this.onFrontBlur}
                     />
                 ) : (
                     <div
@@ -111,13 +115,20 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         <Icon className={styles.editIcon} type="edit"/>
                     </div>
                 )}
+                {showMiddle && (
+                    <div
+                        className={classNames(styles.side, styles.middle, styles.sideReadOnly)}
+                    >
+                        <span className={styles.cardText}>{card.middle}</span>
+                    </div>
+                )}
                 {(isBackEditable || !card.back) ? (
                     <LineInput
                         className={classNames(styles.side, styles.back)}
                         value={card.back}
                         onChange={this.updateBack}
-                        placeholder="Enter definition"
-                        label="definition"
+                        placeholder={`Enter ${backLabel}`}
+                        label={backLabel}
                         ref={(input: LineInput) => { this.backInput = input ? input.input : undefined; }}
                         onBlur={this.makeEditable(false, false)}
                     />
@@ -135,6 +146,11 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                 </div>
             </div>
         );
+    }
+
+    private onFrontBlur = () => {
+        this.makeEditable(true, false);
+        this.props.onFrontBlur(this.props.index, this.props.card.front);
     }
 }
 

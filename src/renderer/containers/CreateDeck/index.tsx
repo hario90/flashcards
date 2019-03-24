@@ -4,6 +4,8 @@ import {
     Icon,
     Input,
 } from "antd";
+import Kuroshiro from "kuroshiro";
+import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 import * as Mousetrap from "mousetrap";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -51,12 +53,15 @@ const EMPTY_CARD = {
 class CreateDeck extends React.Component<DeckProps, DeckState> {
     private nameInput?: Input;
     private firstInput?: Input;
+    private kuroshiro = new Kuroshiro();
+    private converterReady: boolean = false;
 
     constructor(props: DeckProps) {
         super(props);
         this.state = {
             editingTitle: false,
         };
+        this.kuroshiro.init(new KuromojiAnalyzer()).then(() => this.converterReady = true);
     }
 
     public setEditingTitle = (value: boolean): () => void  => {
@@ -86,11 +91,38 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         }
     }
 
+    public onFrontBlur = async (cardIndex: number, front: string): Promise<void> => {
+        const { draft } = this.props;
+        const cards = [
+            ...draft.cards,
+        ];
+        let middle = "";
+
+        if (front && this.converterReady) {
+            try {
+                middle = await this.kuroshiro.convert(front, {mode: "okurigana", to: "hiragana"});
+            } catch (e) {
+                // tslint:disable-next-line
+                console.log(e)
+            }
+        }
+
+        cards[cardIndex] = {
+            ...cards[cardIndex],
+            middle,
+        };
+        this.props.saveDraft({
+            ...draft,
+            cards,
+        });
+    }
+
     public updateFront = (cardIndex: number, front: string): void => {
         const { draft } = this.props;
         const cards = [
                 ...draft.cards,
         ];
+
         cards[cardIndex] = {
             ...cards[cardIndex],
             front,
@@ -220,6 +252,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                                     ref={(row) => {
                                         this.firstInput = row ? row.frontInput : undefined;
                                     }}
+                                    showMiddle={draft.type === "THREE_WAY"}
+                                    onFrontBlur={this.onFrontBlur}
                                 />
                             );
                         }
@@ -232,6 +266,8 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                                 key={i}
                                 index={i}
                                 card={card}
+                                showMiddle={draft.type === "THREE_WAY"}
+                                onFrontBlur={this.onFrontBlur}
                             />
                         );
                     })}
