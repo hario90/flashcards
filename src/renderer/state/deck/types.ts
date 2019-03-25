@@ -54,3 +54,6 @@ export interface ClearDraftAction {
 export interface ClearDecksAction {
     type: string;
 }
+
+export type TranslateTarget = "hiragana" | "katakana" | "romaji";
+export type TranslateMode = "normal" | "okurigana" | "furigana";

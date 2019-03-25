@@ -119,7 +119,10 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                     <div
                         className={classNames(styles.side, styles.middle, styles.sideReadOnly)}
                     >
-                        <span className={styles.cardText}>{card.middle}</span>
+                        {
+                            card.middle &&
+                            <div className={styles.cardText} dangerouslySetInnerHTML={{__html: card.middle}}/>
+                        }
                     </div>
                 )}
                 {(isBackEditable || !card.back) ? (
@@ -149,7 +152,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
     }
 
     private onFrontBlur = () => {
-        this.makeEditable(true, false);
+        this.makeEditable(true, false)();
         this.props.onFrontBlur(this.props.index, this.props.card.front);
     }
 }
