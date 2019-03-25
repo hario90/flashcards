@@ -239,6 +239,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                     </div>
                 </div>
                 {draft.type === "THREE_WAY" && <JapaneseOptions
+                    className={styles.japaneseOptions}
                     mode={mode}
                     setTranslateTarget={this.setTranslateTarget}
                     setMode={this.setMode}
