@@ -1,6 +1,8 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog, Event, ipcMain } from "electron";
 import * as path from "path";
 import { format as formatUrl } from "url";
+
+import { SAVE_DECK, SHOW_SAVE_DECK_MESSAGE } from "../shared/events";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -64,4 +66,20 @@ app.on("activate", () => {
 // create main BrowserWindow when electron is ready
 app.on("ready", () => {
     mainWindow = createMainWindow();
+});
+
+ipcMain.on(SHOW_SAVE_DECK_MESSAGE, (event: Event) => {
+    const opts = {
+        buttons: ["Save", "Cancel"],
+        message: "Save Deck?",
+        title: "Question",
+        type: "question",
+    };
+
+    if (mainWindow) {
+        dialog.showMessageBox(mainWindow, opts, (response) => {
+            console.log(response);
+            event.sender.send(SAVE_DECK, response === 0);
+        });
+    }
 });

@@ -7,10 +7,8 @@ import { events } from "../../../shared";
 
 import { clearDraft, saveDeck, saveDraft, setDecks } from "../deck/actions";
 import { getSelectedDeck, unsavedChanges } from "../deck/selectors";
-
 import { CardResponse, Deck, RawDeck } from "../deck/types";
 import { deselectDeck, setCurrentCard, setSeenCards, setUnseenCards } from "../selection/actions";
-
 import {
     ReduxLogicDeps, ReduxLogicDoneCb,
     ReduxLogicNextCb,
@@ -47,7 +45,6 @@ const setPageLogic = createLogic({
         const unsavedChangesExist: boolean = unsavedChanges(getState());
 
         if (currentPage === Page.CreateDeck && unsavedChangesExist) {
-            ipcRenderer.send(events.SHOW_SAVE_DECK_MESSAGE);
             ipcRenderer.on(events.SAVE_DECK, (event: Event, saveClicked: boolean) => {
                 if (saveClicked) {
                     next(setNextPage(action.payload));
@@ -55,6 +52,8 @@ const setPageLogic = createLogic({
                     next(batchActions([action, clearDraft(), setPage(action.payload)]));
                 }
             });
+            ipcRenderer.send(events.SHOW_SAVE_DECK_MESSAGE);
+
         } else if (action.payload === Page.Flip && selectedDeck) {
             actions.push(
                 action,
