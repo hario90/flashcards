@@ -98,6 +98,10 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public onFrontBlur = async (cardIndex: number, front: string): Promise<void> => {
         const { draft } = this.props;
+        if (front === draft.cards[cardIndex].front) {
+            return Promise.resolve();
+        }
+
         const { mode, translateTarget } = this.state;
         const cards = [
             ...draft.cards,

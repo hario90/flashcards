@@ -16,13 +16,13 @@ export function makeConstant(associatedReducer: string, actionType: string) {
 
 export function makeReducer<S>(typeToDescriptionMap: TypeToDescriptionMap, initialState: S): Reducer<S> {
     return (state: S = initialState, action: AnyAction) => {
-        console.log(action.type);
         const description = typeToDescriptionMap[action.type];
         if (!description) {
             return state;
         }
 
         if (description.accepts(action)) {
+            console.log(action.type);
             return description.perform(state, action);
         }
 
