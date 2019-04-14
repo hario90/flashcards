@@ -4,7 +4,6 @@ import { TypeToDescriptionMap } from "../types";
 import { makeReducer } from "../util";
 
 import { SET_USER, SIGN_OUT } from "./constants";
-
 import { SetUserAction, SignOutAction, UserStateBranch } from "./types";
 
 export const initialState: UserStateBranch = {

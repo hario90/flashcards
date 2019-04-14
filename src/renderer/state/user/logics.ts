@@ -142,7 +142,18 @@ const updateUserLogic = createLogic({
             httpClient
                 .put(`${baseApiUrl}/users/${userId}`, updateUserAction.payload)
                 .then((resp: AxiosResponse) => {
-                    dispatch(setUser(resp.data));
+                    const {
+                        id,
+                        email,
+                        first_name: firstName,
+                        last_name: lastName,
+                    } = resp.data;
+                    dispatch(setUser({
+                        email,
+                        firstName,
+                        id,
+                        lastName,
+                    }));
                 })
                 .catch((err: AxiosError) => {
                     // set an error message.

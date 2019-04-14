@@ -78,7 +78,6 @@ ipcMain.on(SHOW_SAVE_DECK_MESSAGE, (event: Event) => {
 
     if (mainWindow) {
         dialog.showMessageBox(mainWindow, opts, (response) => {
-            console.log(response);
             event.sender.send(SAVE_DECK, response === 0);
         });
     }
