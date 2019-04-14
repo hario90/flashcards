@@ -111,18 +111,11 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                         className={classNames(styles.side, styles.front, styles.sideReadOnly)}
                         onClick={this.makeEditable(true, true)}
                     >
-                        <span className={styles.cardText}>{card.front}</span>
-                        <Icon className={styles.editIcon} type="edit"/>
-                    </div>
-                )}
-                {showMiddle && (
-                    <div
-                        className={classNames(styles.side, styles.middle, styles.sideReadOnly)}
-                    >
-                        {
-                            card.middle &&
-                            <div className={styles.cardText} dangerouslySetInnerHTML={{__html: card.middle}}/>
+                        {showMiddle && card.middle ?
+                            <div className={styles.cardText} dangerouslySetInnerHTML={{__html: card.middle}}/> :
+                            <span className={styles.cardText}>{card.front}</span>
                         }
+                        <Icon className={styles.editIcon} type="edit"/>
                     </div>
                 )}
                 {(isBackEditable || !card.back) ? (

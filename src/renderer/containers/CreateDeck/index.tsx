@@ -44,8 +44,6 @@ interface DeckProps {
 interface DeckState {
     error?: string;
     editingTitle: boolean;
-    mode: TranslateMode;
-    translateTarget: TranslateTarget;
 }
 
 const EMPTY_CARD = {
@@ -63,8 +61,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         super(props);
         this.state = {
             editingTitle: false,
-            mode: "normal",
-            translateTarget: "hiragana",
         };
         this.kuroshiro.init(new KuromojiAnalyzer()).then(() => this.converterReady = true);
     }
@@ -101,8 +97,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         if (front === draft.cards[cardIndex].front) {
             return Promise.resolve();
         }
-
-        const { mode, translateTarget } = this.state;
         const cards = [
             ...draft.cards,
         ];
@@ -110,7 +104,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
         if (front && this.converterReady) {
             try {
-                middle = await this.kuroshiro.convert(front, {mode, to: translateTarget});
+                middle = await this.kuroshiro.convert(front, {mode: "furigana", to: "hiragana"});
             } catch (e) {
                 // tslint:disable-next-line
                 console.log(e)
@@ -207,7 +201,7 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
     public render() {
         const { className, draft, enableSave } = this.props;
         const { cards, name } = draft;
-        const {  editingTitle, error, mode, translateTarget } = this.state;
+        const {  editingTitle, error } = this.state;
         return (
             <div className={className}>
                 <div className={styles.titleRow}>
@@ -242,13 +236,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                         <ShortcutHint visible={enableSave} hint={`${getCtrlOrCmd()}+S`}/>
                     </div>
                 </div>
-                {draft.type === "THREE_WAY" && <JapaneseOptions
-                    className={styles.japaneseOptions}
-                    mode={mode}
-                    setTranslateTarget={this.setTranslateTarget}
-                    setMode={this.setMode}
-                    translateTarget={translateTarget}
-                />}
                 <div className={styles.cards}>
                     {error && <Alert
                         message="Could Not Save Deck"
@@ -295,16 +282,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
                 </div>
             </div>
         );
-    }
-
-    private setTranslateTarget = (e: TranslateTarget) => {
-        this.setState({translateTarget: e});
-        this.updateTranslations(e, this.state.mode);
-    }
-
-    private setMode = (e: TranslateMode) => {
-        this.setState({mode: e});
-        this.updateTranslations(this.state.translateTarget, e);
     }
 
     private updateTranslations = async (translateTarget: TranslateTarget, mode: TranslateMode) => {
