@@ -93,15 +93,12 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
 
     public onFrontBlur = async (cardIndex: number, front: string): Promise<void> => {
         const { draft } = this.props;
-        if (front === draft.cards[cardIndex].front) {
-            return Promise.resolve();
-        }
         const cards = [
             ...draft.cards,
         ];
         let middle = "";
-
         if (front && this.converterReady) {
+
             try {
                 middle = await this.kuroshiro.convert(front, {mode: "furigana", to: "hiragana"});
             } catch (e) {
@@ -110,14 +107,16 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             }
         }
 
-        cards[cardIndex] = {
-            ...cards[cardIndex],
-            middle,
-        };
-        this.props.saveDraft({
-            ...draft,
-            cards,
-        });
+        if (middle !== cards[cardIndex].middle) {
+            cards[cardIndex] = {
+                ...cards[cardIndex],
+                middle,
+            };
+            this.props.saveDraft({
+                ...draft,
+                cards,
+            });
+        }
     }
 
     public updateFront = (cardIndex: number, front: string): void => {
@@ -282,35 +281,6 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
             </div>
         );
     }
-
-    // private updateTranslations = async (translateTarget: TranslateTarget, mode: TranslateMode) => {
-    //     const { draft } = this.props;
-    //     const cardPromises = await draft.cards.map(async (card: Card) => {
-    //         const { front } = card;
-    //         let middle = "";
-    //
-    //         if (front && this.converterReady) {
-    //             try {
-    //                 middle = await this.kuroshiro.convert(front, {mode, to: translateTarget});
-    //             } catch (e) {
-    //                 // tslint:disable-next-line
-    //                 console.log(e)
-    //             }
-    //         }
-    //
-    //         return {
-    //             ...card,
-    //             middle,
-    //         };
-    //     });
-    //
-    //     Promise.all(cardPromises).then((cards: Card[]) => {
-    //         this.props.saveDraft({
-    //             ...draft,
-    //             cards,
-    //         });
-    //     });
-    // }
 }
 
 function mapStateToProps(state: State) {
