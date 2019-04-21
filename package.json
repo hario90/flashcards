@@ -63,10 +63,12 @@
   },
   "dependencies": {
     "@ant-design/icons": "~1.1.0",
+    "@types/jsonwebtoken": "^8.3.2",
     "antd": "3.15.0",
     "core-js": "2.6.5",
     "jsdom": "14.0.0",
     "jsdom-global": "3.0.2",
+    "jsonwebtoken": "^8.5.1",
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "lodash": "4.17.11",

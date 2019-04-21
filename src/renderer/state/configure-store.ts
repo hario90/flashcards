@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
     applyMiddleware,
     combineReducers,
@@ -18,6 +17,7 @@ import {
     State,
     user,
 } from "./";
+import { HttpClient } from "./http-client";
 
 const reducers = {
     deck: deck.reducer,
@@ -38,7 +38,7 @@ const logics = [
 
 const reduxLogicDependencies = {
     baseApiUrl: BASE_API_URL,
-    httpClient: axios,
+    httpClient: new HttpClient(),
 };
 
 export default function createReduxStore(initialState?: State) {

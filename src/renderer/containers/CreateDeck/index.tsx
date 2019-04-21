@@ -12,13 +12,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import CardRow from "../../components/CardRow/index";
-import JapaneseOptions from "../../components/JapaneseOptions";
 import LineInput from "../../components/LineInput/index";
 import ShortcutHint from "../../components/ShortcutHint";
 import { deleteDeck, saveDeck, saveDraft } from "../../state/deck/actions";
 import { defaultDeck } from "../../state/deck/constants";
 import { getCanSave, getDraft, getSelectedDeck } from "../../state/deck/selectors";
-import { Card, Deck, SaveDeckAction, SaveDraftAction, TranslateMode, TranslateTarget } from "../../state/deck/types";
+import { Card, Deck, SaveDeckAction, SaveDraftAction } from "../../state/deck/types";
 import { setPage } from "../../state/page/actions";
 import { Page, SetPageAction } from "../../state/page/types";
 import { selectDeck } from "../../state/selection/actions";
@@ -284,34 +283,34 @@ class CreateDeck extends React.Component<DeckProps, DeckState> {
         );
     }
 
-    private updateTranslations = async (translateTarget: TranslateTarget, mode: TranslateMode) => {
-        const { draft } = this.props;
-        const cardPromises = await draft.cards.map(async (card: Card) => {
-            const { front } = card;
-            let middle = "";
-
-            if (front && this.converterReady) {
-                try {
-                    middle = await this.kuroshiro.convert(front, {mode, to: translateTarget});
-                } catch (e) {
-                    // tslint:disable-next-line
-                    console.log(e)
-                }
-            }
-
-            return {
-                ...card,
-                middle,
-            };
-        });
-
-        Promise.all(cardPromises).then((cards: Card[]) => {
-            this.props.saveDraft({
-                ...draft,
-                cards,
-            });
-        });
-    }
+    // private updateTranslations = async (translateTarget: TranslateTarget, mode: TranslateMode) => {
+    //     const { draft } = this.props;
+    //     const cardPromises = await draft.cards.map(async (card: Card) => {
+    //         const { front } = card;
+    //         let middle = "";
+    //
+    //         if (front && this.converterReady) {
+    //             try {
+    //                 middle = await this.kuroshiro.convert(front, {mode, to: translateTarget});
+    //             } catch (e) {
+    //                 // tslint:disable-next-line
+    //                 console.log(e)
+    //             }
+    //         }
+    //
+    //         return {
+    //             ...card,
+    //             middle,
+    //         };
+    //     });
+    //
+    //     Promise.all(cardPromises).then((cards: Card[]) => {
+    //         this.props.saveDraft({
+    //             ...draft,
+    //             cards,
+    //         });
+    //     });
+    // }
 }
 
 function mapStateToProps(state: State) {
