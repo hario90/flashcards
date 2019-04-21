@@ -1,4 +1,4 @@
-import { Button, Icon, Input } from "antd";
+import { Icon, Input } from "antd";
 import * as classNames from "classnames";
 import { ChangeEvent } from "react";
 import * as React from "react";
@@ -138,7 +138,7 @@ class CardRow extends React.Component<CardRowProps, CardRowState>  {
                     </div>
                 )}
                 <div className={styles.closeButton} >
-                    <Button icon="delete" shape="circle" onClick={this.deleteCard}/>
+                    <Icon type="delete" onClick={this.deleteCard}/>
                 </div>
             </div>
         );
