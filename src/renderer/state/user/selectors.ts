@@ -1,14 +1,64 @@
+import { decode } from "jsonwebtoken";
 import { createSelector } from "reselect";
 
 import { State } from "../types";
 
-export const getUser = (state: State) => state.user;
-export const getUserId = (state: State) => state.user.id;
-export const getEmail = (state: State) => state.user.email;
-export const getFirstName = (state: State) => state.user.firstName;
-export const getLastName = (state: State) => state.user.lastName;
-export const getAvatarSrc = (state: State) => state.user.avatarSrc;
+import { User, UserStateBranch } from "./types";
 
-export const getUserIsLoggedIn = createSelector([getEmail], (email?: string) => {
-    return !!email;
+export const getJWT = () => localStorage.getItem("jwt");
+export const getUserFromMemory = (state: State) => state.user;
+
+export const getUser = createSelector([
+    getUserFromMemory,
+    getJWT,
+], (user: UserStateBranch, jwt: string | null): UserStateBranch => {
+    if (jwt) {
+        const jwtBody = decode(jwt, {complete: true}) as { payload: { user: User, expires: Date} };
+
+        if (jwtBody) {
+            return jwtBody.payload.user;
+        }
+    }
+
+    return user;
 });
+
+export const getUserIsLoggedIn = createSelector(
+    [getUser],
+    (user: UserStateBranch): boolean => {
+    return !!user.id;
+});
+
+export const getUserId = createSelector(
+    [getUser],
+    (user: UserStateBranch): number | undefined => {
+    return user.id;
+});
+
+export const getFirstName = createSelector(
+    [getUser],
+    (user: UserStateBranch): string | undefined => {
+        return user.firstName;
+    }
+);
+
+export const getLastName = createSelector(
+    [getUser],
+    (user: UserStateBranch): string | undefined => {
+        return user.lastName;
+    }
+);
+
+export const getEmail = createSelector(
+    [getUser],
+    (user: UserStateBranch): string | undefined => {
+        return user.email;
+    }
+);
+
+export const getAvatarSrc = createSelector(
+    [getUser],
+    (user: UserStateBranch): string | undefined => {
+        return user.avatarSrc;
+    }
+);

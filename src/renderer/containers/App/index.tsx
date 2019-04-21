@@ -76,6 +76,10 @@ class App extends React.Component<AppProps, {}> {
         super(props);
     }
 
+    public componentDidMount() {
+        this.props.setPage(Page.Home);
+    }
+
     public componentDidUpdate() {
         const { alert, dispatch } = this.props;
         if (alert) {
