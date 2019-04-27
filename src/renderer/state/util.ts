@@ -88,10 +88,10 @@ export async function getDecksProcessLogic(
         httpClient.get(`${baseApiUrl}/decks/users/${currentUserId}`),
         httpClient.get(`${baseApiUrl}/cards/users/${currentUserId}`),
     ]).catch((err) => {
-        if (err.response.status !== 404) {
+        if (!err || !err.response || (err.response && err.response.status !== 404)) {
             actions.push(
                 setAlert({
-                    message: err.message || "Could not retrieve your decks.",
+                    message: err.message || err || "Could not retrieve your decks.",
                     type: AlertType.ERROR,
                 }),
                 removeRequestFromInProgress(HttpRequestType.GET_DECKS)

@@ -2,7 +2,7 @@ import {
     Alert,
     Button,
     Radio,
-    Spin,
+    Skeleton,
 } from "antd";
 import { RadioChangeEvent } from "antd/es/radio";
 import RadioGroup from "antd/es/radio/group";
@@ -191,8 +191,13 @@ class Home extends React.Component<HomeProps, HomeState> {
 
         if (loading) {
             return (
-                <div className={classNames(styles.body)}>
-                    <Spin/>
+                <div className={classNames(styles.body, styles.center)}>
+                    <Skeleton
+                        active={true}
+                        className={styles.skeleton}
+                        title={false}
+                        paragraph={{rows: 15}}
+                    />
                 </div>
             );
         }
