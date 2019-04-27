@@ -3,15 +3,14 @@ import * as jwt from "jsonwebtoken";
 import { AnyAction } from "redux";
 import { createLogic } from "redux-logic";
 
-import { clearDeck, clearDraft, setDecks } from "../deck/actions";
-import { CardResponse, RawDeck } from "../deck/types";
+import { clearDeck, clearDraft } from "../deck/actions";
 import { addRequestToInProgress, removeRequestFromInProgress, setAlert } from "../feedback/actions";
 import { AlertType, HttpRequestType } from "../feedback/types";
 import { setPage } from "../page/actions";
 import { Page } from "../page/types";
 import { resetSelections } from "../selection/actions";
 import { ReduxLogicDeps, ReduxLogicDoneCb, ReduxLogicNextCb } from "../types";
-import { batchActions, getActionFromBatch } from "../util";
+import { batchActions, getActionFromBatch, getDecksProcessLogic } from "../util";
 
 import { setUser } from "./actions";
 import { LOGIN, SIGN_OUT, SIGNUP, UPDATE_USER } from "./constants";
@@ -33,28 +32,24 @@ const loginLogic = createLogic({
             const { data: token }: AxiosResponse<string> = await httpClient.post(loginUrl, loginAction.payload);
             localStorage.setItem("jwt", token);
             const jwtBody = jwt.decode(token, {complete: true}) as { payload: { user: User, expires: Date} };
-            console.log(jwtBody);
 
             if (jwtBody && jwtBody.payload && jwtBody.payload.user) {
                 const user = jwtBody.payload.user;
-                actions.push(setUser(user));
-                const response: [{data: RawDeck[]}, {data: CardResponse[]}] = await Promise.all([
-                    httpClient.get(`${baseApiUrl}/decks/users/${user.id}`),
-                    httpClient.get(`${baseApiUrl}/cards/users/${user.id}`),
-                ]);
-                const { data: decks } = response[0];
-                const { data: cards } = response[1];
-                const decksWithCards = decks.map((d: RawDeck) => {
-                    return {
-                        ...d,
-                        cards: cards.filter((c: CardResponse) => c.deckId === d.id),
-                    };
-                });
                 actions.push(
-                    setDecks(decksWithCards),
+                    setUser(user),
                     removeRequestFromInProgress(HttpRequestType.LOGIN),
                     setPage(Page.Home)
                 );
+
+                await getDecksProcessLogic(
+                    getState,
+                    httpClient,
+                    baseApiUrl,
+                    next,
+                    done,
+                    actions,
+                    user.id,
+                    undefined);
             } else {
                 actions.push(setAlert({
                     message: "Could not get user information",
@@ -99,7 +94,6 @@ const signupLogic = createLogic({
         }
         httpClient.post(`${baseApiUrl}/users/`, signupAction.payload)
             .then((result: AxiosResponse<User>) => {
-                console.log("result", result);
                 next(batchActions([
                     setAlert({
                         message: "Success!",
@@ -134,10 +128,12 @@ const signupLogic = createLogic({
 
 const signoutLogic = createLogic({
     transform: ({getState, action, httpClient, baseApiUrl}: ReduxLogicDeps, next: ReduxLogicNextCb) => {
+        localStorage.removeItem("jwt");
         next(batchActions([
             clearDeck(),
             clearDraft(),
             resetSelections(),
+            //set page?
             action,
         ]));
     },

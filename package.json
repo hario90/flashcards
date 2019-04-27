@@ -1,10 +1,11 @@
 {
-  "name": "template-electron-react",
+  "name": "flashcards",
   "version": "1.0.0",
   "description": "template electron and react app",
   "main": "main.js",
   "scripts": {
-    "dev": "electron-webpack dev",
+    "devRemote": "electron-webpack dev",
+    "dev": "API_URL=http://localhost:3000 electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",

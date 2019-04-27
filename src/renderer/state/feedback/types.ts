@@ -13,6 +13,7 @@ export enum HttpRequestType {
     LOGIN = 1,
     SIGNUP,
     UPDATE_USER,
+    GET_DECKS,
 }
 
 export interface FeedbackStateBranch {

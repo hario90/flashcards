@@ -1,6 +1,8 @@
 import {
     Alert,
-    Button, Radio,
+    Button,
+    Radio,
+    Spin,
 } from "antd";
 import { RadioChangeEvent } from "antd/es/radio";
 import RadioGroup from "antd/es/radio/group";
@@ -22,6 +24,8 @@ import {
     CreateDeckAction,
     Deck, DeleteDeckAction,
 } from "../../state/deck/types";
+import { getRequestsInProgressContains } from "../../state/feedback/selectors";
+import { HttpRequestType } from "../../state/feedback/types";
 import { setPage } from "../../state/page/actions";
 import {
     Page,
@@ -36,6 +40,7 @@ interface HomeProps {
     decks: Deck[];
     deleteDeck: (id: number) => DeleteDeckAction;
     createDeck: (deck: Deck) => CreateDeckAction;
+    loading: boolean;
     selectDeck: (id: number) => SelectDeckAction;
     setPage: (page: Page) => SetPageAction;
 }
@@ -182,7 +187,16 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 
     private getBody(): JSX.Element {
-        const { decks } = this.props;
+        const { decks, loading } = this.props;
+
+        if (loading) {
+            return (
+                <div className={classNames(styles.body)}>
+                    <Spin/>
+                </div>
+            );
+        }
+
         if (isEmpty(decks)) {
             return (
                 <div className={styles.body}>No decks started. Why don't you create one?</div>
@@ -220,6 +234,7 @@ class Home extends React.Component<HomeProps, HomeState> {
 function mapStateToProps(state: State) {
     return {
         decks: getDecks(state),
+        loading: getRequestsInProgressContains(state, HttpRequestType.GET_DECKS),
     };
 }
 
