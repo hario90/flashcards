@@ -12,5 +12,6 @@ build_task:
     fingerprint_script: cat yarn.lock
     populate_script: yarn install
   build_script: yarn dist
-  build_artifacts:
-    path: "dist/*"
+  always:
+    build_artifacts:
+      path: "dist/*"
