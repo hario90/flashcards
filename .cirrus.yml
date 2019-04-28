@@ -3,8 +3,9 @@ osx_instance:
 
 build_task:
   env:
-    CSC_LINK:
-    CSC_KEY_PASSWORD:
+    FLASHCARDS_API_URL: ENCRYPTED[7526eb24b5eec18f4c539d3ebb3434cb4b694bd2187bf8af4838490086afbed1ac80cf66d75b4502904fdd077bba2a8f]
+    CSC_LINK: ENCRYPTED[f229d4c1a805eebe64a9377976d0dddb3e70a2072892a7aef891ccc31cdfbf36170c8e2678cb6d22be65b10f1187dc3b]
+    CSC_KEY_PASSWORD: ENCRYPTED[8a0127db16da1faed35b988a1a5fdaacf7631d1d17098dcdf36e036e1c58ffa8b6795e75b933c101d851d49cf390c848]
   yarn_script: brew install yarn
   node_modules_cache:
     folder: node_modules
