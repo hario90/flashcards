@@ -9,11 +9,18 @@
     "compile": "electron-webpack",
     "dist": "NODE_ENV=production yarn compile && DEBUG=electron-builder CSC_LINK=${CSC_LINK} CSC_KEY_PASSWORD=${CSC_KEY_PASSWORD} API_URL=${FLASHCARDS_API_URL} electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "test": "TS_NODE_PROJECT=tsconfig.commonjs.json NODE_ENV=production mocha --opts mocha.opts src/**/test/*.{ts,tsx}"
+    "test": "TS_NODE_PROJECT=tsconfig.commonjs.json NODE_ENV=production mocha --opts mocha.opts src/**/test/*.{ts,tsx}",
+    "release": "GH_TOKEN=${FLASHCARDS_GH_TOKEN} build"
+  },
+  "build": {
+    "appId": "com.hario90.flashcards",
+    "mac": {
+      "publish": ["github"]
+    }
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@stash.corp.alleninstitute.org:7999/aicssw/template-electron-react.git"
+    "url": "https://github.com/hario90/flashcards.git"
   },
   "keywords": [
     "template",

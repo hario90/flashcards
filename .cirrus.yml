@@ -6,11 +6,10 @@ build_task:
     FLASHCARDS_API_URL: ENCRYPTED[7526eb24b5eec18f4c539d3ebb3434cb4b694bd2187bf8af4838490086afbed1ac80cf66d75b4502904fdd077bba2a8f]
     CSC_LINK: ENCRYPTED[025b8b1ecaaad511534bbb9087b44b73502dff6d76e53791ecb1af688a8706b45f8bcc63a22d21e93c5ce5704c8784e1]
     CSC_KEY_PASSWORD: ENCRYPTED[8a0127db16da1faed35b988a1a5fdaacf7631d1d17098dcdf36e036e1c58ffa8b6795e75b933c101d851d49cf390c848]
+    FLASHCARDS_GH_TOKEN: ENCRYPTED[f71fff2c1c567d2480daaef9c5245c5d6524c6abc9c0d5daaccfb7f8a825646b3a2cd18d0572797b9283ca9c77616fec]
   yarn_script: brew install yarn
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock
     populate_script: yarn install
-  build_script: yarn dist
-  build_result_artifacts:
-    path: "dist/*"
+  build_script: yarn release
