@@ -1,0 +1,13 @@
+osx_instance:
+  image: mojave-xcode-10.2
+
+build_task:
+  env:
+    CSC_LINK:
+    CSC_KEY_PASSWORD:
+  yarn_script: brew install yarn
+  node_modules_cache:
+    folder: node_modules
+    fingerprint_script: cat yarn.lock
+    populate_script: yarn install
+  build_script: yarn dist
