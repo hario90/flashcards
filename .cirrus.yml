@@ -1,7 +1,7 @@
 osx_instance:
   image: mojave-xcode-10.2
 
-build_task:
+dist_task:
   env:
     FLASHCARDS_API_URL: ENCRYPTED[7526eb24b5eec18f4c539d3ebb3434cb4b694bd2187bf8af4838490086afbed1ac80cf66d75b4502904fdd077bba2a8f]
     CSC_LINK: ENCRYPTED[025b8b1ecaaad511534bbb9087b44b73502dff6d76e53791ecb1af688a8706b45f8bcc63a22d21e93c5ce5704c8784e1]
@@ -11,4 +11,6 @@ build_task:
     folder: node_modules
     fingerprint_script: cat yarn.lock
     populate_script: yarn install
-  build_script: yarn dist
+  dist_script: yarn dist
+  dist_artifact:
+    path: "dist/*"
