@@ -2,7 +2,6 @@
   "name": "flashcards",
   "version": "1.0.0",
   "description": "template electron and react app",
-  "main": "src/main/index.tsx",
   "scripts": {
     "devRemote": "API_URL=${FLASHCARDS_API_URL} electron-webpack dev",
     "dev": "electron-webpack dev",
