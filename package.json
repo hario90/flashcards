@@ -7,10 +7,8 @@
     "devRemote": "API_URL=${FLASHCARDS_API_URL} electron-webpack dev",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist": "NODE_ENV=production yarn compile && DEBUG=electron-builder CSC_LINK=${CSC_LINK} CSC_KEY_PASSWORD=${CSC_KEY_PASSWORD} API_URL=${FLASHCARDS_API_URL} electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "dist": "NODE_ENV=production yarn compile && GH_TOKEN=${FLASHCARDS_GH_TOKEN} CSC_LINK=${CSC_LINK} CSC_KEY_PASSWORD=${CSC_KEY_PASSWORD} API_URL=${FLASHCARDS_API_URL} electron-builder",
     "test": "TS_NODE_PROJECT=tsconfig.commonjs.json NODE_ENV=production mocha --opts mocha.opts src/**/test/*.{ts,tsx}",
-    "release": "GH_TOKEN=${FLASHCARDS_GH_TOKEN} build"
   },
   "build": {
     "appId": "com.hario90.flashcards",
