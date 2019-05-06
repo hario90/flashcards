@@ -32,7 +32,6 @@ async function createMainWindow() {
             protocol: "file",
             slashes: true,
         }));
-        await autoUpdate();
     }
 
     window.on("closed", () => {
@@ -45,6 +44,8 @@ async function createMainWindow() {
             window.focus();
         });
     });
+
+    await autoUpdater.checkForUpdatesAndNotify();
 
     return window;
 }
@@ -84,7 +85,3 @@ ipcMain.on(SHOW_SAVE_DECK_MESSAGE, (event: Event) => {
         });
     }
 });
-
-const autoUpdate = async () => {
-    await autoUpdater.checkForUpdatesAndNotify();
-};
