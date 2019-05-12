@@ -31,7 +31,7 @@ import Home from "../Home";
 import Login from "../Login";
 import Match from "../Match";
 import Profile from "../Profile";
-import Signup from "../SignUp";
+import Signup from "../Signup";
 import Test from "../Test";
 
 const styles = require("./style.pcss");
