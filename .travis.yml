@@ -49,7 +49,7 @@ script:
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
-#branches:
-#  only:
-#    - "/^\\d+\\.\\d+\\.\\d+$/"
-#    - master
+branches:
+  only:
+    - "/^\\d+\\.\\d+\\.\\d+$/"
+    - master
