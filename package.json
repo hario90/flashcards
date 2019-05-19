@@ -4,9 +4,9 @@
   "description": "template electron and react app",
   "main": "main.js",
   "scripts": {
-    "devRemote": "API_URL=${FLASHCARDS_API_URL} electron-webpack dev",
+    "devRemote": "ELECTRON_WEBPACK_APP_API_URL=${FLASHCARDS_API_URL} electron-webpack dev",
     "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
+    "compile": "ELECTRON_WEBPACK_APP_API_URL=\"https://fathomless-mesa-20048.herokuapp.com\" electron-webpack",
     "dist": "electron-builder -p always",
     "test": "TS_NODE_PROJECT=tsconfig.commonjs.json NODE_ENV=production mocha --opts mocha.opts src/**/test/*.{ts,tsx}"
   },
